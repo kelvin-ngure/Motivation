@@ -1,0 +1,14 @@
+package com.happymeerkat.motivated.ui.views.navigation
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
+
+sealed class NavigationGraph(val route: String, val icon: ImageVector?) {
+    object GRAPHROOT: NavigationGraph(route = "root", icon = null)
+    object HOME: NavigationGraph(route = "home", icon = Icons.Default.Home)
+    object FILTERS: NavigationGraph(route = "filters", icon = Icons.Default.Apps)
+    object SETTINGS: NavigationGraph(route = "settings", icon = Icons.Default.Settings)
+}

@@ -17,10 +17,10 @@ fun NavigationWrapper(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.HOME.route,
+        startDestination = NavigationGraph.SETTINGS.route,
     ) {
-        composable( route = NavigationGraph.FILTERS.route ) { Filters() }
-        composable( route = NavigationGraph.HOME.route ) { Home() }
-        composable( route = NavigationGraph.SETTINGS.route ){ Settings() }
+        composable( route = NavigationGraph.FILTERS.route ) { Filters(modifier = modifier) }
+        composable( route = NavigationGraph.HOME.route ) { Home(modifier = modifier) }
+        composable( route = NavigationGraph.SETTINGS.route ){ Settings(modifier = modifier) }
     }
 }

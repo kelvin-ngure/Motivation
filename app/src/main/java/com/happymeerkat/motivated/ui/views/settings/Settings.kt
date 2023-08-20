@@ -32,6 +32,7 @@ fun Settings(
     Column(
         modifier = modifier
     ) {
+        SettingsButton(title = "Favorites", onClick = {})
         SettingsButton(title = "Manage Notifications", onClick = {})
         SettingsButton(title = "Theme", onClick = {})
         SettingsButton(title = "Fonts", onClick = {})

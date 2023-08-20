@@ -28,7 +28,7 @@ fun QuoteCard(
 ) {
     Card(
         elevation = CardDefaults.cardElevation(15.dp),
-        modifier = modifier.padding(20.dp)
+        modifier = modifier
     ) {
         Column(
             modifier = modifier.padding(

@@ -17,7 +17,7 @@ fun NavigationWrapper(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.FILTERS.route,
+        startDestination = NavigationGraph.HOME.route,
     ) {
         composable( route = NavigationGraph.FILTERS.route ) { Filters(modifier = modifier) }
         composable( route = NavigationGraph.HOME.route ) { Home(modifier = modifier) }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FormatQuote
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -18,31 +19,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.happymeerkat.motivated.data.models.Quote
 
 @Composable
 fun QuoteCard(
     modifier: Modifier,
-    quote: String,
-    author: String? = null,
-    context: String? = null
+    quote: Quote
 ) {
     Card(
         elevation = CardDefaults.cardElevation(15.dp),
-        modifier = modifier
+        modifier = modifier.padding(vertical = 18.dp)
     ) {
         Column(
             modifier = modifier.padding(
                 start = 22.dp,
                 end = 22.dp,
                 top = 20.dp,
-                bottom = 44.dp
+                bottom = 22.dp
             )
         ) {
             Row(
                 modifier = modifier.padding(bottom = 22.dp)
             ) {
                 Text(
-                    quote,
+                    quote.quote,
                     style = MaterialTheme.typography.displayLarge,
                     textAlign = TextAlign.Center
                 )
@@ -51,17 +51,23 @@ fun QuoteCard(
                 modifier = modifier,
                 horizontalArrangement = Arrangement.Center
             ) {
-                if (author != null) {
+                if (quote.author != null) {
                     Text(
-                        author,
+                        quote.author,
                         textAlign = TextAlign.Center
                     )
                 }
             }
             Row {
-                if (context != null) {
-                    Text(context)
+                if (quote.context != null) {
+                    Text(quote.context)
                 }
+            }
+            Row(
+                modifier = modifier.padding(top = 22.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "Button to add quote to Favorites")
             }
         }
 

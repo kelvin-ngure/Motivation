@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.happymeerkat.motivated.data.models.Quote
 
 @Composable
 fun Home(
@@ -17,6 +18,7 @@ fun Home(
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.background).padding(horizontal = 22.dp, vertical = 11.dp)
     ) {
-        QuoteCard(modifier = Modifier.fillMaxWidth(), quote = "And I cannot sell my soul", author = "Roddy Rich")
+        QuoteCard(modifier = Modifier.fillMaxWidth(), Quote(1, "And I cannot sell my soul", author = "Roddy Rich", categoryId = 1))
+        QuoteCard(modifier = Modifier.fillMaxWidth(), Quote(1, "And I cannot sell my soul", author = "Roddy Rich", categoryId = 1))
     }
 }

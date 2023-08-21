@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuoteDao {
-    @Query("SELECT * FROM quote")
+    @Query("SELECT * FROM Quote")
     fun getAllQuotes(): Flow<List<Quote>>
 
     @Upsert

@@ -10,6 +10,6 @@ class QuoteRepositoryImpl @Inject constructor(
     private val dao: QuoteDao
 ): QuoteRepository {
     override fun getAllQuotes(): Flow<List<Quote>> {
-        TODO("Not yet implemented")
+        return dao.getAllQuotes()
     }
 }

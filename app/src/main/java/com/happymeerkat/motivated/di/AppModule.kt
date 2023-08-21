@@ -57,6 +57,7 @@ object AppModule {
             MotivatedDB::class.java,
             MotivatedDB.DATABASE_NAME,
         )
+            .createFromAsset("data/localdb/quotes.sql")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
 //            .addCallback(object : RoomDatabase.Callback() {

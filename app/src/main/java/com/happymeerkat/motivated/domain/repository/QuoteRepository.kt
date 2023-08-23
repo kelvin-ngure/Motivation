@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuoteRepository {
     fun getAllQuotes(): Flow<List<Quote>>
+    suspend fun upsertQuote(quote: Quote)
 }

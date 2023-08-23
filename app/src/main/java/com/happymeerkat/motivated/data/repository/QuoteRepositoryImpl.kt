@@ -12,4 +12,8 @@ class QuoteRepositoryImpl @Inject constructor(
     override fun getAllQuotes(): Flow<List<Quote>> {
         return dao.getAllQuotes()
     }
+
+    override suspend fun upsertQuote(quote: Quote) {
+        dao.upsertQuote(quote)
+    }
 }

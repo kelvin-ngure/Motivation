@@ -1,19 +1,15 @@
 package com.happymeerkat.motivated.ui.views.home
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +23,8 @@ import com.happymeerkat.motivated.data.models.Quote
 @Composable
 fun QuoteCard(
     modifier: Modifier,
-    quote: Quote?
+    quote: Quote,
+    toggleFavorite: () -> Unit
 ) {
         Column(
             modifier = modifier
@@ -84,8 +81,9 @@ fun QuoteCard(
                 ) {
                     Icon(
                         modifier = modifier
-                            .size(40.dp),
-                        imageVector = Icons.Outlined.Favorite,
+                            .size(40.dp)
+                            .clickable { toggleFavorite() },
+                        imageVector = if(quote.favorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "Button to add quote to Favorites",
                     )
                 }

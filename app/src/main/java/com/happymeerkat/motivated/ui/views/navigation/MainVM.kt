@@ -1,5 +1,6 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.happymeerkat.motivated.data.models.Quote
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,18 +44,18 @@ class MainVM @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun moveToNextQuote() {
-        _homeUIState.value  = homeUIState.value.copy(
-            currentQuoteIndex = (homeUIState.value.currentQuoteIndex + 1) % (homeUIState.value.quotes.size),
-            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex+1]
-        )
-    }
+    fun toggleFavorite(quote: Quote) {
+        viewModelScope.launch {
+            val favorite = quote.favorite
+            val quote = quote.copy(
+                favorite = !favorite
+            )
+            quotesRepository.upsertQuote(
+                quote
+            )
+            Log.d("UPSERT", "UPDATED $favorite")
+        }
 
-    fun moveToPreviousQuote() {
-        _homeUIState.value  = homeUIState.value.copy(
-            currentQuoteIndex = (homeUIState.value.currentQuoteIndex - 1) % (homeUIState.value.quotes.size),
-            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex-1]
-        )
     }
 
 }

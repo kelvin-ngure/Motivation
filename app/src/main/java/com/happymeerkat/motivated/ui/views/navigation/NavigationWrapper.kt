@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.filters.Filters
 import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
@@ -27,7 +28,8 @@ fun NavigationWrapper(
         composable( route = NavigationGraph.HOME.route ) {
             Home(
                 modifier = modifier,
-                quotes = state.quotes
+                quotes = state.quotes,
+                toggleFavorite = {quote -> vm.toggleFavorite(quote)}
             )
         }
         composable( route = NavigationGraph.SETTINGS.route ){ Settings(modifier = modifier) }

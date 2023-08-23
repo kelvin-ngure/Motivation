@@ -1,6 +1,7 @@
 package com.happymeerkat.motivated.ui.views.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,13 +20,17 @@ fun Home(
 ) {
     val state = vm.homeUIState.collectAsState().value
 
-    LazyColumn(
+    Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 22.dp, vertical = 11.dp)
     ) {
-        items(state.quotes) {quote ->
-            QuoteCard(modifier = Modifier.fillMaxWidth(), quote)
-        }
+        QuoteCard(
+            modifier = Modifier.fillMaxWidth(),
+            showNextQuote = {vm.moveToNextQuote()},
+            showPreviousQuote = {vm.moveToPreviousQuote()},
+            quote = state.currentQuote
+
+        )
     }
 }

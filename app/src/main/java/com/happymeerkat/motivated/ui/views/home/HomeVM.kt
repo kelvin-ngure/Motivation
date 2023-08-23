@@ -18,7 +18,7 @@ class HomeVM @Inject constructor(
     private val quotesRepository: QuoteRepository,
     private val categoryRepository: CategoryRepository
 ): ViewModel() {
-    private val _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
+    private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
     val homeUIState: StateFlow<HomeUIState> = _homeUIState
 
     var getQuotesJob: Job? = null
@@ -40,9 +40,24 @@ class HomeVM @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun moveToNextQuote() {
+        _homeUIState.value  = homeUIState.value.copy(
+            currentQuoteIndex = (homeUIState.value.currentQuoteIndex + 1) % (homeUIState.value.quotes.size),
+            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex]
+        )
+    }
+
+    fun moveToPreviousQuote() {
+        _homeUIState.value  = homeUIState.value.copy(
+            currentQuoteIndex = (homeUIState.value.currentQuoteIndex - 1) % (homeUIState.value.quotes.size),
+            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex]
+        )
+    }
 
 }
 
 data class HomeUIState(
-    val quotes: List<Quote> = emptyList()
+    val quotes: List<Quote> = emptyList(),
+    var currentQuoteIndex: Int = 0,
+    var currentQuote: Quote? = Quote(id = 0, quote = "default", author = "fsdfd", context = "ewrw", categoryId = 1, favorite = false)
 )

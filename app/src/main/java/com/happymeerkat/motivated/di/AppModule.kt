@@ -59,7 +59,6 @@ object AppModule {
             MotivatedDB.DATABASE_NAME,
         )
             .createFromAsset("database/Quotes.db")
-            .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
 //            .addCallback(object : RoomDatabase.Callback() {
 //                override fun onCreate(db: SupportSQLiteDatabase) {

@@ -1,15 +1,15 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,13 +27,15 @@ fun BottomBar(
     val currentScreen = currentRoute(navController)
 
     NavigationBar(
-        modifier = Modifier.height(60.dp),
-        tonalElevation = 0.dp
+        modifier = modifier.height(60.dp).background(MaterialTheme.colorScheme.background),
+        tonalElevation = 0.dp,
+        containerColor = MaterialTheme.colorScheme.background
     ) {
         screens.forEach { screen ->
             NavigationBarItem(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
                 selected = currentScreen == screen.route,
                 onClick = {
                     if (currentScreen != screen.route) {
@@ -41,11 +43,17 @@ fun BottomBar(
                     }
                 },
                 icon = { screen.icon?.let { Icon(imageVector = it, contentDescription = screen.route) } },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.background,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    indicatorColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
         }
     }
 }
-
 
 @Composable
 private fun currentRoute(navController: NavHostController): String? {

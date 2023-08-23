@@ -59,7 +59,7 @@ class MainVM @Inject constructor(
 }
 
 data class HomeUIState(
-    val quotes: List<Quote> = emptyList(),
+    val quotes: List<Quote> = listOf(Quote(6000, quote = "default")),
     var currentQuoteIndex: Int = 0,
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false)
 )

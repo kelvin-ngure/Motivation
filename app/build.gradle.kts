@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.happymeerkat.motivated"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.happymeerkat.motivation"
@@ -57,7 +57,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    implementation("androidx.compose.foundation:foundation:1.6.0-alpha01")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -71,10 +72,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // ROOM
-    val room_version = "2.6.0-alpha01"
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
+    val roomVersion = "2.6.0-alpha01"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     // DAGGER HILT
     implementation("com.google.dagger:hilt-android:2.46")
@@ -83,8 +84,6 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     // ViewModel utilities for Compose
-    val lifecycle_version = "2.6.1"
-    // implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
     implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
     implementation ("io.coil-kt:coil-compose:2.3.0")

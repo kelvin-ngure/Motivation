@@ -27,9 +27,7 @@ fun NavigationWrapper(
         composable( route = NavigationGraph.HOME.route ) {
             Home(
                 modifier = modifier,
-                currentQuote = state.currentQuote,
-                moveToNextQuote = {vm.moveToNextQuote()},
-                moveToPreviousQuote = {vm.moveToPreviousQuote()}
+                quotes = state.quotes
             )
         }
         composable( route = NavigationGraph.SETTINGS.route ){ Settings(modifier = modifier) }

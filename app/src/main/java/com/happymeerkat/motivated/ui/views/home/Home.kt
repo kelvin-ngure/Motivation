@@ -12,13 +12,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.happymeerkat.motivated.data.models.Quote
 
 @Composable
 fun Home(
     modifier: Modifier = Modifier,
-    vm: HomeVM = hiltViewModel()
+    currentQuote: Quote,
+    moveToNextQuote: () -> Unit,
+    moveToPreviousQuote: () -> Unit,
 ) {
-    val state = vm.homeUIState.collectAsState().value
+
 
     Column(
         modifier = modifier
@@ -27,9 +30,9 @@ fun Home(
     ) {
         QuoteCard(
             modifier = Modifier.fillMaxWidth(),
-            showNextQuote = {vm.moveToNextQuote()},
-            showPreviousQuote = {vm.moveToPreviousQuote()},
-            quote = state.currentQuote
+            showNextQuote = {moveToNextQuote()},
+            showPreviousQuote = {moveToPreviousQuote()},
+            quote = currentQuote
 
         )
     }

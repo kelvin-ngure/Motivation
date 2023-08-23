@@ -1,4 +1,4 @@
-package com.happymeerkat.motivated.ui.views.home
+package com.happymeerkat.motivated.ui.views.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeVM @Inject constructor(
+class MainVM @Inject constructor(
     private val quotesRepository: QuoteRepository,
     private val categoryRepository: CategoryRepository
 ): ViewModel() {
@@ -34,7 +34,9 @@ class HomeVM @Inject constructor(
             .getAllQuotes()
             .onEach { quoteList ->
                 _homeUIState.value = _homeUIState.value.copy(
-                    quotes = quoteList
+                    quotes = quoteList,
+                    currentQuote = quoteList[0],
+                    currentQuoteIndex = 0
                 )
             }
             .launchIn(viewModelScope)
@@ -43,14 +45,14 @@ class HomeVM @Inject constructor(
     fun moveToNextQuote() {
         _homeUIState.value  = homeUIState.value.copy(
             currentQuoteIndex = (homeUIState.value.currentQuoteIndex + 1) % (homeUIState.value.quotes.size),
-            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex]
+            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex+1]
         )
     }
 
     fun moveToPreviousQuote() {
         _homeUIState.value  = homeUIState.value.copy(
             currentQuoteIndex = (homeUIState.value.currentQuoteIndex - 1) % (homeUIState.value.quotes.size),
-            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex]
+            currentQuote = homeUIState.value.quotes[homeUIState.value.currentQuoteIndex-1]
         )
     }
 
@@ -59,5 +61,5 @@ class HomeVM @Inject constructor(
 data class HomeUIState(
     val quotes: List<Quote> = emptyList(),
     var currentQuoteIndex: Int = 0,
-    var currentQuote: Quote? = Quote(id = 0, quote = "default", author = "fsdfd", context = "ewrw", categoryId = 1, favorite = false)
+    var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false)
 )

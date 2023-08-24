@@ -41,8 +41,11 @@ fun NavigationWrapper(
         }
         composable( route = NavigationGraph.FAVORITES.route ){
             Favorites(
-                modifier = modifier,
-                backToSettings = {navController.navigateUp()},
+                backToSettings = {navController.popBackStack()},
+                favoriteQuotes = state.quotes.filter {
+                    it.favorite
+                },
+                toggleFavorite = {quote: Quote -> vm.toggleFavorite(quote)}
             )
         }
     }

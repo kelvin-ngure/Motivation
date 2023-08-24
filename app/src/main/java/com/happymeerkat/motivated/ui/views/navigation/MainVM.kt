@@ -36,7 +36,7 @@ class MainVM @Inject constructor(
             .getAllQuotes()
             .onEach { quoteList ->
                 _homeUIState.value = _homeUIState.value.copy(
-                    quotes = quoteList,
+                    quotes = quoteList.shuffled(),
                     currentQuote = quoteList[0],
                     currentQuoteIndex = 0
                 )
@@ -55,7 +55,6 @@ class MainVM @Inject constructor(
             )
             Log.d("UPSERT", "UPDATED $favorite")
         }
-
     }
 
 }

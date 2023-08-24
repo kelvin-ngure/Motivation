@@ -1,6 +1,5 @@
 package com.happymeerkat.motivated.ui.views.settings
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,23 +15,22 @@ import androidx.compose.material.icons.filled.Facebook
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.happymeerkat.motivated.R
 
 @Composable
 fun Settings(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    goToFavorites: () -> Unit
 ) {
     Column(
         modifier = modifier
     ) {
-        SettingsButton(title = "Favorites", onClick = {})
+        SettingsButton(title = "Favorites", onClick = {goToFavorites()})
         SettingsButton(title = "Manage Notifications", onClick = {})
         SettingsButton(title = "Theme", onClick = {})
         SettingsButton(title = "Fonts", onClick = {})
@@ -66,7 +64,7 @@ fun SettingsButton(
 ) {
     Row(
         modifier = modifier
-            .clickable {  }
+            .clickable { onClick() }
             .padding(22.dp)
     ) {
         Text(

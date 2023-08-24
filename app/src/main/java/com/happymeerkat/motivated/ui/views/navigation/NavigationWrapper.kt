@@ -11,6 +11,7 @@ import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.filters.Filters
 import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
+import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 
 @Composable
 fun NavigationWrapper(
@@ -32,6 +33,17 @@ fun NavigationWrapper(
                 toggleFavorite = {quote -> vm.toggleFavorite(quote)}
             )
         }
-        composable( route = NavigationGraph.SETTINGS.route ){ Settings(modifier = modifier) }
+        composable( route = NavigationGraph.SETTINGS.route ){
+            Settings(
+                modifier = modifier,
+                goToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)}
+            )
+        }
+        composable( route = NavigationGraph.FAVORITES.route ){
+            Favorites(
+                modifier = modifier,
+                backToSettings = {navController.navigateUp()},
+            )
+        }
     }
 }

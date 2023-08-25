@@ -24,7 +24,10 @@ fun Favorites(
     toggleFavorite: (quote: Quote) -> Unit
 ) {
     Scaffold(
-        topBar = { AppBar(title = "Favorites")}
+        topBar = { AppBar(
+            title = "Favorites",
+            goBack = {backToSettings()}
+        )}
     ) { it ->
         Column(
             modifier = modifier.padding(it)

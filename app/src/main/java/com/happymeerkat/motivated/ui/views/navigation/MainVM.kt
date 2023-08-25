@@ -36,7 +36,7 @@ class MainVM @Inject constructor(
             .getAllQuotes()
             .onEach { quoteList ->
                 _homeUIState.value = _homeUIState.value.copy(
-                    quotes = quoteList.shuffled(),
+                    quotes = quoteList,
                     currentQuote = quoteList[0],
                     currentQuoteIndex = 0
                 )

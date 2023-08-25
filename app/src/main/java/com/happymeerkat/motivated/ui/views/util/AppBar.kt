@@ -16,13 +16,14 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 fun AppBar(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    title: String
+    title: String,
+    goBack: () -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { goBack() }) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "go back to Settings")
         }
         Text(

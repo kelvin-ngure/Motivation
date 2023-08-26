@@ -21,7 +21,8 @@ fun BottomBar(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) {
-    val screens = listOf(NavigationGraph.FILTERS, NavigationGraph.HOME, NavigationGraph.SETTINGS)
+    // val screens = listOf(NavigationGraph.FILTERS, NavigationGraph.HOME, NavigationGraph.SETTINGS) TODO: remove after publishing version 1
+    val screens = listOf(NavigationGraph.HOME, NavigationGraph.SETTINGS)
     val currentScreen = currentRoute(navController)
 
     NavigationBar(

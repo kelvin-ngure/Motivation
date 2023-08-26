@@ -9,17 +9,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Facebook
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.happymeerkat.motivated.R
 
 @Composable
@@ -30,28 +34,29 @@ fun Settings(
     Column(
         modifier = modifier
     ) {
-        SettingsButton(title = "Favorites", onClick = {goToFavorites()})
-        SettingsButton(title = "Manage Notifications", onClick = {})
-        SettingsButton(title = "Theme", onClick = {})
-        SettingsButton(title = "Fonts", onClick = {})
-        SettingsButton(title = "Rate us on PlayStore", onClick = {})
-        SettingsButton(title = "Share our app!", onClick = {})
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Contact Us")
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Icon(imageVector = Icons.Default.Email, contentDescription = "email")
-                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.instagram), contentDescription = "instagram")
-                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.tiktok), contentDescription = "tiktok")
-                Icon(imageVector = Icons.Default.Facebook, contentDescription = "facebook")
-            }
-        }
+        SettingsButton(icon = Icons.Default.Favorite, title = "Favorites", onClick = {goToFavorites()})
+        // TODO: remove after publishing version 1
+//        SettingsButton(title = "Manage Notifications", onClick = {})
+//        SettingsButton(title = "Theme", onClick = {})
+//        SettingsButton(title = "Fonts", onClick = {})
+//        SettingsButton(title = "Rate us on PlayStore", onClick = {})
+//        SettingsButton(title = "Share our app!", onClick = {})
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Text(text = "Contact Us")
+//            Spacer(modifier = Modifier.height(10.dp))
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceAround
+//            ) {
+//                Icon(imageVector = Icons.Default.Email, contentDescription = "email")
+//                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.instagram), contentDescription = "instagram")
+//                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.tiktok), contentDescription = "tiktok")
+//                Icon(imageVector = Icons.Default.Facebook, contentDescription = "facebook")
+//            }
+//        }
 
     }
 }
@@ -60,17 +65,22 @@ fun Settings(
 fun SettingsButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
     title: String,
+    icon: ImageVector,
     onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .clickable { onClick() }
-            .padding(22.dp)
+            .padding(22.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        Icon(imageVector = icon, contentDescription = title)
+        Spacer(modifier = Modifier.width(10.dp))
         Text(
             color = MaterialTheme.colorScheme.onPrimary,
             text = title,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            lineHeight = 30.sp
         )
     }
 }

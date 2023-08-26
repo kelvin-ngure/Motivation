@@ -28,7 +28,7 @@ fun MainBottomNavigation(
         route = "main",
         startDestination = NavigationGraph.HOME.route,
     ) {
-        composable( route = NavigationGraph.FILTERS.route ) { Filters(modifier = modifier) }
+        //composable( route = NavigationGraph.FILTERS.route ) { Filters(modifier = modifier) } TODO: remove after publishing version 1
         composable( route = NavigationGraph.HOME.route ) {
             Home(
                 modifier = modifier,

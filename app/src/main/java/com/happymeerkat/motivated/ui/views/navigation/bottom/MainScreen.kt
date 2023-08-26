@@ -1,10 +1,12 @@
-package com.happymeerkat.motivated.ui.views.navigation
+package com.happymeerkat.motivated.ui.views.navigation.bottom
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.happymeerkat.motivated.data.models.Quote
+import com.happymeerkat.motivated.ui.views.navigation.bottom.BottomBar
+import com.happymeerkat.motivated.ui.views.navigation.bottom.MainBottomNavigation
 
 @Composable
 fun MainScreen(
@@ -12,6 +14,8 @@ fun MainScreen(
     toggleFavorite: (quote: Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
     quotes: List<Quote>,
+    quotePage: Int,
+    updateQuotePage: (page: Int) -> Unit,
     navHostController: NavHostController = rememberNavController(),
 ) {
     Scaffold(
@@ -22,7 +26,9 @@ fun MainScreen(
             toggleFavorite = { quote -> toggleFavorite(quote) },
             isFavorite = {quote: Quote -> isFavorite(quote)},
             quotes = quotes,
-            navHostController = navHostController
+            quotePage = quotePage,
+            navHostController = navHostController,
+            updateQuotePage = updateQuotePage
         )
     }
 }

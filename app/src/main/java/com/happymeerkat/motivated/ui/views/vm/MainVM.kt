@@ -1,5 +1,6 @@
-package com.happymeerkat.motivated.ui.views.navigation
+package com.happymeerkat.motivated.ui.views.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.happymeerkat.motivated.data.models.Favorite
@@ -41,8 +42,6 @@ class MainVM @Inject constructor(
             .onEach { quoteList ->
                 _homeUIState.value = _homeUIState.value.copy(
                     quotes = quoteList.shuffled(),
-                    currentQuote = quoteList[0],
-                    currentQuoteIndex = 0
                 )
             }
             .launchIn(viewModelScope)
@@ -71,8 +70,15 @@ class MainVM @Inject constructor(
         }
     }
 
+
     fun quoteInFavorites(quote: Quote): Boolean {
         return _homeUIState.value.favorites.contains(Favorite(quote.id))
+    }
+
+    fun updateQuotePage(page: Int) {
+        _homeUIState.value = homeUIState.value.copy(
+            quotePage = page
+        )
     }
 
 }
@@ -81,5 +87,6 @@ data class HomeUIState(
     val quotes: List<Quote> = listOf(Quote(6000, quote = "default")),
     var currentQuoteIndex: Int = 0,
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
-    var favorites: List<Favorite> = emptyList()
+    var favorites: List<Favorite> = emptyList(),
+    val quotePage: Int = 0
 )

@@ -16,11 +16,13 @@ import com.happymeerkat.motivated.data.models.Quote
 fun Home(
     modifier: Modifier = Modifier,
     quotes: List<Quote>,
+    quotePage: Int,
     toggleFavorite: (quote: Quote) -> Unit,
-    isFavorite: (quote: Quote) -> Boolean
+    isFavorite: (quote: Quote) -> Boolean,
+    updateQuotePage: (page: Int) -> Unit
 ) {
     val pagerState = rememberPagerState(
-        initialPage = 0,
+        initialPage = quotePage,
         pageCount = {quotes.size}
     )
 
@@ -30,11 +32,13 @@ fun Home(
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background)
     ) {page ->
+        updateQuotePage(page)
         QuoteCard(
             modifier = Modifier.fillMaxWidth(),
             quote = quotes[page],
             isFavorite = isFavorite(quotes[page]),
             toggleFavorite = {toggleFavorite(quotes[page])}
         )
+
     }
 }

@@ -84,11 +84,12 @@ fun QuoteCard(
                 ) {
                     IconButton(
                         modifier = Modifier
-                            .size(40.dp),
+                            .size(50.dp),
                         onClick = { toggleFavorite() },
 
                     ) {
                         Icon(
+                            modifier = Modifier.size(50.dp),
                             imageVector = if(isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Button to add quote to Favorites"
                         )

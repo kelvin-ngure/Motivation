@@ -16,7 +16,8 @@ import com.happymeerkat.motivated.data.models.Quote
 fun Home(
     modifier: Modifier = Modifier,
     quotes: List<Quote>,
-    toggleFavorite: (quote: Quote) -> Unit
+    toggleFavorite: (quote: Quote) -> Unit,
+    isFavorite: (quote: Quote) -> Boolean
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -32,6 +33,7 @@ fun Home(
         QuoteCard(
             modifier = Modifier.fillMaxWidth(),
             quote = quotes[page],
+            isFavorite = isFavorite(quotes[page]),
             toggleFavorite = {toggleFavorite(quotes[page])}
         )
     }

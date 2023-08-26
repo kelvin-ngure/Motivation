@@ -20,6 +20,7 @@ fun MainBottomNavigation(
     modifier: Modifier = Modifier,
     navigateToFavorites: () -> Unit,
     toggleFavorite: (quote:Quote) -> Unit,
+    isFavorite: (quote: Quote) -> Boolean,
     quotes: List<Quote>,
     navHostController: NavHostController
 ) {
@@ -34,7 +35,8 @@ fun MainBottomNavigation(
             Home(
                 modifier = modifier,
                 quotes = quotes,
-                toggleFavorite = {quote -> toggleFavorite(quote)}
+                toggleFavorite = {quote -> toggleFavorite(quote)},
+                isFavorite = {quote -> isFavorite(quote)}
             )
         }
         composable( route = NavigationGraph.SETTINGS.route ){

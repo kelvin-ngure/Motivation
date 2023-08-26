@@ -10,6 +10,7 @@ import com.happymeerkat.motivated.data.models.Quote
 fun MainScreen(
     navigateToFavorites: () -> Unit,
     toggleFavorite: (quote: Quote) -> Unit,
+    isFavorite: (quote: Quote) -> Boolean,
     quotes: List<Quote>,
     navHostController: NavHostController = rememberNavController(),
 ) {
@@ -19,6 +20,7 @@ fun MainScreen(
         MainBottomNavigation(
             navigateToFavorites = navigateToFavorites,
             toggleFavorite = { quote -> toggleFavorite(quote) },
+            isFavorite = {quote: Quote -> isFavorite(quote)},
             quotes = quotes,
             navHostController = navHostController
         )

@@ -12,8 +12,10 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.happymeerkat.motivated.data.datasources.localdb.MotivatedDB
 import com.happymeerkat.motivated.data.repository.CategoryRepositoryImpl
+import com.happymeerkat.motivated.data.repository.FavoriteRepositoryImpl
 import com.happymeerkat.motivated.data.repository.QuoteRepositoryImpl
 import com.happymeerkat.motivated.domain.repository.CategoryRepository
+import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
 import dagger.Module
 import dagger.Provides
@@ -47,6 +49,12 @@ object AppModule {
     @Singleton
     fun provideCategoryRepository(db: MotivatedDB): CategoryRepository {
         return CategoryRepositoryImpl(db.getCategoryDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteRepository(db: MotivatedDB): FavoriteRepository {
+        return FavoriteRepositoryImpl(db.getFavoriteDao())
     }
 
 

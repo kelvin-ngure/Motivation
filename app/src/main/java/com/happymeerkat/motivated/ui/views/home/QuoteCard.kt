@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +25,8 @@ import com.happymeerkat.motivated.data.models.Quote
 fun QuoteCard(
     modifier: Modifier,
     quote: Quote,
-    toggleFavorite: () -> Unit
+    toggleFavorite: () -> Unit,
+    isFavorite: Boolean
 ) {
         Column(
             modifier = modifier
@@ -76,16 +78,21 @@ fun QuoteCard(
                 modifier = modifier.weight(1f)
             ) {
                 Row(
+                    modifier = modifier,
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        modifier = modifier
-                            .size(40.dp)
-                            .clickable { toggleFavorite() },
-                        imageVector = if(quote.favorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = "Button to add quote to Favorites",
-                    )
+                    IconButton(
+                        modifier = Modifier
+                            .size(40.dp),
+                        onClick = { toggleFavorite() },
+
+                    ) {
+                        Icon(
+                            imageVector = if(isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = "Button to add quote to Favorites"
+                        )
+                    }
                 }
             }
 

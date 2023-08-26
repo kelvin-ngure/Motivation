@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 
@@ -27,6 +28,7 @@ fun RootNavigation(
             MainScreen(
                 quotes = state.quotes,
                 toggleFavorite = {quote -> vm.toggleFavorite(quote)},
+                isFavorite = {quote:Quote -> vm.quoteInFavorites(quote)},
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
             )
         }
@@ -35,7 +37,7 @@ fun RootNavigation(
             Favorites(
                 backToSettings = {navController.popBackStack()},
                 favoriteQuotes = state.quotes.filter {
-                    it.favorite
+                                                     quote -> state.favorites.contains(Favorite(quote.id))
                 },
                 toggleFavorite = {quote: Quote -> vm.toggleFavorite(quote)}
             )

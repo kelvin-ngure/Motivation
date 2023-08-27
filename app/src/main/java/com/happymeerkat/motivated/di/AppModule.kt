@@ -68,15 +68,6 @@ object AppModule {
         )
             .createFromAsset("database/Quotes.db")
             .allowMainThreadQueries()
-//            .addCallback(object : RoomDatabase.Callback() {
-//                override fun onCreate(db: SupportSQLiteDatabase) {
-//                    super.onCreate(db)
-//                    val contentValues = ContentValues()
-//                    contentValues.put ("id",1)
-//                    contentValues.put ("name","All")
-//                    db.insert("Category", OnConflictStrategy.REPLACE, contentValues)
-//                }
-//            })
             .build()
     }
 }

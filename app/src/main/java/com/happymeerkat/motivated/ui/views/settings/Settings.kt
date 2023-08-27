@@ -11,9 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Facebook
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,28 +40,28 @@ fun Settings(
         modifier = modifier
     ) {
         SettingsButton(icon = Icons.Default.Favorite, title = "Favorites", onClick = {goToFavorites()})
-        // TODO: remove after publishing version 1
-//        SettingsButton(title = "Manage Notifications", onClick = {})
-//        SettingsButton(title = "Theme", onClick = {})
-//        SettingsButton(title = "Fonts", onClick = {})
-//        SettingsButton(title = "Rate us on PlayStore", onClick = {})
-//        SettingsButton(title = "Share our app!", onClick = {})
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text(text = "Contact Us")
-//            Spacer(modifier = Modifier.height(10.dp))
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceAround
-//            ) {
-//                Icon(imageVector = Icons.Default.Email, contentDescription = "email")
-//                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.instagram), contentDescription = "instagram")
-//                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.tiktok), contentDescription = "tiktok")
-//                Icon(imageVector = Icons.Default.Facebook, contentDescription = "facebook")
-//            }
-//        }
+        SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
+        SettingsButton(title = "Theme", onClick = {}, icon = Icons.Default.ColorLens)
+        SettingsButton(title = "Fonts", onClick = {}, icon = Icons.Default.FontDownload)
+        SettingsButton(title = "Rate us on PlayStore", onClick = {}, icon = Icons.Default.StarRate)
+        SettingsButton(title = "Share our app!", onClick = {}, icon = Icons.Default.Share)
+        Spacer(modifier = Modifier.height(15.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Contact Us")
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Icon(imageVector = Icons.Default.Email, contentDescription = "email")
+                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.instagram), contentDescription = "instagram")
+                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.tiktok), contentDescription = "tiktok")
+                Icon(imageVector = Icons.Default.Facebook, contentDescription = "facebook")
+            }
+        }
 
     }
 }

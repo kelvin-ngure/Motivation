@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.happymeerkat.motivated.data.models.Quote
@@ -28,7 +30,8 @@ fun QuoteCard(
     modifier: Modifier,
     quote: Quote,
     toggleFavorite: () -> Unit,
-    isFavorite: Boolean
+    isFavorite: Boolean,
+    fontId: Int
 ) {
         Column(
             modifier = modifier
@@ -48,8 +51,8 @@ fun QuoteCard(
                     if (quote != null)
                         Text(
                             quote.quote,
-                            style = MaterialTheme.typography.displayLarge,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily(listOf(Font(fontId)))
                         )
                 }
                 Row(

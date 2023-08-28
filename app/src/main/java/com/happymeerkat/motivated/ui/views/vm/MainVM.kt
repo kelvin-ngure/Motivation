@@ -8,6 +8,7 @@ import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.domain.repository.CategoryRepository
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
+import com.happymeerkat.motivated.domain.themes.FontManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainVM @Inject constructor(
     private val quotesRepository: QuoteRepository,
-    private val categoryRepository: CategoryRepository,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
+    private val fontManager: FontManager
 ): ViewModel() {
     private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
     val homeUIState: StateFlow<HomeUIState> = _homeUIState
@@ -29,10 +30,12 @@ class MainVM @Inject constructor(
     var getQuotesJob: Job? = null
     var getCategoriesJob: Job? = null
     var getFavoritesJob: Job? = null
+    var getFontJob: Job? = null
 
     init {
         getAllQuotes()
         getAllFavorites()
+        getFont()
     }
 
     private fun getAllQuotes() {
@@ -54,6 +57,19 @@ class MainVM @Inject constructor(
             .onEach { favorites ->
                 _homeUIState.value = homeUIState.value.copy(
                     favorites = favorites
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getFont() {
+        getFontJob?.cancel()
+        getFontJob = fontManager
+            .showCurrentFont
+            .onEach { fontId ->
+                Log.d("FONT STUFF", "font id is $fontId")
+                _homeUIState.value = homeUIState.value.copy(
+                    fontId = fontId
                 )
             }
             .launchIn(viewModelScope)
@@ -88,5 +104,6 @@ data class HomeUIState(
     var currentQuoteIndex: Int = 0,
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
     var favorites: List<Favorite> = emptyList(),
-    val quotePage: Int = 0
+    val quotePage: Int = 0,
+    val fontId: Int = 0
 )

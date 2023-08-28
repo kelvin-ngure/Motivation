@@ -20,6 +20,7 @@ fun MainBottomNavigation(
     quotes: List<Quote>,
     quotePage: Int,
     updateQuotePage: (page: Int) -> Unit,
+    fontId: Int,
     navHostController: NavHostController
 ) {
 
@@ -36,7 +37,8 @@ fun MainBottomNavigation(
                 quotePage = quotePage,
                 toggleFavorite = {quote -> toggleFavorite(quote)},
                 isFavorite = {quote -> isFavorite(quote)},
-                updateQuotePage = updateQuotePage
+                updateQuotePage = updateQuotePage,
+                fontId = fontId
             )
         }
         composable( route = NavigationGraph.SETTINGS.route ){

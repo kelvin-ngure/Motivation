@@ -16,6 +16,7 @@ fun MainScreen(
     quotes: List<Quote>,
     quotePage: Int,
     updateQuotePage: (page: Int) -> Unit,
+    fontId: Int,
     navHostController: NavHostController = rememberNavController(),
 ) {
     Scaffold(
@@ -28,7 +29,8 @@ fun MainScreen(
             quotes = quotes,
             quotePage = quotePage,
             navHostController = navHostController,
-            updateQuotePage = updateQuotePage
+            updateQuotePage = updateQuotePage,
+            fontId = fontId
         )
     }
 }

@@ -34,6 +34,7 @@ fun RootNavigation(
                 toggleFavorite = {quote -> vm.toggleFavorite(quote)},
                 isFavorite = {quote:Quote -> vm.quoteInFavorites(quote)},
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
+                fontId = state.fontId
             )
         }
 

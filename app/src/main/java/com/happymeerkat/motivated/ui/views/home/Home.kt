@@ -22,7 +22,8 @@ fun Home(
     quotePage: Int,
     toggleFavorite: (quote: Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
-    updateQuotePage: (page: Int) -> Unit
+    updateQuotePage: (page: Int) -> Unit,
+    fontId: Int
 ) {
     val pagerState = rememberPagerState(
         initialPage = quotePage,
@@ -40,7 +41,8 @@ fun Home(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
             quote = quotes[page],
             isFavorite = isFavorite(quotes[page]),
-            toggleFavorite = {toggleFavorite(quotes[page])}
+            toggleFavorite = {toggleFavorite(quotes[page])},
+            fontId = fontId
         )
 
     }

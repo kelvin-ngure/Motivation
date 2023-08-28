@@ -20,9 +20,9 @@ class ThemePreferencesRepository @Inject constructor (
         val CURRENT_FONT = intPreferencesKey("current_font")
     }
 
-    suspend fun saveFontPreference(fontId: Int) {
+    suspend fun saveFontPreference(fontIndexInFontList: Int) {
         dataStore.edit { preferences ->
-            preferences[CURRENT_FONT] = fontId
+            preferences[CURRENT_FONT] = fontIndexInFontList
         }
 
     }
@@ -36,6 +36,7 @@ class ThemePreferencesRepository @Inject constructor (
             }
         }
         .map { preferences ->
-            preferences[CURRENT_FONT] ?: R.font.montserrat_regular
+            //preferences[CURRENT_FONT] ?: R.font.montserrat_regular
+            R.font.robotomono_regular
         }
 }

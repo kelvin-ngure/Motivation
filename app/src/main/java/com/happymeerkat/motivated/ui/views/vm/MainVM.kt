@@ -3,6 +3,7 @@ package com.happymeerkat.motivated.ui.views.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.domain.repository.CategoryRepository
@@ -67,6 +68,7 @@ class MainVM @Inject constructor(
         getFontJob = fontManager
             .showCurrentFont
             .onEach { fontId ->
+                Log.d("FONT STUFF", "font id is ${_homeUIState.value.fontId}")
                 Log.d("FONT STUFF", "font id is $fontId")
                 _homeUIState.value = homeUIState.value.copy(
                     fontId = fontId
@@ -105,5 +107,5 @@ data class HomeUIState(
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
-    val fontId: Int = 0
+    val fontId: Int = R.font.montserrat_regular
 )

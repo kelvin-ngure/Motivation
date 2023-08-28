@@ -12,7 +12,8 @@ class FontManager(
 ) {
     private val fonts = listOf<Int>(
         R.font.montserrat_regular,
-        R.font.open_sans_regular
+        R.font.open_sans_regular,
+        R.font.robotomono_regular
     )
 
     private val currentFontIndex : Flow<Int> =  repository.readFontPreference // reading pref returns 0 if no preference saved

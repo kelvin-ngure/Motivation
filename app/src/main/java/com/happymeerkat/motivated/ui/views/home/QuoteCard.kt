@@ -1,5 +1,6 @@
 package com.happymeerkat.motivated.ui.views.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ fun QuoteCard(
     isFavorite: Boolean,
     fontId: Int
 ) {
+    Log.d("FONT STUFF in card ui", "font id is $fontId")
         Column(
             modifier = modifier
                 .fillMaxHeight()

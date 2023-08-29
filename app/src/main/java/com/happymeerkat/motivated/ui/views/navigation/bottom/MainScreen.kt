@@ -11,6 +11,7 @@ import com.happymeerkat.motivated.ui.views.navigation.bottom.MainBottomNavigatio
 @Composable
 fun MainScreen(
     navigateToFavorites: () -> Unit,
+    navigateToFonts: () -> Unit,
     toggleFavorite: (quote: Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
     quotes: List<Quote>,
@@ -24,6 +25,7 @@ fun MainScreen(
     ) { _ ->
         MainBottomNavigation(
             navigateToFavorites = navigateToFavorites,
+            navigateToFonts = navigateToFonts,
             toggleFavorite = { quote -> toggleFavorite(quote) },
             isFavorite = {quote: Quote -> isFavorite(quote)},
             quotes = quotes,

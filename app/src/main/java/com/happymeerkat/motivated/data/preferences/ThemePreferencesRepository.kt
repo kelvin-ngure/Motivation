@@ -36,7 +36,6 @@ class ThemePreferencesRepository @Inject constructor (
             }
         }
         .map { preferences ->
-            //preferences[CURRENT_FONT] ?: R.font.montserrat_regular
-            R.font.robotomono_regular
+            preferences[CURRENT_FONT] ?: 0
         }
 }

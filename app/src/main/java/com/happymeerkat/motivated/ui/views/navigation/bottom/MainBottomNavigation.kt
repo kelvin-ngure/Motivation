@@ -15,6 +15,7 @@ import com.happymeerkat.motivated.ui.views.settings.Settings
 fun MainBottomNavigation(
     modifier: Modifier = Modifier,
     navigateToFavorites: () -> Unit,
+    navigateToFonts: () -> Unit,
     toggleFavorite: (quote:Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
     quotes: List<Quote>,
@@ -44,7 +45,8 @@ fun MainBottomNavigation(
         composable( route = NavigationGraph.SETTINGS.route ){
             Settings(
                 modifier = modifier,
-                goToFavorites = {navigateToFavorites()}
+                goToFavorites = {navigateToFavorites()},
+                navigateToFonts = {navigateToFonts()}
             )
         }
     }

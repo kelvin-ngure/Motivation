@@ -66,12 +66,10 @@ class MainVM @Inject constructor(
     private fun getFont() {
         getFontJob?.cancel()
         getFontJob = fontManager
-            .showCurrentFont
-            .onEach { fontId ->
-                Log.d("FONT STUFF", "font id is ${_homeUIState.value.fontId}")
-                Log.d("FONT STUFF", "font id is $fontId")
+            .currentFontIndex
+            .onEach { fontIndex ->
                 _homeUIState.value = homeUIState.value.copy(
-                    fontId = fontId
+                    fontId = fontManager.fonts[fontIndex]
                 )
             }
             .launchIn(viewModelScope)
@@ -107,5 +105,6 @@ data class HomeUIState(
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
-    val fontId: Int = R.font.montserrat_regular
+    val fontId: Int = R.font.montserrat_regular,
+    val fonts: List<Int> = emptyList()
 )

@@ -34,7 +34,8 @@ import com.happymeerkat.motivated.R
 @Composable
 fun Settings(
     modifier: Modifier = Modifier,
-    goToFavorites: () -> Unit
+    goToFavorites: () -> Unit,
+    navigateToFonts: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -42,7 +43,7 @@ fun Settings(
         SettingsButton(icon = Icons.Default.Favorite, title = "Favorites", onClick = {goToFavorites()})
         SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
         SettingsButton(title = "Theme", onClick = {}, icon = Icons.Default.ColorLens)
-        SettingsButton(title = "Fonts", onClick = {}, icon = Icons.Default.FontDownload)
+        SettingsButton(title = "Fonts", onClick = {navigateToFonts()}, icon = Icons.Default.FontDownload)
         SettingsButton(title = "Rate us on PlayStore", onClick = {}, icon = Icons.Default.StarRate)
         SettingsButton(title = "Share our app!", onClick = {}, icon = Icons.Default.Share)
         Spacer(modifier = Modifier.height(15.dp))

@@ -12,6 +12,7 @@ import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.navigation.bottom.MainScreen
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
+import com.happymeerkat.motivated.ui.views.settings.fonts.Fonts
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
 @Composable
@@ -24,7 +25,7 @@ fun RootNavigation(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = "main",
+        startDestination = NavigationGraph.FONTS.route,
     ) {
         composable( route = "main" ) {
             MainScreen(
@@ -34,6 +35,7 @@ fun RootNavigation(
                 toggleFavorite = {quote -> vm.toggleFavorite(quote)},
                 isFavorite = {quote:Quote -> vm.quoteInFavorites(quote)},
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
+                navigateToFonts = {navController.navigate(NavigationGraph.FONTS.route)},
                 fontId = state.fontId
             )
         }
@@ -43,6 +45,12 @@ fun RootNavigation(
                 backToSettings = {navController.popBackStack()},
                 favoriteQuotes = state.quotes.filter { quote -> state.favorites.contains(Favorite(quote.id)) },
                 toggleFavorite = {quote: Quote -> vm.toggleFavorite(quote)}
+            )
+        }
+
+        composable( route = NavigationGraph.FONTS.route ){
+            Fonts(
+                backToSettings = {navController.popBackStack()}
             )
         }
 

@@ -25,7 +25,7 @@ fun RootNavigation(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.FONTS.route,
+        startDestination = "main",
     ) {
         composable( route = "main" ) {
             MainScreen(

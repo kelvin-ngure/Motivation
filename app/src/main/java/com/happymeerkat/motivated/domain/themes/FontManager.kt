@@ -5,7 +5,7 @@ import com.happymeerkat.motivated.data.preferences.ThemePreferencesRepository
 import kotlinx.coroutines.flow.Flow
 
 class FontManager(
-    repository: ThemePreferencesRepository
+    private val repository: ThemePreferencesRepository
 ) {
     val fonts = listOf<Int>(
         R.font.montserrat_regular,
@@ -14,6 +14,10 @@ class FontManager(
     )
 
     val currentFontIndex : Flow<Int> =  repository.readFontPreference // reading pref returns 0 if no preference saved
+
+    suspend fun changeFont(fontIndex: Int) {
+        repository.saveFontPreference(fontIndex)
+    }
 
     //val showCurrentFont: Flow<Int> = repository.readFontPreference
 //        flow {

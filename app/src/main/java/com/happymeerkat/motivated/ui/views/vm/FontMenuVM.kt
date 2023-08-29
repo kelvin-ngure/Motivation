@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +23,7 @@ class FontMenuVM @Inject constructor(
 
     init {
         getAllFonts()
-        updateSelectedFont()
+        getSelectedFont()
     }
 
     fun getAllFonts() {
@@ -31,7 +32,7 @@ class FontMenuVM @Inject constructor(
         )
     }
 
-    fun updateSelectedFont() {
+    fun getSelectedFont() {
         currentFontJob?.cancel()
         currentFontJob = fontManager.currentFontIndex.onEach { fontIndex ->
             _fontMenuUI.value = fontMenuUI.value.copy(
@@ -39,7 +40,17 @@ class FontMenuVM @Inject constructor(
                 selectedFont = fontManager.fonts[fontIndex]
             )
         }.launchIn(viewModelScope)
+    }
 
+    fun changeSelectedFont(fontId: Int) {
+        val fontIndex = fontManager.fonts.indexOf(fontId)
+        _fontMenuUI.value = fontMenuUI.value.copy(
+            selectedFontIndex = fontIndex,
+            selectedFont = fontId
+        )
+        viewModelScope.launch {
+            fontManager.changeFont(fontIndex)
+        }
     }
 }
 

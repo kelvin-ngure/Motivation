@@ -1,6 +1,8 @@
 package com.happymeerkat.motivated.ui.views.settings.fonts
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,13 +26,19 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun FontBox(
     modifier: Modifier = Modifier,
-    fontId: Int
+    fontId: Int,
+    changeFont: () -> Unit,
+    isCurrentFont: Boolean
 ) {
     Card(
-        modifier = Modifier.padding(10.dp).height(80.dp),
+        modifier = Modifier
+            .padding(10.dp)
+            .height(80.dp)
+            .clickable { changeFont() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
-        )
+        ),
+        border = if(isCurrentFont) BorderStroke(3.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.1.dp, MaterialTheme.colorScheme.surface )
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

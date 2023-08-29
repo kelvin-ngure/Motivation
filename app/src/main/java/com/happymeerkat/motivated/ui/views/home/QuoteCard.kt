@@ -65,7 +65,8 @@ fun QuoteCard(
                         if (quote.author != null) {
                             Text(
                                 quote.author,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                fontFamily = FontFamily(listOf(Font(fontId)))
                             )
                         }
                     }
@@ -73,7 +74,10 @@ fun QuoteCard(
                 Row {
                     if (quote != null) {
                         if (quote.context != null) {
-                            Text(quote.context)
+                            Text(
+                                quote.context,
+                                fontFamily = FontFamily(listOf(Font(fontId)))
+                            )
                         }
                     }
                 }

@@ -1,11 +1,11 @@
 package com.happymeerkat.motivated.domain.themes
 
 import com.happymeerkat.motivated.R
-import com.happymeerkat.motivated.data.preferences.ThemePreferencesRepository
+import com.happymeerkat.motivated.data.preferences.FontPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 
 class FontManager(
-    private val repository: ThemePreferencesRepository
+    private val repository: FontPreferencesRepository
 ) {
     val fonts = listOf<Int>(
         R.font.montserrat_regular,

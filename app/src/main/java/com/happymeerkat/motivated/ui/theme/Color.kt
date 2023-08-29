@@ -9,18 +9,13 @@ val LightSuede = Color(0xFFfefae0)
 val LightBrown = Color(0xFFab9e79)
 
 // Dark
-val Black = Color(0xFF121212)
+val Black = Color(0xFF000000)
 val DarkBlue = Color(0xFF14213d)
 val Gold = Color(0xFFfca311)
-val White = Color(0xFFc2c0c0)
-//bdbda4
-//ccccca
-//d6d6d4
+val White = Color(0xFFf5f5f5)
+
 // Dark options
 val DarkBlueGreen = Color(0xff213555)
-//4c6ea8
-//213555
-//3b5480
 
 val ErrorRed = Color(0xffcf5132)
 

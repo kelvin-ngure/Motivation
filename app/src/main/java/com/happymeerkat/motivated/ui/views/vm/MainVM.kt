@@ -1,14 +1,15 @@
 package com.happymeerkat.motivated.ui.views.vm
 
-import android.util.Log
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
-import com.happymeerkat.motivated.domain.repository.CategoryRepository
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
+import com.happymeerkat.motivated.domain.themes.BackgroundManager
 import com.happymeerkat.motivated.domain.themes.FontManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -23,7 +24,8 @@ import javax.inject.Inject
 class MainVM @Inject constructor(
     private val quotesRepository: QuoteRepository,
     private val favoriteRepository: FavoriteRepository,
-    private val fontManager: FontManager
+    private val fontManager: FontManager,
+    private val backgroundManager: BackgroundManager
 ): ViewModel() {
     private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
     val homeUIState: StateFlow<HomeUIState> = _homeUIState
@@ -32,11 +34,13 @@ class MainVM @Inject constructor(
     var getCategoriesJob: Job? = null
     var getFavoritesJob: Job? = null
     var getFontJob: Job? = null
+    var getBackgroundJob: Job? = null
 
     init {
         getAllQuotes()
         getAllFavorites()
         getFont()
+        getBackground()
     }
 
     private fun getAllQuotes() {
@@ -69,11 +73,27 @@ class MainVM @Inject constructor(
             .currentFontIndex
             .onEach { fontIndex ->
                 _homeUIState.value = homeUIState.value.copy(
-                    fontId = fontManager.fonts[fontIndex]
+                    fontId = fontManager.fonts[fontIndex],
+                    fontIndex = fontIndex
                 )
             }
             .launchIn(viewModelScope)
     }
+
+    private fun getBackground() {
+        getBackgroundJob?.cancel()
+        getBackgroundJob = backgroundManager
+            .currentBackgroundIndex
+            .onEach { backgroundIndex ->
+                _homeUIState.value = homeUIState.value.copy(
+                    background = backgroundManager.backgrounds[backgroundIndex],
+                    backgroundIndex = backgroundIndex
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+
 
     fun toggleFavorite(quote: Quote) {
         viewModelScope.launch {
@@ -105,6 +125,10 @@ data class HomeUIState(
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
+    val fontIndex: Int = 0,
     val fontId: Int = R.font.montserrat_regular,
-    val fonts: List<Int> = emptyList()
+    val fonts: List<Int> = emptyList(),
+    val backgroundIndex: Int = 0,
+    val background: Color? = null,
+    val backgrounds: List<Color> = emptyList()
 )

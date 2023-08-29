@@ -32,14 +32,13 @@ fun RootNavigation(
     ) {
         composable( route = NavigationGraph.HOME.route ) {
             Home(
-                modifier = Modifier.background(state.background ?: Color.Yellow),
                 quotes = state.quotes,
                 quotePage = state.quotePage,
                 isFavorite = {quote:Quote -> vm.quoteInFavorites(quote)},
                 toggleFavorite = {quote -> vm.toggleFavorite(quote)},
                 updateQuotePage = {page: Int -> vm.updateQuotePage(page)},
                 fontId = state.fontId,
-                background = state.background,
+                theme = state.background,
                 navigateToSettings = {navController.navigate(NavigationGraph.SETTINGS.route)}
             )
         }

@@ -34,6 +34,6 @@ class BackgroundPreferencesRepository @Inject constructor (
             }
         }
         .map { preferences ->
-            preferences[CURRENT_BACKGROUND] ?: 1
+            preferences[CURRENT_BACKGROUND] ?: 0
         }
 }

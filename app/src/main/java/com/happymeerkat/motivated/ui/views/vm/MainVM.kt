@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
+import com.happymeerkat.motivated.data.models.Theme
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
 import com.happymeerkat.motivated.domain.themes.BackgroundManager
@@ -129,6 +130,6 @@ data class HomeUIState(
     val fontId: Int = R.font.montserrat_regular,
     val fonts: List<Int> = emptyList(),
     val backgroundIndex: Int = 0,
-    val background: Color? = null,
-    val backgrounds: List<Color> = emptyList()
+    val background: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null),
+    val backgrounds: List<Theme> = emptyList()
 )

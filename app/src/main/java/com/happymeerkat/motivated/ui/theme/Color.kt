@@ -37,7 +37,7 @@ sealed class ThemeColors (
         error = ErrorRed
     )
     object Light : ThemeColors (
-        background = LightSuede,
+        background = Color.White,
         surface = LightBrown,
         primary = LightSuede,
         text = DarkBlueGreen,

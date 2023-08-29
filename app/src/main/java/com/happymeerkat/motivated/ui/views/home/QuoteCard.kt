@@ -32,9 +32,10 @@ fun QuoteCard(
     quote: Quote,
     toggleFavorite: () -> Unit,
     isFavorite: Boolean,
-    fontId: Int
+    fontId: Int,
+    fontColor: Color?
 ) {
-    Log.d("FONT STUFF in card ui", "font id is $fontId")
+
         Column(
             modifier = modifier
                 .fillMaxHeight()
@@ -54,7 +55,8 @@ fun QuoteCard(
                         Text(
                             quote.quote,
                             textAlign = TextAlign.Center,
-                            fontFamily = FontFamily(listOf(Font(fontId)))
+                            fontFamily = FontFamily(listOf(Font(fontId))),
+                            color = fontColor ?: MaterialTheme.colorScheme.onPrimary
                         )
                 }
                 Row(
@@ -66,7 +68,8 @@ fun QuoteCard(
                             Text(
                                 quote.author,
                                 textAlign = TextAlign.Center,
-                                fontFamily = FontFamily(listOf(Font(fontId)))
+                                fontFamily = FontFamily(listOf(Font(fontId))),
+                                color = fontColor ?: MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }
@@ -76,7 +79,8 @@ fun QuoteCard(
                         if (quote.context != null) {
                             Text(
                                 quote.context,
-                                fontFamily = FontFamily(listOf(Font(fontId)))
+                                fontFamily = FontFamily(listOf(Font(fontId))),
+                                color = fontColor ?: MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }
@@ -103,7 +107,7 @@ fun QuoteCard(
                             modifier = Modifier.size(50.dp),
                             imageVector = if(isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Button to add quote to Favorites",
-                            tint = if(isFavorite) Color.Red.copy(alpha = 0.68f) else MaterialTheme.colorScheme.onPrimary
+                            tint = if(isFavorite) Color.Red else fontColor ?: MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }

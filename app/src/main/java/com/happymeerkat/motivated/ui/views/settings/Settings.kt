@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,23 +20,24 @@ import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Facebook
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getString
 import androidx.core.content.ContextCompat.startActivity
 import com.happymeerkat.motivated.R
+
 
 @Composable
 fun Settings(
@@ -63,7 +65,8 @@ fun Settings(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Icon(imageVector = Icons.Default.Email, contentDescription = "email")
+                SocialMediaButton(icon = Icons.Default.Email, description = "send email button", onClick = { emailUs(context) })
+
                 Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.instagram), contentDescription = "instagram")
                 Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.tiktok), contentDescription = "tiktok")
                 Icon(imageVector = Icons.Default.Facebook, contentDescription = "facebook")
@@ -97,6 +100,18 @@ fun SettingsButton(
     }
 }
 
+@Composable
+fun SocialMediaButton(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    description: String,
+    onClick: () -> Unit
+) {
+    IconButton(onClick = { onClick() }) {
+        Icon(imageVector = Icons.Default.Email, contentDescription = "email")
+    }
+}
+
 fun rateOnPlayStore(context: Context) {
     val packageName = context.packageName
     val uri: Uri = Uri.parse("market://details?id=$packageName")
@@ -119,5 +134,30 @@ fun rateOnPlayStore(context: Context) {
             ),
             null
         )
+    }
+}
+
+fun emailUs(context: Context) {
+    val mailto = "mailto:" + getString(context, R.string.app_email) +
+            "?cc=" +
+            "&subject=" + Uri.encode("your subject") +
+            "&body=" + Uri.encode("your mail body")
+    val emailIntent = Intent(Intent.ACTION_SENDTO)
+    emailIntent.data = Uri.parse(mailto)
+    emailIntent.addFlags(
+        Intent.FLAG_ACTIVITY_NO_HISTORY or
+        Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+        Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
+        Intent.FLAG_ACTIVITY_NEW_TASK
+    )
+
+    try {
+        startActivity(
+            context,
+            emailIntent,
+            null
+        )
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(context, "Error to open email app", Toast.LENGTH_SHORT).show()
     }
 }

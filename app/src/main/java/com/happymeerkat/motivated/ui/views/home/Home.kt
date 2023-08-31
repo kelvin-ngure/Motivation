@@ -48,7 +48,6 @@ fun Home(
     theme: Theme,
     navigateToSettings: () -> Unit
 ) {
-    Log.d("THEME", theme.toString())
     val pagerState = rememberPagerState(
         initialPage = quotePage,
         pageCount = {quotes.size}
@@ -60,7 +59,7 @@ fun Home(
                 if (theme.backgroundImage != null) {
                     Modifier.paint(
                         painterResource(id = theme.backgroundImage),
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Crop,
                         alpha = 1f
                     )
                 } else {
@@ -103,10 +102,14 @@ fun Home(
                 .clip(RoundedCornerShape(5.dp, 5.dp, 5.dp, 5.dp)),
             onClick = { navigateToSettings() },
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = Color.White
+                containerColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
-            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "")
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.background
+            )
         }
     }
 

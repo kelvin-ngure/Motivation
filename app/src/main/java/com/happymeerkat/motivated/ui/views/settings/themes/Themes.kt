@@ -1,12 +1,12 @@
-package com.happymeerkat.motivated.ui.views.settings.fonts
+package com.happymeerkat.motivated.ui.views.settings.themes
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,18 +31,22 @@ fun Themes(
         )
         }
     ) { it ->
-        LazyVerticalGrid(
-            modifier = modifier
-                .padding(it)
-                .background(MaterialTheme.colorScheme.background),
-            columns = GridCells.Fixed(3)
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
         ) {
-            items(state.themes) { theme ->
-                ThemeBox(
-                    theme = theme,
-                    changeTheme = {vm.changeSelectedTheme(theme = theme)},
-                    isCurrentTheme = state.selectedTheme == theme
-                )
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .padding(it),
+                columns = GridCells.Fixed(3)
+            ) {
+                items(state.themes) { theme ->
+                    ThemeBox(
+                        theme = theme,
+                        changeTheme = {vm.changeSelectedTheme(theme = theme)},
+                        isCurrentTheme = state.selectedTheme == theme
+                    )
+                }
             }
         }
     }

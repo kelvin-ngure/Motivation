@@ -28,14 +28,14 @@ sealed class ThemeColors (
 ) {
     object Dark : ThemeColors (
         background = Black,
-        surface = DarkBlue,
+        surface = Black,
         primary = Black,
         text = White,
         error = ErrorRed
     )
     object Light : ThemeColors (
-        background = Color.White,
-        surface = LightBrown,
+        background = LightSuede,
+        surface = LightSuede,
         primary = LightSuede,
         text = DarkBlueGreen,
         error = ErrorRed

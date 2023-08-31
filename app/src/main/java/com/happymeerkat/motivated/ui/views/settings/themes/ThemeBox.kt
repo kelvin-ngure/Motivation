@@ -1,4 +1,4 @@
-package com.happymeerkat.motivated.ui.views.settings.fonts
+package com.happymeerkat.motivated.ui.views.settings.themes
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,15 +36,12 @@ fun ThemeBox(
             .padding(10.dp)
             .height(160.dp)
             .clickable { changeTheme() },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
         border = if(isCurrentTheme) BorderStroke(3.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.1.dp, MaterialTheme.colorScheme.surface )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .paint(painter = painterResource(id = theme.backgroundImage!!), contentScale = ContentScale.FillBounds),
+                .paint(painter = painterResource(id = theme.backgroundImage!!), contentScale = ContentScale.Crop),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

@@ -1,6 +1,8 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -14,7 +16,7 @@ import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
-import com.happymeerkat.motivated.ui.views.settings.fonts.Themes
+import com.happymeerkat.motivated.ui.views.settings.themes.Themes
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
 @Composable
@@ -28,7 +30,7 @@ fun RootNavigation(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.FONTS.route,
+        startDestination = NavigationGraph.HOME.route,
     ) {
         composable( route = NavigationGraph.HOME.route ) {
             Home(
@@ -44,9 +46,10 @@ fun RootNavigation(
 
         composable( route = NavigationGraph.SETTINGS.route ){
             Settings(
-                modifier = modifier,
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.background),
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
-                navigateToFonts = {navController.navigate(NavigationGraph.FONTS.route)}
+                navigateToFonts = {navController.navigate(NavigationGraph.THEMES.route)}
             )
         }
 
@@ -59,9 +62,10 @@ fun RootNavigation(
             )
         }
 
-        composable( route = NavigationGraph.FONTS.route ){
+        composable( route = NavigationGraph.THEMES.route ){
             Themes(
-                modifier = modifier,
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.background),
                 backToSettings = {navController.popBackStack()}
             )
         }

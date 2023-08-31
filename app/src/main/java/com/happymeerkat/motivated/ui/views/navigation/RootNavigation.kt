@@ -1,5 +1,6 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,7 @@ import com.happymeerkat.motivated.ui.views.vm.MainVM
 fun RootNavigation(
     modifier: Modifier = Modifier
             .statusBarsPadding(),
+    context: Context,
     navController: NavHostController = rememberNavController(),
     vm: MainVM = hiltViewModel()
 ) {
@@ -48,6 +50,7 @@ fun RootNavigation(
             Settings(
                 modifier = modifier
                     .background(MaterialTheme.colorScheme.background),
+                context = context,
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
                 navigateToFonts = {navController.navigate(NavigationGraph.THEMES.route)}
             )

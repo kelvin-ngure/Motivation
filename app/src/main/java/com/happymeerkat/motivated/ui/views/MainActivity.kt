@@ -1,5 +1,6 @@
 package com.happymeerkat.motivated.ui.views
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         super.onCreate(savedInstanceState)
+        var context: Context = applicationContext
 
         setContent {
             MotivatedDailyQuotesTheme {
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    RootNavigation()
+                    RootNavigation(context =  context)
                 }
             }
         }

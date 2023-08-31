@@ -1,5 +1,9 @@
 package com.happymeerkat.motivated.ui.views.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,14 +30,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.happymeerkat.motivated.R
 
 @Composable
 fun Settings(
     modifier: Modifier = Modifier,
+    context: Context,
     navigateToFavorites: () -> Unit,
     navigateToFonts: () -> Unit,
 ) {
@@ -43,7 +50,7 @@ fun Settings(
         SettingsButton(icon = Icons.Default.Favorite, title = "Favorites", onClick = {navigateToFavorites()})
         SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
         SettingsButton(title = "Themes", onClick = {navigateToFonts()}, icon = Icons.Default.ColorLens)
-        SettingsButton(title = "Rate us on PlayStore", onClick = {}, icon = Icons.Default.StarRate)
+        SettingsButton(title = "Rate us on PlayStore", onClick = { rateOnPlayStore(context) }, icon = Icons.Default.StarRate)
         SettingsButton(title = "Share our app!", onClick = {}, icon = Icons.Default.Share)
         Spacer(modifier = Modifier.height(15.dp))
         Column(
@@ -86,6 +93,31 @@ fun SettingsButton(
             text = title,
             style = MaterialTheme.typography.bodyLarge,
             lineHeight = 30.sp
+        )
+    }
+}
+
+fun rateOnPlayStore(context: Context) {
+    val packageName = context.packageName
+    val uri: Uri = Uri.parse("market://details?id=$packageName")
+    val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+
+    goToMarket.addFlags(
+        Intent.FLAG_ACTIVITY_NO_HISTORY or
+            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+            Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
+            Intent.FLAG_ACTIVITY_NEW_TASK
+    )
+    try {
+        startActivity(context, goToMarket, null)
+    } catch (e: ActivityNotFoundException) {
+        startActivity(
+            context,
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+            ),
+            null
         )
     }
 }

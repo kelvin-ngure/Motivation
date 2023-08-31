@@ -6,5 +6,6 @@ data class Theme(
     val themeId: Int,
     val backgroundImage: Int?,
     val backgroundColor: Color?,
-    val fontColor: Color?
+    val fontColor: Color?,
+    val fontId: Int?
 )

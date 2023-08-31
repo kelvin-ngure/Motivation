@@ -32,7 +32,7 @@ fun QuoteCard(
     quote: Quote,
     toggleFavorite: () -> Unit,
     isFavorite: Boolean,
-    fontId: Int,
+    fontId: Int?,
     fontColor: Color?
 ) {
 
@@ -55,7 +55,7 @@ fun QuoteCard(
                         Text(
                             quote.quote,
                             textAlign = TextAlign.Center,
-                            fontFamily = FontFamily(listOf(Font(fontId))),
+                            fontFamily = if (fontId != null) FontFamily(listOf(Font(fontId))) else MaterialTheme.typography.bodyLarge.fontFamily,
                             color = fontColor ?: MaterialTheme.colorScheme.onPrimary
                         )
                 }
@@ -68,7 +68,7 @@ fun QuoteCard(
                             Text(
                                 quote.author,
                                 textAlign = TextAlign.Center,
-                                fontFamily = FontFamily(listOf(Font(fontId))),
+                                fontFamily = if (fontId != null) FontFamily(listOf(Font(fontId))) else MaterialTheme.typography.bodyLarge.fontFamily,
                                 color = fontColor ?: MaterialTheme.colorScheme.onPrimary
                             )
                         }
@@ -79,7 +79,7 @@ fun QuoteCard(
                         if (quote.context != null) {
                             Text(
                                 quote.context,
-                                fontFamily = FontFamily(listOf(Font(fontId))),
+                                fontFamily = if (fontId != null) FontFamily(listOf(Font(fontId))) else MaterialTheme.typography.bodyLarge.fontFamily,
                                 color = fontColor ?: MaterialTheme.colorScheme.onPrimary
                             )
                         }

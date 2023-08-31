@@ -19,9 +19,6 @@ val DarkBlueGreen = Color(0xff213555)
 
 val ErrorRed = Color(0xffcf5132)
 
-
-
-
 sealed class ThemeColors (
     val background: Color,
     val surface: Color,

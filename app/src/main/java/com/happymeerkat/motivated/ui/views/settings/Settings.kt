@@ -42,8 +42,7 @@ fun Settings(
     ) {
         SettingsButton(icon = Icons.Default.Favorite, title = "Favorites", onClick = {navigateToFavorites()})
         SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
-        SettingsButton(title = "Theme", onClick = {}, icon = Icons.Default.ColorLens)
-        SettingsButton(title = "Fonts", onClick = {navigateToFonts()}, icon = Icons.Default.FontDownload)
+        SettingsButton(title = "Themes", onClick = {navigateToFonts()}, icon = Icons.Default.ColorLens)
         SettingsButton(title = "Rate us on PlayStore", onClick = {}, icon = Icons.Default.StarRate)
         SettingsButton(title = "Share our app!", onClick = {}, icon = Icons.Default.Share)
         Spacer(modifier = Modifier.height(15.dp))

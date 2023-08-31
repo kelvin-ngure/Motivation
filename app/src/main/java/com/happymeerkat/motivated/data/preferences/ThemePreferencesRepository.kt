@@ -11,21 +11,21 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class FontPreferencesRepository @Inject constructor (
+class ThemePreferencesRepository @Inject constructor (
     private val dataStore: DataStore<Preferences>
 ) {
     private companion object {
-        val CURRENT_FONT = intPreferencesKey("current_font")
+        val CURRENT_THEME = intPreferencesKey("current_theme")
     }
 
-    suspend fun saveFontPreference(fontIndexInFontList: Int) {
+    suspend fun saveThemePreference(themeIndexInThemeList: Int) {
         dataStore.edit { preferences ->
-            preferences[CURRENT_FONT] = fontIndexInFontList
+            preferences[CURRENT_THEME] = themeIndexInThemeList
         }
 
     }
 
-    val readFontPreference: Flow<Int> = dataStore.data
+    val readThemePreference: Flow<Int> = dataStore.data
         .catch {
             if(it is IOException) {
                 emit(emptyPreferences())
@@ -34,6 +34,6 @@ class FontPreferencesRepository @Inject constructor (
             }
         }
         .map { preferences ->
-            preferences[CURRENT_FONT] ?: 0
+            preferences[CURRENT_THEME] ?: 0
         }
 }

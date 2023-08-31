@@ -13,19 +13,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.happymeerkat.motivated.ui.views.util.AppBar
-import com.happymeerkat.motivated.ui.views.vm.FontMenuVM
+import com.happymeerkat.motivated.ui.views.vm.ThemeMenuVM
 
 @Composable
-fun Fonts(
+fun Themes(
     modifier: Modifier = Modifier.fillMaxSize(),
     backToSettings: () -> Unit,
-    vm: FontMenuVM = hiltViewModel()
+    vm: ThemeMenuVM = hiltViewModel()
 ) {
-    val state = vm.fontMenuUI.collectAsState().value
+    val state = vm.themeMenuUI.collectAsState().value
 
     Scaffold(
+        modifier = modifier,
         topBar = { AppBar(
-            title = "Fonts",
+            title = "Themes",
             goBack = {backToSettings()}
         )
         }
@@ -36,11 +37,11 @@ fun Fonts(
                 .background(MaterialTheme.colorScheme.background),
             columns = GridCells.Fixed(3)
         ) {
-            items(state.fonts) { fontId ->
-                FontBox(
-                    fontId = fontId,
-                    changeFont = {vm.changeSelectedFont(fontId =  fontId)},
-                    isCurrentFont = state.selectedFont == fontId
+            items(state.themes) { theme ->
+                ThemeBox(
+                    theme = theme,
+                    changeTheme = {vm.changeSelectedTheme(theme = theme)},
+                    isCurrentTheme = state.selectedTheme == theme
                 )
             }
         }

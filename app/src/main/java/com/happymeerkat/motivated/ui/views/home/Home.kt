@@ -45,7 +45,6 @@ fun Home(
     toggleFavorite: (quote: Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
     updateQuotePage: (page: Int) -> Unit,
-    fontId: Int,
     theme: Theme,
     navigateToSettings: () -> Unit
 ) {
@@ -75,7 +74,7 @@ fun Home(
         contentAlignment = Alignment.TopEnd
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.6f))
+            modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.2f))
         ) {
 
         }
@@ -92,7 +91,7 @@ fun Home(
                 quote = quotes[page],
                 isFavorite = isFavorite(quotes[page]),
                 toggleFavorite = {toggleFavorite(quotes[page])},
-                fontId = fontId,
+                fontId = theme.fontId,
                 fontColor = theme.fontColor
             )
 

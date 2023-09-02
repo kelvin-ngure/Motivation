@@ -1,12 +1,14 @@
 package com.happymeerkat.motivated.ui.views.settings.themes
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,15 +35,30 @@ fun ThemeBox(
 ) {
     Card(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(horizontal = 5.dp, vertical = 10.dp)
             .height(160.dp)
+            .width(100.dp)
             .clickable { changeTheme() },
-        border = if(isCurrentTheme) BorderStroke(3.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.1.dp, MaterialTheme.colorScheme.surface )
+        border = if(isCurrentTheme) BorderStroke(3.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.3.dp, MaterialTheme.colorScheme.onPrimary )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .paint(painter = painterResource(id = theme.backgroundImage!!), contentScale = ContentScale.Crop),
+                .then(
+                    if (theme.backgroundImage != null) {
+                        Modifier.paint(
+                            painterResource(id = theme.backgroundImage),
+                            contentScale = ContentScale.Crop,
+                            alpha = 1f
+                        )
+                    } else {
+                        if (theme.backgroundColor != null) {
+                            Modifier.background(theme.backgroundColor)
+                        } else {
+                            Modifier.background(MaterialTheme.colorScheme.background)
+                        }
+                    }
+                ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

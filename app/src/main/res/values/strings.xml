@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Motivation</string>
     <string name="app_email">hpmkapps@outlook.com</string>
+    <string name="app_instagram">https://www.instagram.com/motivated_existence?utm_source=qr&amp;r=nametag</string>
+    <string name="app_playstore_link">https://play.google.com/store/apps/details?id=com.happymeerkat.motivation</string>
+
 </resources>

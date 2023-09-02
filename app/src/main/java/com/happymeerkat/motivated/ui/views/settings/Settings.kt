@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Facebook
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Share
@@ -32,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getString
@@ -53,7 +53,7 @@ fun Settings(
         SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
         SettingsButton(title = "Themes", onClick = {navigateToFonts()}, icon = Icons.Default.ColorLens)
         SettingsButton(title = "Rate us on PlayStore", onClick = { rateOnPlayStore(context) }, icon = Icons.Default.StarRate)
-        SettingsButton(title = "Share our app!", onClick = {}, icon = Icons.Default.Share)
+        SettingsButton(title = "Share our app!", onClick = { shareAppLink(context) }, icon = Icons.Default.Share)
         Spacer(modifier = Modifier.height(15.dp))
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -66,15 +66,15 @@ fun Settings(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 SocialMediaButton(icon = Icons.Default.Email, description = "send email button", onClick = { emailUs(context) })
-
-                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.instagram), contentDescription = "instagram")
-                Icon(modifier = Modifier.size(21.dp),painter = painterResource(id = R.drawable.tiktok), contentDescription = "tiktok")
-                Icon(imageVector = Icons.Default.Facebook, contentDescription = "facebook")
+                SocialMediaButton(iconId = R.drawable.instagram, description = "instagram button", onClick = { openInstagram(context) })
+                SocialMediaButton(iconId = R.drawable.tiktok, description = "tiktok button", onClick = { openTiktok() })
             }
         }
 
     }
 }
+
+
 
 @Composable
 fun SettingsButton(
@@ -103,12 +103,18 @@ fun SettingsButton(
 @Composable
 fun SocialMediaButton(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    iconId: Int? = null,
+    icon: ImageVector? = null,
     description: String,
     onClick: () -> Unit
 ) {
     IconButton(onClick = { onClick() }) {
-        Icon(imageVector = Icons.Default.Email, contentDescription = "email")
+        if(icon != null) {
+            Icon(imageVector = Icons.Default.Email, contentDescription = description)
+        }
+        else {
+            Icon(modifier = Modifier.size(21.dp), painter = painterResource(id = iconId!!), contentDescription = description )
+        }
     }
 }
 
@@ -161,3 +167,64 @@ fun emailUs(context: Context) {
         Toast.makeText(context, "Error to open email app", Toast.LENGTH_SHORT).show()
     }
 }
+
+fun openInstagram(context: Context) {
+    val uri = Uri.parse(getString(context, R.string.app_instagram))
+    val likeIng = Intent(Intent.ACTION_VIEW, uri)
+    likeIng.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+            Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
+            Intent.FLAG_ACTIVITY_NEW_TASK)
+    likeIng.setPackage("com.instagram.android")
+
+    try {
+        startActivity(context, likeIng, null)
+    } catch (e: ActivityNotFoundException) {
+        startActivity(
+            context,
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://instagram.com/xxx")
+            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            null
+        )
+    }
+}
+
+fun openTiktok() {
+
+}
+
+fun shareAppLink(context: Context) {
+
+
+    val uri = Uri.parse(getString(context, R.string.app_playstore_link))
+
+    val intent = Intent(Intent.ACTION_ALL_APPS).apply {
+        //intent.data = uri
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, uri)
+        type = "text/plain"
+    }
+
+
+    intent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK
+    )
+
+    try {
+        startActivity(
+            context,
+            Intent.createChooser(intent, "Share")
+                .addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+            ),
+            null
+        )
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(context, "couldn't start", Toast.LENGTH_SHORT)
+    }
+
+
+}
+

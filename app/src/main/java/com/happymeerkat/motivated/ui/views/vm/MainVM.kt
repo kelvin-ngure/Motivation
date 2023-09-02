@@ -9,6 +9,7 @@ import com.happymeerkat.motivated.data.models.Theme
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
 import com.happymeerkat.motivated.domain.themes.ThemeManager
+import com.happymeerkat.motivated.domain.themes.ThemeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -90,7 +91,6 @@ class MainVM @Inject constructor(
         }
     }
 
-
     fun quoteInFavorites(quote: Quote): Boolean {
         return _homeUIState.value.favorites.contains(Favorite(quote.id))
     }
@@ -101,6 +101,7 @@ class MainVM @Inject constructor(
         )
     }
 
+    fun showThemeGroups(): HashMap<ThemeType, List<Int>> = themeManager.getThemeGroups()
 }
 
 data class HomeUIState(

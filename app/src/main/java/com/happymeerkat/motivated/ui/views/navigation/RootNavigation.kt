@@ -69,7 +69,8 @@ fun RootNavigation(
             Themes(
                 modifier = modifier
                     .background(MaterialTheme.colorScheme.background),
-                backToSettings = {navController.popBackStack()}
+                backToSettings = {navController.popBackStack()},
+                themeGroups = vm.showThemeGroups()
             )
         }
     }

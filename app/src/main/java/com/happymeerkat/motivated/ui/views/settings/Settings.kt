@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -67,7 +68,7 @@ fun Settings(
             ) {
                 SocialMediaButton(icon = Icons.Default.Email, description = "send email button", onClick = { emailUs(context) })
                 SocialMediaButton(iconId = R.drawable.instagram, description = "instagram button", onClick = { openInstagram(context) })
-                SocialMediaButton(iconId = R.drawable.tiktok, description = "tiktok button", onClick = { openTiktok() })
+                SocialMediaButton(iconId = R.drawable.tiktok, description = "tiktok button", onClick = { openTiktok(context) })
             }
         }
 
@@ -191,8 +192,20 @@ fun openInstagram(context: Context) {
     }
 }
 
-fun openTiktok() {
+fun openTiktok(context: Context) {
+    val uri = Uri.parse(getString(context, R.string.app_tiktok))
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+            Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
+            Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.setPackage("com.zhiliaoapp.musically")
 
+    try {
+        startActivity(context, intent, null)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(context, "Error opening tiktok app", Toast.LENGTH_SHORT).show()
+    }
 }
 
 fun shareAppLink(context: Context) {
@@ -201,12 +214,11 @@ fun shareAppLink(context: Context) {
     val uri = Uri.parse(getString(context, R.string.app_playstore_link))
 
     val intent = Intent(Intent.ACTION_ALL_APPS).apply {
-        //intent.data = uri
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, uri)
+        putExtra(Intent.EXTRA_TEXT, uri.toString())
         type = "text/plain"
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     }
-
 
     intent.addFlags(
             Intent.FLAG_ACTIVITY_NEW_TASK
@@ -224,7 +236,5 @@ fun shareAppLink(context: Context) {
     } catch (e: ActivityNotFoundException) {
         Toast.makeText(context, "couldn't start", Toast.LENGTH_SHORT)
     }
-
-
 }
 

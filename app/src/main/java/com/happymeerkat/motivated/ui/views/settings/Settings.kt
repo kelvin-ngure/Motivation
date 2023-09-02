@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getString
 import androidx.core.content.ContextCompat.startActivity
 import com.happymeerkat.motivated.R
+import com.happymeerkat.motivated.ui.views.util.AppBar
 
 
 @Composable
@@ -46,15 +48,39 @@ fun Settings(
     context: Context,
     navigateToFavorites: () -> Unit,
     navigateToFonts: () -> Unit,
+    backToHome: () -> Unit
 ) {
-    Column(
-        modifier = modifier
+    Scaffold(
+        modifier = modifier,
+        topBar = { AppBar(
+            title = "Settings",
+            goBack = {backToHome()}
+        )
+        }
     ) {
-        SettingsButton(icon = Icons.Default.Favorite, title = "Favorites", onClick = {navigateToFavorites()})
-        SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
-        SettingsButton(title = "Themes", onClick = {navigateToFonts()}, icon = Icons.Default.ColorLens)
-        SettingsButton(title = "Rate us on PlayStore", onClick = { rateOnPlayStore(context) }, icon = Icons.Default.StarRate)
-        SettingsButton(title = "Share our app!", onClick = { shareAppLink(context) }, icon = Icons.Default.Share)
+    Column(
+        modifier = modifier.padding(it)
+    ) {
+        SettingsButton(
+            icon = Icons.Default.Favorite,
+            title = "Favorites",
+            onClick = { navigateToFavorites() })
+        //SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
+        SettingsButton(
+            title = "Themes",
+            onClick = { navigateToFonts() },
+            icon = Icons.Default.ColorLens
+        )
+        SettingsButton(
+            title = "Rate us on PlayStore",
+            onClick = { rateOnPlayStore(context) },
+            icon = Icons.Default.StarRate
+        )
+        SettingsButton(
+            title = "Share our app!",
+            onClick = { shareAppLink(context) },
+            icon = Icons.Default.Share
+        )
         Spacer(modifier = Modifier.height(15.dp))
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -66,11 +92,21 @@ fun Settings(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                SocialMediaButton(icon = Icons.Default.Email, description = "send email button", onClick = { emailUs(context) })
-                SocialMediaButton(iconId = R.drawable.instagram, description = "instagram button", onClick = { openInstagram(context) })
-                SocialMediaButton(iconId = R.drawable.tiktok, description = "tiktok button", onClick = { openTiktok(context) })
+                SocialMediaButton(
+                    icon = Icons.Default.Email,
+                    description = "send email button",
+                    onClick = { emailUs(context) })
+                SocialMediaButton(
+                    iconId = R.drawable.instagram,
+                    description = "instagram button",
+                    onClick = { openInstagram(context) })
+                SocialMediaButton(
+                    iconId = R.drawable.tiktok,
+                    description = "tiktok button",
+                    onClick = { openTiktok(context) })
             }
         }
+    }
 
     }
 }
@@ -171,15 +207,15 @@ fun emailUs(context: Context) {
 
 fun openInstagram(context: Context) {
     val uri = Uri.parse(getString(context, R.string.app_instagram))
-    val likeIng = Intent(Intent.ACTION_VIEW, uri)
-    likeIng.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
             Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
             Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
             Intent.FLAG_ACTIVITY_NEW_TASK)
-    likeIng.setPackage("com.instagram.android")
+    intent.setPackage("com.instagram.android")
 
     try {
-        startActivity(context, likeIng, null)
+        startActivity(context, intent, null)
     } catch (e: ActivityNotFoundException) {
         startActivity(
             context,

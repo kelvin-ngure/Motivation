@@ -52,7 +52,8 @@ fun RootNavigation(
                     .background(MaterialTheme.colorScheme.background),
                 context = context,
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
-                navigateToFonts = {navController.navigate(NavigationGraph.THEMES.route)}
+                navigateToFonts = {navController.navigate(NavigationGraph.THEMES.route)},
+                backToHome = {navController.popBackStack()}
             )
         }
 

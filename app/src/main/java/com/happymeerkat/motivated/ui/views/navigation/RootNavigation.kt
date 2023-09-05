@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,23 +13,29 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
+import com.happymeerkat.motivated.ui.views.ImageState
 import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 import com.happymeerkat.motivated.ui.views.settings.themes.Themes
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RootNavigation(
     modifier: Modifier = Modifier
             .statusBarsPadding(),
     context: Context,
     navController: NavHostController = rememberNavController(),
+    imageState: MutableState<ImageState>,
+    downloadImage: (awsKey: String) -> Unit,
     vm: MainVM = hiltViewModel()
 ) {
     val state = vm.homeUIState.collectAsState().value
+
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
@@ -38,12 +45,13 @@ fun RootNavigation(
             Home(
                 quotes = state.quotes,
                 quotePage = state.quotePage,
-                isFavorite = {quote:Quote -> vm.quoteInFavorites(quote)},
-                toggleFavorite = {quote -> vm.toggleFavorite(quote)},
-                updateQuotePage = {page: Int -> vm.updateQuotePage(page)},
-                theme = state.background,
-                navigateToSettings = {navController.navigate(NavigationGraph.SETTINGS.route)}
-            )
+                imageState = imageState,
+                downloadImage = downloadImage,
+                isFavorite = { quote:Quote -> vm.quoteInFavorites(quote)},
+                toggleFavorite = { quote -> vm.toggleFavorite(quote)},
+                updateQuotePage = { page: Int -> vm.updateQuotePage(page)},
+                theme = state.background
+            ) { navController.navigate(NavigationGraph.SETTINGS.route) }
         }
 
         composable( route = NavigationGraph.SETTINGS.route ){

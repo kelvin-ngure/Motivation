@@ -105,12 +105,12 @@ class MainVM @Inject constructor(
 }
 
 data class HomeUIState(
-    val quotes: List<Quote> = listOf(Quote(6000, quote = "default")),
+    val quotes: List<Quote> = listOf(Quote(6000, quote = "")),
     var currentQuoteIndex: Int = 0,
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
     val backgroundIndex: Int = 0,
-    val background: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null),
+    val background: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null),
     val backgrounds: List<Theme> = emptyList()
 )

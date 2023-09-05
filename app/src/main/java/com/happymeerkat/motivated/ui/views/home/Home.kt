@@ -3,7 +3,6 @@ package com.happymeerkat.motivated.ui.views.home
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,35 +12,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.TextDelegate.Companion.paint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.data.models.Theme
+import com.happymeerkat.motivated.ui.views.ImageState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun Home(
     modifier: Modifier = Modifier,
     quotes: List<Quote>,
     quotePage: Int,
+    downloadImage: (awsKey: String) -> Unit,
+    imageState: MutableState<ImageState>,
     toggleFavorite: (quote: Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
     updateQuotePage: (page: Int) -> Unit,
@@ -52,31 +57,45 @@ fun Home(
         initialPage = quotePage,
         pageCount = {quotes.size}
     )
+    val imgState = imageState.value
+    var downloaded by remember{ mutableStateOf(false) }
+
     Box(
         modifier = modifier
             .fillMaxHeight()
             .then(
-                if (theme.backgroundImage != null) {
-                    Modifier.paint(
-                        painterResource(id = theme.backgroundImage),
-                        contentScale = ContentScale.Crop,
-                        alpha = 1f
-                    )
+                if (theme.backgroundColor != null) {
+                    Modifier.background(theme.backgroundColor)
                 } else {
-                    if (theme.backgroundColor != null) {
-                        Modifier.background(theme.backgroundColor)
-                    } else {
-                        Modifier.background(MaterialTheme.colorScheme.background)
-                    }
+                    Modifier.background(MaterialTheme.colorScheme.background)
                 }
+
             ),
         contentAlignment = Alignment.TopEnd
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.2f))
-        ) {
+        if(theme.awsKey != null) {
+            if(downloaded) {
+                when(imgState) {
+                    is ImageState.ImageDownloaded -> {
+                        Log.d("AMPLIFY", "downloaded image ${imgState.downloadedImageFile}")
+                        GlideImage(
+                            model = imgState.downloadedImageFile,
+                            contentDescription = "sunset tree",
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+
+                    else -> {}
+                }
+            } else{
+                Log.d("AMPLIFY", "recompose")
+                downloadImage(theme.awsKey)
+                downloaded = true
+            }
+
 
         }
+
         VerticalPager(
             state = pagerState,
             modifier = modifier

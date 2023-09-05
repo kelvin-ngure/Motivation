@@ -8,5 +8,6 @@ data class Theme(
     val backgroundImage: Int?,
     val backgroundColor: Color?,
     val fontColor: Color?,
-    val fontId: Int?
+    val fontId: Int?,
+    val awsKey: String?
 )

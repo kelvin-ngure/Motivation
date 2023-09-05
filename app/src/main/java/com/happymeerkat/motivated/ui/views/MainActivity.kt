@@ -1,32 +1,26 @@
 package com.happymeerkat.motivated.ui.views
 
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.storage.options.StoragePagedListOptions
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.happymeerkat.motivated.ui.theme.MotivatedDailyQuotesTheme
+import com.happymeerkat.motivated.ui.views.navigation.RootNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -63,24 +57,11 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    //RootNavigation(context =  context)
-                    when(val state = imageState.value) {
-                        is ImageState.ImageUploaded -> {
-                            Button(onClick = ::downloadPhoto) {
-                                Text(text = "Download Photo")
-                            }
-                        }
-
-                        is ImageState.ImageDownloaded -> {
-                            GlideImage(
-                                model = state.downloadedImageFile,
-                                contentDescription = "sunset tree",
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-
-                        else -> {}
-                    }
+                    RootNavigation(
+                        context =  applicationContext,
+                        imageState = imageState,
+                        downloadImage = { awsKey -> downloadPhoto(awsKey)}
+                    )
 
                 }
             }
@@ -88,7 +69,6 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private val PHOTO_KEY = "tree.jpg"
     private fun configureAmplify() {
         try {
 
@@ -118,13 +98,13 @@ class MainActivity : ComponentActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
-    fun downloadPhoto() {
-        val localFile = File("${applicationContext.filesDir}/downloaded-image.jpg")
-
+    fun downloadPhoto(awsKey: String) {
+        val localFile = File("${applicationContext.filesDir}/$awsKey")
+        Log.d("AMPLIFY", "downloading")
         Amplify.Storage.downloadFile(
-            PHOTO_KEY,
+            "$awsKey.jpg",
             localFile,
-            { imageState.value = ImageState.ImageDownloaded(localFile) },
+            { imageState.value = ImageState.ImageDownloaded(localFile); Log.d("AMPLIFY", "download success") },
             { Log.e("AMPLIFY", "Failed download", it) }
         )
     }

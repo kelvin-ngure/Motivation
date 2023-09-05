@@ -13,52 +13,59 @@ class ThemeManager(
     val themes = listOf(
         Theme(
             themeId = 1,
-            backgroundImage = R.drawable.image1,
+            backgroundImage = null,
             backgroundColor = null,
             fontColor = Color.White,
-            fontId = R.font.montserrat_regular
+            fontId = R.font.montserrat_regular,
+            awsKey = "nature1"
         ),
         Theme(
             themeId = 2,
-            backgroundImage = R.drawable.image2,
+            backgroundImage = null,
             backgroundColor = null,
             fontColor = Color.White,
-            fontId = R.font.robotomono_regular
+            fontId = R.font.robotomono_regular,
+            awsKey = "nature2"
         ),
         Theme(
             themeId = 3,
-            backgroundImage = R.drawable.image3,
+            backgroundImage = null,
             backgroundColor = null,
             fontColor = Color.White,
-            fontId = R.font.open_sans_regular
+            fontId = R.font.open_sans_regular,
+            awsKey = "nature3"
         ),
         Theme(
             themeId = 4,
             backgroundImage = null,
             backgroundColor = Color(0xfffefae0),
             fontColor = Color.Black,
-            fontId = R.font.open_sans_regular
+            fontId = R.font.open_sans_regular,
+            awsKey = null
         ),
         Theme(
             themeId = 5,
             backgroundImage = null,
             backgroundColor = Color(0xff8ecae6),
             fontColor = Color(0xff023047),
-            fontId = R.font.open_sans_regular
+            fontId = R.font.open_sans_regular,
+            awsKey = null
         ),
         Theme(
             themeId = 6,
             backgroundImage = null,
             backgroundColor = Color(0xffdda15e),
             fontColor = Color(0xff283618),
-            fontId = R.font.open_sans_regular
+            fontId = R.font.open_sans_regular,
+            awsKey = null
         ),
         Theme(
             themeId = 7,
             backgroundImage = null,
             backgroundColor = Color(0xff1b263b),
             fontColor = Color(0xffe0e1dd),
-            fontId = R.font.open_sans_regular
+            fontId = R.font.open_sans_regular,
+            awsKey = null
         ),
     )
 

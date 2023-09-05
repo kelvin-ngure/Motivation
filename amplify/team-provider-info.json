@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "motivation67e9b8ad": {}
+        "motivation67e9b8ad": {},
+        "userPoolGroups": {}
       },
       "storage": {
         "s34006ce6a": {}

@@ -1,32 +1,59 @@
 package com.happymeerkat.motivated.ui.views
 
-import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import com.amplifyframework.AmplifyException
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.happymeerkat.motivated.ui.theme.MotivatedDailyQuotesTheme
-import com.happymeerkat.motivated.ui.views.navigation.RootNavigation
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+
+
+sealed class ImageState {
+    class ImageDownloaded(val downloadedImageFile: File): ImageState()
+    object ImageUploaded: ImageState()
+}
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalGlideComposeApi::class)
+    @RequiresApi(Build.VERSION_CODES.R)
+
+    var imageState = mutableStateOf<ImageState>(ImageState.ImageUploaded)
+
+
+    @OptIn(ExperimentalGlideComposeApi::class)
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+
+
         super.onCreate(savedInstanceState)
-        var context: Context = applicationContext
+        configureAmplify()
 
         setContent {
             MotivatedDailyQuotesTheme {
@@ -35,9 +62,63 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    RootNavigation(context =  context)
+                    //RootNavigation(context =  context)
+                    Button(onClick = ::downloadPhoto) {
+                        Text(text = "DownloadImage")
+                    }
+                    when(val state = imageState.value) {
+                        is ImageState.ImageUploaded -> {
+                            Button(onClick = ::downloadPhoto) {
+                                Text(text = "Download Photo")
+                            }
+                        }
+
+                        is ImageState.ImageDownloaded -> {
+                            GlideImage(
+                                model = state.downloadedImageFile,
+                                contentDescription = "sunset tree",
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+
+                        else -> {}
+                    }
+
                 }
             }
         }
+    }
+
+
+    private val PHOTO_KEY = "image1.jpg"
+    private fun configureAmplify() {
+        try {
+
+            Amplify.addPlugin(AWSCognitoAuthPlugin())
+            Amplify.addPlugin(AWSS3StoragePlugin())
+            Amplify.configure(applicationContext)
+
+            Amplify.Auth.fetchAuthSession(
+                { Log.i("AMPLIFY", "Auth session = $it") },
+                { error -> Log.e("AMPLIFY", "Failed to fetch auth session", error) }
+            )
+
+
+        } catch (e: AmplifyException) {
+            Log.d("AMPLIFY", "couldn't initialize $e")
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun downloadPhoto() {
+        val localFile = File("${applicationContext.filesDir}/downloaded-image.jpg")
+
+        Amplify.Storage.downloadFile(
+            PHOTO_KEY,
+            localFile,
+            { imageState.value = ImageState.ImageDownloaded(localFile) },
+            { Log.e("AMPLIFY", "Failed download", it) }
+        )
     }
 }

@@ -1,0 +1,16 @@
+{
+  "resourceName": "s34006ce6a",
+  "policyUUID": "4006ce6a",
+  "bucketName": "motivationappbucket",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

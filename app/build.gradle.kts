@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.happymeerkat.motivation"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 33
         versionCode = 101
         versionName = "1.0.1"
@@ -33,6 +33,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -76,6 +77,20 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    // Amplify
+    val amplify_version = "2.13.0"
+    implementation ("com.amplifyframework:aws-storage-s3:$amplify_version")
+    implementation ("com.amplifyframework:aws-auth-cognito:$amplify_version")
+    implementation ("com.amplifyframework:aws-datastore:2.13.0")
+
+    // Support for Java 8 features
+    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.5")
+
+    //GLIDE
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.5")
 
     // DAGGER HILT
     implementation("com.google.dagger:hilt-android:2.46")

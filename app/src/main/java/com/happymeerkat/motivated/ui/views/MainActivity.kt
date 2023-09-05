@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.storage.options.StoragePagedListOptions
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -63,9 +64,6 @@ class MainActivity : ComponentActivity() {
                         .background(MaterialTheme.colorScheme.background)
                 ) {
                     //RootNavigation(context =  context)
-                    Button(onClick = ::downloadPhoto) {
-                        Text(text = "DownloadImage")
-                    }
                     when(val state = imageState.value) {
                         is ImageState.ImageUploaded -> {
                             Button(onClick = ::downloadPhoto) {
@@ -90,7 +88,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private val PHOTO_KEY = "image1.jpg"
+    private val PHOTO_KEY = "tree.jpg"
     private fun configureAmplify() {
         try {
 
@@ -109,6 +107,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun uploadFile() {
+        val exampleFile = File(applicationContext.filesDir, "ExampleKey")
+        exampleFile.writeText("Example file contents")
+
+        Amplify.Storage.uploadFile("ExampleKey", exampleFile,
+            { Log.i("MyAmplifyApp", "Successfully uploaded: ${it.key}") },
+            { Log.e("MyAmplifyApp", "Upload failed", it) }
+        )
+    }
 
     @RequiresApi(Build.VERSION_CODES.R)
     fun downloadPhoto() {
@@ -119,6 +126,23 @@ class MainActivity : ComponentActivity() {
             localFile,
             { imageState.value = ImageState.ImageDownloaded(localFile) },
             { Log.e("AMPLIFY", "Failed download", it) }
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun listKeys() {
+        val options = StoragePagedListOptions.builder()
+            .setPageSize(1000)
+            .build()
+
+        Amplify.Storage.list("", options,
+            { result ->
+                result.items.forEach { item ->
+                    Log.i("MyAmplifyApp", "Item: ${item.key}")
+                }
+                Log.i("MyAmplifyApp", "Next Token: ${result.nextToken}")
+            },
+            { Log.e("MyAmplifyApp", "List failure", it) }
         )
     }
 }

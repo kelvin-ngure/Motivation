@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
 
         super.onCreate(savedInstanceState)
-        configureAmplify()
+        //configureAmplify()
 
         setContent {
             MotivatedDailyQuotesTheme {

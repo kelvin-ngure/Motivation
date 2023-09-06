@@ -34,6 +34,6 @@ class ThemePreferencesRepository @Inject constructor (
             }
         }
         .map { preferences ->
-            preferences[CURRENT_THEME] ?: 0
+            preferences[CURRENT_THEME] ?: 4
         }
 }

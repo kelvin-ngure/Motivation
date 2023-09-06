@@ -2,6 +2,7 @@ package com.happymeerkat.motivated.ui.views.home
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,9 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -73,27 +78,36 @@ fun Home(
             ),
         contentAlignment = Alignment.TopEnd
     ) {
-        if(theme.awsKey != null) {
-            if(downloaded) {
-                when(imgState) {
-                    is ImageState.ImageDownloaded -> {
-                        Log.d("AMPLIFY", "downloaded image ${imgState.downloadedImageFile}")
-                        GlideImage(
-                            model = imgState.downloadedImageFile,
-                            contentDescription = "sunset tree",
-                            contentScale = ContentScale.Crop
-                        )
-                    }
 
-                    else -> {}
-                }
-            } else{
-                Log.d("AMPLIFY", "recompose")
-                downloadImage(theme.awsKey)
-                downloaded = true
-            }
+        // TODO: DO NOT DELETE WILL WORK ON AWS PULLING LATER
+//        if(theme.awsKey != null) {
+//            if(downloaded) {
+//                when(imgState) {
+//                    is ImageState.ImageDownloaded -> {
+//                        Log.d("AMPLIFY", "downloaded image ${imgState.downloadedImageFile}")
+//                        GlideImage(
+//                            model = imgState.downloadedImageFile,
+//                            contentDescription = "sunset tree",
+//                            contentScale = ContentScale.Crop
+//                        )
+//                    }
+//
+//                    else -> {}
+//                }
+//            } else{
+//                Log.d("AMPLIFY", "recompose")
+//                downloadImage(theme.awsKey)
+//                downloaded = true
+//            }
+//        }
 
-
+        if(theme.backgroundImage != null) {
+            Image(
+                painter = painterResource(id = theme.backgroundImage),
+                contentDescription = theme.awsKey,
+                contentScale = ContentScale.Crop,
+                alpha = 0.3f
+            )
         }
 
         VerticalPager(
@@ -117,15 +131,14 @@ fun Home(
 
         IconButton(
             modifier = Modifier
-                .padding(top = 30.dp, end = 15.dp)
-                .clip(RoundedCornerShape(5.dp, 5.dp, 5.dp, 5.dp)),
+                .padding(top = 30.dp, end = 15.dp),
             onClick = { navigateToSettings() },
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
             Icon(
-                imageVector = Icons.Default.AccountCircle,
+                imageVector = Icons.Default.Menu,
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.background
             )

@@ -77,7 +77,7 @@ fun Settings(
             icon = Icons.Default.StarRate
         )
         SettingsButton(
-            title = "Share our app!",
+            title = "Share our app",
             onClick = { shareAppLink(context) },
             icon = Icons.Default.Share
         )

@@ -43,6 +43,7 @@ fun RootNavigation(
     ) {
         composable( route = NavigationGraph.HOME.route ) {
             Home(
+                context = context,
                 quotes = state.quotes,
                 quotePage = state.quotePage,
                 imageState = imageState,

@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.applyCanvas
+import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
 import java.io.File
 import java.io.IOException
@@ -131,19 +133,23 @@ fun QuoteCard(
 
                     val currentView = LocalView.current
                     val cnt = LocalContext.current
+                    val appLink = stringResource(id = R.string.app_playstore_link)
                     IconButton(
                         modifier = Modifier
                             .size(80.dp),
                         onClick = { shareQuote(
                             context = cnt,
-                            currentView = currentView
+                            currentView = currentView,
+                            quote.quote,
+                            quote.author,
+                            appLink
                         ) }
                         ) {
                         Icon(
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Default.Send,
                             contentDescription = "Button to share quote to other apps",
-                            tint = fontColor ?: MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -155,7 +161,10 @@ fun QuoteCard(
 
 fun shareQuote(
     context: Context,
-    currentView: View
+    currentView: View,
+    quote: String,
+    author: String?,
+    appLink: String
 ) {
     // TAKE SCREENSHOT
     takeScreenShot(
@@ -170,18 +179,20 @@ fun shareQuote(
         File(context.filesDir,"screenshot.png")
     )
 
-    val intent = Intent(Intent.ACTION_ALL_APPS).apply {
+    val accompanyingText = "$quote ${if(author != null) "\n\n~ $author" else ""} \n\nFor more quotes, try out the Motivation app ${String(Character.toChars(0x1F60A))}\n$appLink"
+    val intent = Intent().apply {
         action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, accompanyingText)
         putExtra(Intent.EXTRA_STREAM, uri)
         type = "image/jpeg"
         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
     try {
         startActivity(
             context,
-            Intent.createChooser(intent, "Share quote")
+            Intent.createChooser(intent, "send")
                 .addFlags(
                     Intent.FLAG_ACTIVITY_NEW_TASK
                 ),
@@ -197,7 +208,6 @@ fun takeScreenShot(
     context: Context,
     currentView: View
 ) {
-    makeDirectory(context)
     val handler = Handler(Looper.getMainLooper())
     handler.postDelayed({
         val bmp = Bitmap.createBitmap(
@@ -219,10 +229,4 @@ private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, qual
         out.flush()
     }
     //outputStream().close()
-}
-
-
-fun makeDirectory(
-    context: Context
-) {
 }

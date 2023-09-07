@@ -5,9 +5,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -89,7 +92,6 @@ fun Home(
 //                downloaded = true
 //            }
 //        }
-
         if(theme.backgroundImage != null) {
             Image(
                 painter = painterResource(id = theme.backgroundImage),
@@ -98,6 +100,8 @@ fun Home(
                 alpha = 0.3f
             )
         }
+
+
 
         VerticalPager(
             state = pagerState,
@@ -118,21 +122,22 @@ fun Home(
             )
 
         }
-
-        IconButton(
-            modifier = Modifier
-                .padding(top = 30.dp, end = 15.dp),
-            onClick = { navigateToSettings() },
-            colors = IconButtonDefaults.iconButtonColors(
-                containerColor = MaterialTheme.colorScheme.onPrimary
-            )
+        Column(
+            modifier = modifier.statusBarsPadding()
         ) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.background
-            )
+            IconButton(
+                modifier = Modifier.padding(end = 14.dp, top = 5.dp),
+                onClick = { navigateToSettings() },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "",
+                    tint = theme.fontColor ?: MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
+
+
     }
 
 

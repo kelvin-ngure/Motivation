@@ -98,7 +98,7 @@ fun ThemeSelection(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(modifier = Modifier.padding(start = 10.dp), text = groupName)
-            Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "more themes")
+            //Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "more themes")
         }
 
         Column {

@@ -143,7 +143,7 @@ fun QuoteCard(
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Default.Send,
                             contentDescription = "Button to share quote to other apps",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = fontColor ?: MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }

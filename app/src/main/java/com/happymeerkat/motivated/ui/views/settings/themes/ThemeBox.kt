@@ -1,5 +1,6 @@
 package com.happymeerkat.motivated.ui.views.settings.themes
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -33,13 +35,17 @@ fun ThemeBox(
     changeTheme: () -> Unit,
     isCurrentTheme: Boolean
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .padding(horizontal = 5.dp, vertical = 10.dp)
             .height(160.dp)
             .width(100.dp)
-            .clickable { changeTheme() },
-        border = if(isCurrentTheme) BorderStroke(3.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.3.dp, MaterialTheme.colorScheme.onPrimary )
+            .clickable {
+                changeTheme();
+                Toast.makeText(context, "Theme changed successfully!", Toast.LENGTH_LONG).show()
+                       },
+        border = if(isCurrentTheme) BorderStroke(5.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.3.dp, MaterialTheme.colorScheme.onPrimary )
     ) {
         Column(
             modifier = Modifier

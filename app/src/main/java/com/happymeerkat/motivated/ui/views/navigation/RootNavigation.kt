@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.home.Home
@@ -21,7 +20,6 @@ import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 import com.happymeerkat.motivated.ui.views.settings.themes.Themes
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RootNavigation(
 ) {

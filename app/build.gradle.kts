@@ -14,8 +14,8 @@ android {
         applicationId = "com.happymeerkat.motivation"
         minSdk = 24
         targetSdk = 33
-        versionCode = 101
-        versionName = "1.0.1"
+        versionCode = 102
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -33,7 +33,7 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
+        //isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -78,19 +78,19 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
-    // Amplify
-    val amplify_version = "2.13.0"
-    implementation ("com.amplifyframework:aws-storage-s3:$amplify_version")
-    implementation ("com.amplifyframework:aws-auth-cognito:$amplify_version")
-    implementation ("com.amplifyframework:aws-datastore:2.13.0")
-
-    // Support for Java 8 features
-    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.5")
-
-    //GLIDE
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
-    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.5")
+//    // Amplify
+//    val amplify_version = "2.13.0"
+//    implementation ("com.amplifyframework:aws-storage-s3:$amplify_version")
+//    implementation ("com.amplifyframework:aws-auth-cognito:$amplify_version")
+//    implementation ("com.amplifyframework:aws-datastore:2.13.0")
+//
+//    // Support for Java 8 features
+//    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.5")
+//
+//    //GLIDE
+//    implementation ("com.github.bumptech.glide:glide:4.12.0")
+//    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+//    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.5")
 
     // DAGGER HILT
     implementation("com.google.dagger:hilt-android:2.46")
@@ -113,11 +113,11 @@ dependencies {
     // Icons
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha08")
 
-    // Work Manager
-    val work_version = "2.8.1"
+//    // Work Manager
+//    val work_version = "2.8.1"
 
-    // Kotlin + coroutines
-    implementation("androidx.work:work-runtime-ktx:$work_version")
+//    // Kotlin + coroutines
+//    implementation("androidx.work:work-runtime-ktx:$work_version")
 }
 
 kapt {

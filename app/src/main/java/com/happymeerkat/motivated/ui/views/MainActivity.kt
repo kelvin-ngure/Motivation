@@ -13,12 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import com.amplifyframework.AmplifyException
-import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
-import com.amplifyframework.core.Amplify
-import com.amplifyframework.storage.options.StoragePagedListOptions
-import com.amplifyframework.storage.s3.AWSS3StoragePlugin
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.happymeerkat.motivated.ui.theme.MotivatedDailyQuotesTheme
 import com.happymeerkat.motivated.ui.views.navigation.RootNavigation
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,13 +26,11 @@ sealed class ImageState {
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalGlideComposeApi::class)
     @RequiresApi(Build.VERSION_CODES.R)
 
     var imageState = mutableStateOf<ImageState>(ImageState.ImageUploaded)
 
 
-    @OptIn(ExperimentalGlideComposeApi::class)
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
@@ -67,60 +59,60 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun configureAmplify() {
-        try {
+//    private fun configureAmplify() {
+//        try {
+//
+//            Amplify.addPlugin(AWSCognitoAuthPlugin())
+//            Amplify.addPlugin(AWSS3StoragePlugin())
+//            Amplify.configure(applicationContext)
+//
+//            Amplify.Auth.fetchAuthSession(
+//                { Log.i("AMPLIFY", "Auth session = $it") },
+//                { error -> Log.e("AMPLIFY", "Failed to fetch auth session", error) }
+//            )
+//
+//
+//        } catch (e: AmplifyException) {
+//            Log.d("AMPLIFY", "couldn't initialize $e")
+//        }
+//    }
 
-            Amplify.addPlugin(AWSCognitoAuthPlugin())
-            Amplify.addPlugin(AWSS3StoragePlugin())
-            Amplify.configure(applicationContext)
+//    private fun uploadFile() {
+//        val exampleFile = File(applicationContext.filesDir, "ExampleKey")
+//        exampleFile.writeText("Example file contents")
+//
+//        Amplify.Storage.uploadFile("ExampleKey", exampleFile,
+//            { Log.i("MyAmplifyApp", "Successfully uploaded: ${it.key}") },
+//            { Log.e("MyAmplifyApp", "Upload failed", it) }
+//        )
+//    }
 
-            Amplify.Auth.fetchAuthSession(
-                { Log.i("AMPLIFY", "Auth session = $it") },
-                { error -> Log.e("AMPLIFY", "Failed to fetch auth session", error) }
-            )
-
-
-        } catch (e: AmplifyException) {
-            Log.d("AMPLIFY", "couldn't initialize $e")
-        }
-    }
-
-    private fun uploadFile() {
-        val exampleFile = File(applicationContext.filesDir, "ExampleKey")
-        exampleFile.writeText("Example file contents")
-
-        Amplify.Storage.uploadFile("ExampleKey", exampleFile,
-            { Log.i("MyAmplifyApp", "Successfully uploaded: ${it.key}") },
-            { Log.e("MyAmplifyApp", "Upload failed", it) }
-        )
-    }
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    fun downloadPhoto(awsKey: String) {
-        val localFile = File("${applicationContext.filesDir}/$awsKey")
-        Log.d("AMPLIFY", "downloading")
-        Amplify.Storage.downloadFile(
-            "$awsKey.jpg",
-            localFile,
-            { imageState.value = ImageState.ImageDownloaded(localFile); Log.d("AMPLIFY", "download success") },
-            { Log.e("AMPLIFY", "Failed download", it) }
-        )
-    }
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    fun listKeys() {
-        val options = StoragePagedListOptions.builder()
-            .setPageSize(1000)
-            .build()
-
-        Amplify.Storage.list("", options,
-            { result ->
-                result.items.forEach { item ->
-                    Log.i("MyAmplifyApp", "Item: ${item.key}")
-                }
-                Log.i("MyAmplifyApp", "Next Token: ${result.nextToken}")
-            },
-            { Log.e("MyAmplifyApp", "List failure", it) }
-        )
-    }
+//    @RequiresApi(Build.VERSION_CODES.R)
+//    fun downloadPhoto(awsKey: String) {
+//        val localFile = File("${applicationContext.filesDir}/$awsKey")
+//        Log.d("AMPLIFY", "downloading")
+//        Amplify.Storage.downloadFile(
+//            "$awsKey.jpg",
+//            localFile,
+//            { imageState.value = ImageState.ImageDownloaded(localFile); Log.d("AMPLIFY", "download success") },
+//            { Log.e("AMPLIFY", "Failed download", it) }
+//        )
+//    }
+//
+//    @RequiresApi(Build.VERSION_CODES.R)
+//    fun listKeys() {
+//        val options = StoragePagedListOptions.builder()
+//            .setPageSize(1000)
+//            .build()
+//
+//        Amplify.Storage.list("", options,
+//            { result ->
+//                result.items.forEach { item ->
+//                    Log.i("MyAmplifyApp", "Item: ${item.key}")
+//                }
+//                Log.i("MyAmplifyApp", "Next Token: ${result.nextToken}")
+//            },
+//            { Log.e("MyAmplifyApp", "List failure", it) }
+//        )
+//    }
 }

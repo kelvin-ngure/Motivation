@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -26,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -42,8 +40,6 @@ fun Home(
     context: Context,
     quotes: List<Quote>,
     quotePage: Int,
-    downloadImage: (awsKey: String) -> Unit,
-    imageState: MutableState<ImageState>,
     toggleFavorite: (quote: Quote) -> Unit,
     isFavorite: (quote: Quote) -> Boolean,
     updateQuotePage: (page: Int) -> Unit,
@@ -54,8 +50,8 @@ fun Home(
         initialPage = quotePage,
         pageCount = {quotes.size}
     )
-    val imgState = imageState.value
-    var downloaded by remember{ mutableStateOf(false) }
+//    val imgState = imageState.value
+//    var downloaded by remember{ mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -106,7 +102,8 @@ fun Home(
         VerticalPager(
             state = pagerState,
             modifier = modifier
-                .fillMaxHeight()
+                .fillMaxHeight(),
+            beyondBoundsPageCount = 5
         ) {page ->
             updateQuotePage(page)
             QuoteCard(

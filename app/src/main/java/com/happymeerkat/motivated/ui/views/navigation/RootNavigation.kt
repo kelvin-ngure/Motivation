@@ -1,13 +1,12 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
-import com.happymeerkat.motivated.ui.views.ImageState
 import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
@@ -26,15 +24,11 @@ import com.happymeerkat.motivated.ui.views.vm.MainVM
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RootNavigation(
-    modifier: Modifier = Modifier
-            .statusBarsPadding(),
-    context: Context,
-    navController: NavHostController = rememberNavController(),
-    imageState: MutableState<ImageState>,
-    downloadImage: (awsKey: String) -> Unit,
-    vm: MainVM = hiltViewModel()
 ) {
+    val navController: NavHostController = rememberNavController()
+    val vm: MainVM = hiltViewModel()
     val state = vm.homeUIState.collectAsState().value
+    val context = LocalContext.current
 
     NavHost(
         navController = navController,
@@ -46,18 +40,16 @@ fun RootNavigation(
                 context = context,
                 quotes = state.quotes,
                 quotePage = state.quotePage,
-                imageState = imageState,
-                downloadImage = downloadImage,
                 isFavorite = { quote:Quote -> vm.quoteInFavorites(quote)},
                 toggleFavorite = { quote -> vm.toggleFavorite(quote)},
                 updateQuotePage = { page: Int -> vm.updateQuotePage(page)},
-                theme = state.background
+                theme = state.currentTheme
             ) { navController.navigate(NavigationGraph.SETTINGS.route) }
         }
 
         composable( route = NavigationGraph.SETTINGS.route ){
             Settings(
-                modifier = modifier
+                modifier = Modifier.statusBarsPadding()
                     .background(MaterialTheme.colorScheme.background),
                 context = context,
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
@@ -68,7 +60,7 @@ fun RootNavigation(
 
         composable( route = NavigationGraph.FAVORITES.route ){
             Favorites(
-                modifier = modifier,
+                modifier = Modifier.statusBarsPadding(),
                 backToSettings = {navController.popBackStack()},
                 favoriteQuotes = state.quotes.filter { quote -> state.favorites.contains(Favorite(quote.id)) },
                 toggleFavorite = {quote: Quote -> vm.toggleFavorite(quote)}
@@ -77,10 +69,12 @@ fun RootNavigation(
 
         composable( route = NavigationGraph.THEMES.route ){
             Themes(
-                modifier = modifier
+                modifier = Modifier.statusBarsPadding()
                     .background(MaterialTheme.colorScheme.background),
                 backToSettings = {navController.popBackStack()},
-                themeGroups = vm.showThemeGroups()
+                themes = state.themes,
+                currentTheme = state.currentTheme,
+                changeCurrentTheme = {theme -> vm.changeCurrentTheme(theme)}
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.happymeerkat.motivated.ui.views.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.happymeerkat.motivated.R
@@ -28,16 +29,16 @@ class MainVM @Inject constructor(
     private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
     val homeUIState: StateFlow<HomeUIState> = _homeUIState
 
+    var currentThemeJob: Job? = null
     var getQuotesJob: Job? = null
-    var getCategoriesJob: Job? = null
     var getFavoritesJob: Job? = null
-    var getFontJob: Job? = null
     var getThemeJob: Job? = null
 
     init {
         getAllQuotes()
         getAllFavorites()
         getTheme()
+        getThemes()
     }
 
     private fun getAllQuotes() {
@@ -68,11 +69,12 @@ class MainVM @Inject constructor(
     private fun getTheme() {
         getThemeJob?.cancel()
         getThemeJob = themeManager
-            .currentThemeIndex
-            .onEach { backgroundIndex ->
+            .currentThemeId
+            .onEach { currentThemeId ->
+                Log.d("CURRENT THEME", "$currentThemeId")
+                var currentTheme = themeManager.themes.find { it.themeId == currentThemeId }
                 _homeUIState.value = homeUIState.value.copy(
-                    background = themeManager.themes[backgroundIndex],
-                    backgroundIndex = backgroundIndex
+                    currentTheme = currentTheme!!
                 )
             }
             .launchIn(viewModelScope)
@@ -101,7 +103,22 @@ class MainVM @Inject constructor(
         )
     }
 
-    fun showThemeGroups(): HashMap<ThemeType, List<Int>> = themeManager.getThemeGroups()
+
+
+    fun getThemes() {
+        _homeUIState.value = homeUIState.value.copy(
+            themes = themeManager.themes
+        )
+    }
+
+    fun changeCurrentTheme(theme: Theme) {
+        _homeUIState.value = homeUIState.value.copy(
+            currentTheme = theme
+        )
+        viewModelScope.launch {
+            themeManager.changeTheme(theme)
+        }
+    }
 }
 
 data class HomeUIState(
@@ -110,7 +127,7 @@ data class HomeUIState(
     var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
-    val backgroundIndex: Int = 0,
-    val background: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null),
-    val backgrounds: List<Theme> = emptyList()
+    val currentTheme: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null, themeType = ThemeType.COLORS),
+    val themes: List<Theme> = emptyList()
 )
+

@@ -4,10 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Environment
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.view.PixelCopy
 import android.view.View
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -35,14 +34,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.applyCanvas
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
 import java.io.File
-import java.io.IOException
-import kotlin.io.path.createTempDirectory
 
 
 @Composable
@@ -149,7 +147,7 @@ fun QuoteCard(
                             modifier = Modifier.size(35.dp),
                             imageVector = Icons.Default.Send,
                             contentDescription = "Button to share quote to other apps",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = fontColor ?: MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -179,6 +177,13 @@ fun shareQuote(
         File(context.filesDir,"screenshot.png")
     )
 
+    val playstore_uri = Uri.parse(
+        ContextCompat.getString(
+            context,
+            R.string.app_playstore_link
+        )
+    )
+
     val accompanyingText = "$quote ${if(author != null) "\n\n~ $author" else ""} \n\nFor more quotes, try out the Motivation app ${String(Character.toChars(0x1F60A))}\n$appLink"
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
@@ -199,7 +204,7 @@ fun shareQuote(
             null
         )
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(context, "couldn't start", Toast.LENGTH_SHORT)
+        Toast.makeText(context, "couldn't share quote", Toast.LENGTH_SHORT)
     }
 }
 

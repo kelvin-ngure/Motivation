@@ -57,11 +57,9 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
-                    RootNavigation(
-                        context =  applicationContext,
-                        imageState = imageState,
-                        downloadImage = { awsKey -> downloadPhoto(awsKey)}
-                    )
+                    RootNavigation()
+//                    imageState = imageState,
+//                    downloadImage = { awsKey -> downloadPhoto(awsKey)}
 
                 }
             }

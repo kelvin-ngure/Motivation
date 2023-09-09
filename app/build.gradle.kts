@@ -14,8 +14,8 @@ android {
         applicationId = "com.happymeerkat.motivation"
         minSdk = 24
         targetSdk = 33
-        versionCode = 102
-        versionName = "1.0.2"
+        versionCode = 1025
+        versionName = "1.0.25"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -86,11 +86,11 @@ dependencies {
 //
 //    // Support for Java 8 features
 //    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.1.5")
-//
-//    //GLIDE
-//    implementation ("com.github.bumptech.glide:glide:4.12.0")
-//    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
-//    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.5")
+
+    //GLIDE
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.5")
 
     // DAGGER HILT
     implementation("com.google.dagger:hilt-android:2.46")

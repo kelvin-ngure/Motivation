@@ -70,6 +70,9 @@ fun RootNavigation(
                 modifier = Modifier.statusBarsPadding()
                     .background(MaterialTheme.colorScheme.background),
                 backToSettings = {navController.popBackStack()},
+                backToHome = {
+                    navController.popBackStack();navController.popBackStack();
+                             },
                 themes = state.themes,
                 currentTheme = state.currentTheme,
                 changeCurrentTheme = {theme -> vm.changeCurrentTheme(theme)}

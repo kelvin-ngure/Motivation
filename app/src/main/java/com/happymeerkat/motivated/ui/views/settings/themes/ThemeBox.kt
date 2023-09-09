@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -25,9 +26,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.happymeerkat.motivated.data.models.Theme
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ThemeBox(
     modifier: Modifier = Modifier,
@@ -43,39 +47,42 @@ fun ThemeBox(
             .width(100.dp)
             .clickable {
                 changeTheme();
-                Toast.makeText(context, "Theme changed successfully!", Toast.LENGTH_LONG).show()
-                       },
+                Toast
+                    .makeText(context, "Theme changed successfully!", Toast.LENGTH_LONG)
+                    .show()
+            },
         border = if(isCurrentTheme) BorderStroke(5.dp, MaterialTheme.colorScheme.onPrimary) else BorderStroke(0.3.dp, MaterialTheme.colorScheme.onPrimary )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .then(
-                    if (theme.backgroundImage != null) {
-                        Modifier.paint(
-                            painterResource(id = theme.backgroundImage),
-                            contentScale = ContentScale.Crop,
-                            alpha = 1f
-                        )
-                    } else {
-                        if (theme.backgroundColor != null) {
-                            Modifier.background(theme.backgroundColor)
-                        } else {
-                            Modifier.background(MaterialTheme.colorScheme.background)
-                        }
-                    }
-                ),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                "Abc",
-                textAlign = TextAlign.Center,
-                fontFamily = FontFamily(listOf(Font(theme.fontId!!))),
-                fontSize = 30.sp,
-                color = theme.fontColor!!
-            )
-        }
+        Box(modifier = Modifier.fillMaxSize()) {
+            if(theme.backgroundImage != null) {
+                GlideImage(
+                    model = theme.backgroundImage,
+                    contentDescription = theme.awsKey,
+                    contentScale = ContentScale.Crop
+                )
+            }
+            if( theme.backgroundColor != null) {
+                Column(
+                    modifier = Modifier.fillMaxSize().background(theme.backgroundColor!!)
+                ) {
 
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    "Abc",
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(listOf(Font(theme.fontId!!))),
+                    fontSize = 30.sp,
+                    color = theme.fontColor!!
+                )
+            }
+        }
     }
 }

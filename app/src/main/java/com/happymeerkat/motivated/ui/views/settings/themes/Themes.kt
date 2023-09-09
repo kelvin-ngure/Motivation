@@ -22,6 +22,7 @@ import com.happymeerkat.motivated.ui.views.util.AppBar
 fun Themes(
     modifier: Modifier = Modifier.fillMaxSize(),
     backToSettings: () -> Unit,
+    backToHome: () -> Unit,
     themes: List<Theme>,
     currentTheme: Theme,
     changeCurrentTheme: (theme: Theme) -> Unit
@@ -45,6 +46,7 @@ fun Themes(
                     themeTypeName = themeType.toString(),
                     themes = themes.filter { it.themeType == themeType },
                     changeCurrentTheme = {theme -> changeCurrentTheme(theme)},
+                    backToHome = backToHome,
                     currentTheme = currentTheme!!
                 )
 
@@ -72,6 +74,7 @@ fun ThemeSelection(
     themeTypeName: String,
     themes: List<Theme>,
     changeCurrentTheme: (theme: Theme) -> Unit,
+    backToHome: () -> Unit,
     currentTheme: Theme
 ) {
     Column(
@@ -94,7 +97,7 @@ fun ThemeSelection(
                 ) { theme ->
                     ThemeBox(
                         theme = theme,
-                        changeTheme = {changeCurrentTheme(theme)},
+                        changeTheme = {changeCurrentTheme(theme); backToHome()},
                         isCurrentTheme = currentTheme == theme
                     )
                 }

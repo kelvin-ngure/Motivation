@@ -51,6 +51,8 @@ fun QuoteCard(
     isFavorite: Boolean,
     fontId: Int?,
     fontColor: Color?,
+    hidden: Int,
+    toggleHidden: () -> Unit,
     context: Context
 ) {
 
@@ -107,51 +109,55 @@ fun QuoteCard(
 
 
             // Interactors
-            Column(
-                modifier = modifier.weight(1f)
-            ) {
-                Row(
-                    modifier = modifier,
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+            if(hidden == 0) {
+                Column(
+                    modifier = modifier.weight(1f)
                 ) {
-                    IconButton(
-                        modifier = Modifier
-                            .size(80.dp),
-                        onClick = { toggleFavorite() },
-
+                    Row(
+                        modifier = modifier,
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            modifier = Modifier.size(35.dp),
-                            imageVector = if(isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
-                            contentDescription = "Button to add quote to Favorites",
-                            tint = if(isFavorite) Color(0xffc51104).copy(alpha = 0.95f) else fontColor ?: MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
+                        IconButton(
+                            modifier = Modifier
+                                .size(80.dp),
+                            onClick = { toggleFavorite() },
 
-                    val currentView = LocalView.current
-                    val cnt = LocalContext.current
-                    val appLink = stringResource(id = R.string.app_playstore_link)
-                    IconButton(
-                        modifier = Modifier
-                            .size(80.dp),
-                        onClick = { shareQuote(
-                            context = cnt,
-                            currentView = currentView,
-                            quote.quote,
-                            quote.author,
-                            appLink
-                        ) }
+                            ) {
+                            Icon(
+                                modifier = Modifier.size(35.dp),
+                                imageVector = if(isFavorite) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
+                                contentDescription = "Button to add quote to Favorites",
+                                tint = if(isFavorite) Color(0xffc51104).copy(alpha = 0.95f) else fontColor ?: MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+
+                        val currentView = LocalView.current
+                        val cnt = LocalContext.current
+                        val appLink = stringResource(id = R.string.app_playstore_link)
+                        IconButton(
+                            modifier = Modifier
+                                .size(80.dp),
+                            onClick = { shareQuote(
+                                context = cnt,
+                                currentView = currentView,
+                                quote.quote,
+                                quote.author,
+                                appLink,
+                                toggleHidden = toggleHidden
+                            ) }
                         ) {
-                        Icon(
-                            modifier = Modifier.size(35.dp),
-                            imageVector = Icons.Default.Send,
-                            contentDescription = "Button to share quote to other apps",
-                            tint = fontColor ?: MaterialTheme.colorScheme.onPrimary
-                        )
+                            Icon(
+                                modifier = Modifier.size(35.dp),
+                                imageVector = Icons.Default.Send,
+                                contentDescription = "Button to share quote to other apps",
+                                tint = fontColor ?: MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                     }
                 }
             }
+
 
         }
 }
@@ -162,12 +168,15 @@ fun shareQuote(
     currentView: View,
     quote: String,
     author: String?,
-    appLink: String
+    appLink: String,
+    toggleHidden: () -> Unit
 ) {
     // TAKE SCREENSHOT
+    toggleHidden()
     takeScreenShot(
         context = context,
-        currentView = currentView
+        currentView = currentView,
+        toggleHidden = toggleHidden
     )
 
     // SHARE IMAGE
@@ -211,7 +220,8 @@ fun shareQuote(
 
 fun takeScreenShot(
     context: Context,
-    currentView: View
+    currentView: View,
+    toggleHidden: () -> Unit
 ) {
     val handler = Handler(Looper.getMainLooper())
     handler.postDelayed({
@@ -225,6 +235,7 @@ fun takeScreenShot(
             File(context.filesDir, "screenshot.png")
                 .writeBitmap(bmp, Bitmap.CompressFormat.PNG, 85)
         }
+        toggleHidden()
     }, 1000)
 }
 

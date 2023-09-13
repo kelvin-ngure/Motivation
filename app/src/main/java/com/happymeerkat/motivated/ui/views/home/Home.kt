@@ -19,6 +19,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -49,7 +54,7 @@ fun Home(
     )
 //    val imgState = imageState.value
 //    var downloaded by remember{ mutableStateOf(false) }
-
+    var hidden by remember{ mutableIntStateOf(0) }
     Box(
         modifier = modifier
             .fillMaxHeight(),
@@ -112,23 +117,28 @@ fun Home(
                 isFavorite = isFavorite(quotes[page]),
                 toggleFavorite = {toggleFavorite(quotes[page])},
                 fontId = theme.fontId,
-                fontColor = theme.fontColor
+                fontColor = theme.fontColor,
+                hidden = hidden,
+                toggleHidden = {hidden = (hidden+1)%2}
             )
 
         }
         Column(
             modifier = modifier.statusBarsPadding()
         ) {
-            IconButton(
-                modifier = Modifier.padding(end = 14.dp, top = 5.dp),
-                onClick = { navigateToSettings() },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "",
-                    tint = theme.fontColor ?: MaterialTheme.colorScheme.onPrimary
-                )
+            if(hidden == 0) {
+                IconButton(
+                    modifier = Modifier.padding(end = 14.dp, top = 5.dp),
+                    onClick = { navigateToSettings() },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "",
+                        tint = theme.fontColor ?: MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
+
         }
 
 

@@ -2,7 +2,6 @@ package com.happymeerkat.motivated.ui.views.home
 
 import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,17 +20,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.data.models.Theme
 
@@ -46,7 +42,8 @@ fun Home(
     isFavorite: (quote: Quote) -> Boolean,
     updateQuotePage: (page: Int) -> Unit,
     theme: Theme,
-    navigateToSettings: () -> Unit
+    navigateToSettings: () -> Unit,
+    notificationPermission: () -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = quotePage,
@@ -55,6 +52,7 @@ fun Home(
 //    val imgState = imageState.value
 //    var downloaded by remember{ mutableStateOf(false) }
     var hidden by remember{ mutableIntStateOf(0) }
+    notificationPermission()
     Box(
         modifier = modifier
             .fillMaxHeight(),
@@ -87,19 +85,17 @@ fun Home(
                 model = theme.backgroundImage,
                 contentDescription = theme.awsKey,
                 contentScale = ContentScale.Crop,
-                alpha = 0.3f
             )
         }
         if( theme.backgroundColor != null) {
             Column(
-                modifier = Modifier.fillMaxSize().background(theme.backgroundColor!!)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(theme.backgroundColor!!)
             ) {
 
             }
         }
-
-
-
 
         VerticalPager(
             state = pagerState,

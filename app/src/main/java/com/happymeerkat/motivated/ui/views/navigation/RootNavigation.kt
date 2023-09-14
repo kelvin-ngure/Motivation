@@ -1,8 +1,10 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
 import android.Manifest
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +26,7 @@ import com.happymeerkat.motivated.ui.views.settings.fonts.FontsSelection
 import com.happymeerkat.motivated.ui.views.settings.themes.Themes
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun RootNavigation(
 ) {
@@ -43,6 +46,7 @@ fun RootNavigation(
     )
 
 
+
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
@@ -56,8 +60,10 @@ fun RootNavigation(
                 isFavorite = { quote:Quote -> vm.quoteInFavorites(quote)},
                 toggleFavorite = { quote -> vm.toggleFavorite(quote)},
                 updateQuotePage = { page: Int -> vm.updateQuotePage(page)},
-                theme = state.currentTheme
-            ) { navController.navigate(NavigationGraph.SETTINGS.route) }
+                theme = state.currentTheme,
+                navigateToSettings = {navController.navigate(NavigationGraph.SETTINGS.route)},
+                notificationPermission = {notificationsPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)}
+            )
         }
 
         composable( route = NavigationGraph.SETTINGS.route ){

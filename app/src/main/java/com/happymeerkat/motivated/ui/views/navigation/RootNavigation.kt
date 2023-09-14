@@ -17,6 +17,7 @@ import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
+import com.happymeerkat.motivated.ui.views.settings.fonts.FontsSelection
 import com.happymeerkat.motivated.ui.views.settings.themes.Themes
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
@@ -47,11 +48,13 @@ fun RootNavigation(
 
         composable( route = NavigationGraph.SETTINGS.route ){
             Settings(
-                modifier = Modifier.statusBarsPadding()
+                modifier = Modifier
+                    .statusBarsPadding()
                     .background(MaterialTheme.colorScheme.background),
                 context = context,
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
-                navigateToFonts = {navController.navigate(NavigationGraph.THEMES.route)},
+                navigateToThemes = {navController.navigate(NavigationGraph.THEMES.route)},
+                navigateToFonts = {navController.navigate(NavigationGraph.FONTS.route)},
                 backToHome = {navController.popBackStack()}
             )
         }
@@ -67,7 +70,8 @@ fun RootNavigation(
 
         composable( route = NavigationGraph.THEMES.route ){
             Themes(
-                modifier = Modifier.statusBarsPadding()
+                modifier = Modifier
+                    .statusBarsPadding()
                     .background(MaterialTheme.colorScheme.background),
                 backToSettings = {navController.popBackStack()},
                 backToHome = {
@@ -76,6 +80,13 @@ fun RootNavigation(
                 themes = state.themes,
                 currentTheme = state.currentTheme,
                 changeCurrentTheme = {theme -> vm.changeCurrentTheme(theme)}
+            )
+        }
+
+        composable( route = NavigationGraph.FONTS.route ) {
+            FontsSelection(
+                modifier = Modifier.statusBarsPadding(),
+                backToSettings = {navController.popBackStack()}
             )
         }
     }

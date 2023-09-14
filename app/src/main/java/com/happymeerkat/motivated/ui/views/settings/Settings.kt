@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.StarRate
@@ -47,6 +48,7 @@ fun Settings(
     modifier: Modifier = Modifier,
     context: Context,
     navigateToFavorites: () -> Unit,
+    navigateToThemes: () -> Unit,
     navigateToFonts: () -> Unit,
     backToHome: () -> Unit
 ) {
@@ -68,8 +70,13 @@ fun Settings(
         //SettingsButton(title = "Manage Notifications", onClick = {}, icon = Icons.Default.Notifications)
         SettingsButton(
             title = "Themes",
-            onClick = { navigateToFonts() },
+            onClick = { navigateToThemes() },
             icon = Icons.Default.ColorLens
+        )
+        SettingsButton(
+            title = "Fonts",
+            onClick = { navigateToFonts() },
+            icon = Icons.Default.FontDownload
         )
         SettingsButton(
             title = "Rate us on PlayStore",

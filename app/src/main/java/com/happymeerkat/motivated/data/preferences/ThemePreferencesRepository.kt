@@ -16,6 +16,7 @@ class ThemePreferencesRepository @Inject constructor (
 ) {
     private companion object {
         val CURRENT_THEME = intPreferencesKey("current_theme")
+        val CURRENT_FONT = intPreferencesKey("current_font")
     }
 
     suspend fun saveThemePreference(themeIndexInThemeList: Int) {
@@ -35,5 +36,24 @@ class ThemePreferencesRepository @Inject constructor (
         }
         .map { preferences ->
             preferences[CURRENT_THEME] ?: 4
+        }
+
+    suspend fun saveFontPreference(fontIndex: Int) {
+        dataStore.edit { preferences ->
+            preferences[CURRENT_FONT] = fontIndex
+        }
+
+    }
+
+    val readFontPreference: Flow<Int> = dataStore.data
+        .catch {
+            if(it is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }
+        .map { preferences ->
+            preferences[CURRENT_FONT] ?: 0
         }
 }

@@ -94,17 +94,6 @@ fun QuoteCard(
                         }
                     }
                 }
-                Row {
-                    if (quote != null) {
-                        if (quote.context != null) {
-                            Text(
-                                quote.context,
-                                fontFamily = if (fontId != null) FontFamily(listOf(Font(fontId))) else MaterialTheme.typography.bodyLarge.fontFamily,
-                                color = fontColor ?: MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                    }
-                }
             }
 
 

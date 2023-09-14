@@ -15,7 +15,7 @@ import com.happymeerkat.motivated.data.models.Quote
         Category::class,
         Favorite::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class MotivatedDB: RoomDatabase() {

@@ -1,5 +1,8 @@
 package com.happymeerkat.motivated.ui.views.navigation
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
@@ -24,10 +27,21 @@ import com.happymeerkat.motivated.ui.views.vm.MainVM
 @Composable
 fun RootNavigation(
 ) {
+
     val navController: NavHostController = rememberNavController()
     val vm: MainVM = hiltViewModel()
     val state = vm.homeUIState.collectAsState().value
     val context = LocalContext.current
+    val notificationsPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = {isGranted ->
+            vm.onPermissionResult(
+                permission = Manifest.permission.POST_NOTIFICATIONS,
+                isGranted = isGranted
+            )
+        }
+    )
+
 
     NavHost(
         navController = navController,

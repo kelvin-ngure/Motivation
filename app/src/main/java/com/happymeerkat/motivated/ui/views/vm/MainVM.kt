@@ -28,6 +28,7 @@ class MainVM @Inject constructor(
 ): ViewModel() {
     private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
     val homeUIState: StateFlow<HomeUIState> = _homeUIState
+    val visiblePermissionDialogueQueue = mutableListOf<String>()
 
     var currentThemeJob: Job? = null
     var getQuotesJob: Job? = null
@@ -119,12 +120,25 @@ class MainVM @Inject constructor(
             themeManager.changeTheme(theme)
         }
     }
+
+    fun dismissDialog() {
+        visiblePermissionDialogueQueue.removeLast()
+    }
+
+    fun onPermissionResult(
+        permission: String,
+        isGranted: Boolean
+    ) {
+        if(!isGranted) {
+            visiblePermissionDialogueQueue.add(0, permission)
+        }
+    }
 }
 
 data class HomeUIState(
     val quotes: List<Quote> = listOf(Quote(6000, quote = "")),
     var currentQuoteIndex: Int = 0,
-    var currentQuote: Quote = Quote(id = 0, quote = "", author = "", context = "", categoryId = 1, favorite = false),
+    var currentQuote: Quote = Quote(id = 0, quote = "", author = ""),
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
     val currentTheme: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null, themeType = ThemeType.COLORS),

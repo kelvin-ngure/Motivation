@@ -72,7 +72,8 @@ object AppModule {
             MotivatedDB::class.java,
             MotivatedDB.DATABASE_NAME,
         )
-            .createFromAsset("database/Quotes.db")
+            .createFromAsset("database/MotivationApp.db")
+            .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
     }

@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.text.TextUtils
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getString
@@ -50,6 +48,7 @@ fun Settings(
     navigateToFavorites: () -> Unit,
     navigateToThemes: () -> Unit,
     navigateToFonts: () -> Unit,
+    navigateToNotifications: () -> Unit,
     backToHome: () -> Unit
 ) {
     Scaffold(
@@ -78,6 +77,9 @@ fun Settings(
             onClick = { navigateToFonts() },
             icon = Icons.Default.FontDownload
         )
+        SettingsButton(title = "Notifications", icon = Icons.Default.Notifications) {
+            navigateToNotifications()
+        }
         SettingsButton(
             title = "Rate us on PlayStore",
             onClick = { rateOnPlayStore(context) },
@@ -88,12 +90,12 @@ fun Settings(
             onClick = { shareAppLink(context) },
             icon = Icons.Default.Share
         )
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Contact Us")
+            Text(text = "Contact us if you face any issues")
             Spacer(modifier = Modifier.height(20.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),

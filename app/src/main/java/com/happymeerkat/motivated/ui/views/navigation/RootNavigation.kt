@@ -23,6 +23,7 @@ import com.happymeerkat.motivated.ui.views.home.Home
 import com.happymeerkat.motivated.ui.views.settings.Settings
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 import com.happymeerkat.motivated.ui.views.settings.fonts.FontsSelection
+import com.happymeerkat.motivated.ui.views.settings.notifications.Notifications
 import com.happymeerkat.motivated.ui.views.settings.themes.Themes
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
@@ -50,7 +51,7 @@ fun RootNavigation(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.HOME.route,
+        startDestination = NavigationGraph.NOTIFICATIONS.route,
     ) {
         composable( route = NavigationGraph.HOME.route ) {
             Home(
@@ -75,6 +76,7 @@ fun RootNavigation(
                 navigateToFavorites = {navController.navigate(NavigationGraph.FAVORITES.route)},
                 navigateToThemes = {navController.navigate(NavigationGraph.THEMES.route)},
                 navigateToFonts = {navController.navigate(NavigationGraph.FONTS.route)},
+                navigateToNotifications = {navController.navigate(NavigationGraph.NOTIFICATIONS.route)},
                 backToHome = {navController.popBackStack()}
             )
         }
@@ -85,6 +87,13 @@ fun RootNavigation(
                 backToSettings = {navController.popBackStack()},
                 favoriteQuotes = state.quotes.filter { quote -> state.favorites.contains(Favorite(quote.id)) },
                 toggleFavorite = {quote: Quote -> vm.toggleFavorite(quote)}
+            )
+        }
+
+        composable( route = NavigationGraph.NOTIFICATIONS.route ){
+            Notifications(
+                modifier = Modifier.statusBarsPadding(),
+                backToSettings = {navController.popBackStack()}
             )
         }
 

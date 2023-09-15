@@ -63,6 +63,12 @@ object AppModule {
         return FavoriteRepositoryImpl(db.getFavoriteDao())
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideReminderRepository(db: MotivatedDB): ReminderRepository {
+//        return ReminderRepositoryImpl(db.getReminderDao())
+//    }
+
 
     @Provides
     @Singleton

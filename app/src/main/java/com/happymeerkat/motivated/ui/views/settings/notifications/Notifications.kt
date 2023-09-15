@@ -19,7 +19,6 @@ import java.time.LocalTime
 fun Notifications(
     modifier: Modifier = Modifier,
     backToSettings: () -> Unit,
-    openTimeDialog: () -> Unit,
     setNotificationTime: (pickedTime: LocalTime) -> Unit
 ) {
     val timeDialogState = rememberMaterialDialogState()

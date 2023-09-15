@@ -13,7 +13,7 @@ import com.happymeerkat.motivated.data.models.Quote
     entities = [
         Quote::class,
         Category::class,
-        Favorite::class
+        Favorite::class,
     ],
     version = 3,
     exportSchema = false
@@ -23,6 +23,7 @@ abstract class MotivatedDB: RoomDatabase() {
     abstract fun getCategoryDao(): CategoryDao
 
     abstract fun getFavoriteDao(): FavoriteDao
+
 
     companion object {
         val DATABASE_NAME = "MotivatedDB"

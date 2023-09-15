@@ -1,6 +1,7 @@
 package com.happymeerkat.motivated.ui.views.dialog
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,7 +28,8 @@ fun TimeDialog(
         buttons = {
             positiveButton(
                 text = "Ok",
-                onClick = {setNotificationTime(pickedTime)},
+               // onClick = {setNotificationTime(pickedTime)},
+                onClick = { setNotificationTime(pickedTime) },
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onPrimary)
             )
             negativeButton(

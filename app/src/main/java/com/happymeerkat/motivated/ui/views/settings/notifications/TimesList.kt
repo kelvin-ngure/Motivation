@@ -11,10 +11,10 @@ fun TimesList(
     times: List<Long> = listOf(1,2,3,4,5,6)
 ) {
     LazyColumn {
-        times.forEach {item {
-            TimeCard(timeString = it.toString(), editTime = {  }, deleteTime = {})
-        }
-
+        times.forEach {
+            item {
+                TimeCard(timeString = it.toString(), deleteTime = {})
+            }
         }
     }
 }

@@ -47,6 +47,10 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".notification.AlarmReceiver" />
+        <receiver android:name=".notification.OnFavoritedBroadCastReceiver" />
+
+
 
     </application>
 

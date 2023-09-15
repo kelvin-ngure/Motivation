@@ -51,7 +51,7 @@ fun RootNavigation(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.NOTIFICATIONS.route,
+        startDestination = NavigationGraph.HOME.route,
     ) {
         composable( route = NavigationGraph.HOME.route ) {
             Home(
@@ -93,7 +93,9 @@ fun RootNavigation(
         composable( route = NavigationGraph.NOTIFICATIONS.route ){
             Notifications(
                 modifier = Modifier.statusBarsPadding(),
-                backToSettings = {navController.popBackStack()}
+                backToSettings = {navController.popBackStack()},
+                openTimeDialog = {},
+                setNotificationTime = {}
             )
         }
 

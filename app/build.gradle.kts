@@ -33,7 +33,7 @@ android {
         }
     }
     compileOptions {
-        //isCoreLibraryDesugaringEnabled = true
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -112,6 +112,10 @@ dependencies {
 
     // Icons
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha08")
+
+    // Date and time
+    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
 //    // Work Manager
 //    val work_version = "2.8.1"

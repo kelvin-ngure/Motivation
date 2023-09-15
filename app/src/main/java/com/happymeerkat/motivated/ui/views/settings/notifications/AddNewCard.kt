@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AddNewCard(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    addNewTime: () -> Unit
+    addNewTime: () -> Unit,
+    openTimeDialog: () -> Unit
 ) {
     Card(
-        modifier = modifier.clickable { addNewTime() },
+        modifier = modifier.clickable { openTimeDialog() },
         elevation = CardDefaults.cardElevation(defaultElevation = 7.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onPrimary)

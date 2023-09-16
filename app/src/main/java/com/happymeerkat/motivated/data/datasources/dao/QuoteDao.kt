@@ -12,6 +12,9 @@ interface QuoteDao {
     @Query("SELECT * FROM Quote")
     fun getAllQuotes(): Flow<List<Quote>>
 
+    @Query("SELECT * FROM Quote ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomQuote(): Quote
+
     @Upsert
     suspend fun upsertQuote(item: Quote)
 

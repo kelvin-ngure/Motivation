@@ -13,6 +13,10 @@ class QuoteRepositoryImpl @Inject constructor(
         return dao.getAllQuotes()
     }
 
+    override suspend fun getRandomQuote(): Quote {
+        return dao.getRandomQuote()
+    }
+
     override suspend fun upsertQuote(quote: Quote) {
         dao.upsertQuote(quote)
     }

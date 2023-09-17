@@ -26,7 +26,7 @@ fun alarmSet(
     timeChosen: LocalTime,
     context: Context,
     quote: Quote,
-    saveReminder: (reminder: Reminder) -> Unit
+    saveReminder: (suspend (reminder: Reminder) -> Unit)?
 ) {
     // if past time, set alarm for tomorrow
     val today = LocalDate.now()
@@ -44,9 +44,12 @@ fun alarmSet(
         time = alarmDateTimeMilliseconds
     )
 
-    CoroutineScope(Dispatchers.IO).launch {
-        saveReminder(reminder)
+    if(saveReminder != null) { // in the case of an alarm being reset automatically, we don't save it again in the database
+        CoroutineScope(Dispatchers.IO).launch {
+            saveReminder(reminder)
+        }
     }
+
 
     // Alarm and intents
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

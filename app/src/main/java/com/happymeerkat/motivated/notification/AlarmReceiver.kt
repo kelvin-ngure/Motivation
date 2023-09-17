@@ -94,7 +94,8 @@ class AlarmReceiver: BroadcastReceiver() {
             alarmSet(
                 timeChosen = tomorrow,
                 context = context!!,
-                quote = randomQuote
+                quote = randomQuote,
+                saveReminder = null
             )
         }
     }

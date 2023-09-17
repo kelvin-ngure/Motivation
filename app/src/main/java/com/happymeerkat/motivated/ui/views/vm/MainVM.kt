@@ -12,6 +12,7 @@ import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.data.models.Theme
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
+import com.happymeerkat.motivated.domain.repository.ReminderRepository
 import com.happymeerkat.motivated.domain.themes.ThemeManager
 import com.happymeerkat.motivated.domain.themes.ThemeType
 import com.happymeerkat.motivated.notification.AlarmReceiver
@@ -36,6 +37,7 @@ import javax.inject.Inject
 class MainVM @Inject constructor(
     private val quotesRepository: QuoteRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val reminderRepository: ReminderRepository,
     private val themeManager: ThemeManager
 ): ViewModel() {
     private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
@@ -93,8 +95,6 @@ class MainVM @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-
-
     fun toggleFavorite(quote: Quote) {
         viewModelScope.launch {
             val favorite = Favorite(quote.id)
@@ -115,8 +115,6 @@ class MainVM @Inject constructor(
             quotePage = page
         )
     }
-
-
 
     fun getThemes() {
         _homeUIState.value = homeUIState.value.copy(
@@ -150,7 +148,8 @@ class MainVM @Inject constructor(
         alarmSet(
             timeChosen,
             context,
-            _homeUIState.value.quotes[0]
+            _homeUIState.value.quotes[0],
+            saveReminder = {reminder -> reminderRepository.insertReminder(reminder)}
         )
     }
 

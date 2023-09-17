@@ -86,7 +86,7 @@ class AlarmReceiver: BroadcastReceiver() {
             Log.d("ALARM", "quote received :none")
         }
 
-        val tomorrow = LocalTime.now().plusHours(6)
+        val tomorrow = LocalTime.now().plusHours(24)
         CoroutineScope(Dispatchers.Unconfined).launch {
             Log.d("ALARM", "COROUTINE")
             val randomQuote = quoteRepository.getRandomQuote()

@@ -18,10 +18,17 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+
+fun getFormattedTime(time: Long): String {
+    return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault().rules.getOffset(Instant.now())).toLocalTime().format(
+        DateTimeFormatter.ofPattern("hh:mm a"))
+}
 fun alarmSet(
     timeChosen: LocalTime,
     context: Context,
@@ -34,13 +41,17 @@ fun alarmSet(
     val alarmDateTime: LocalDateTime = if (timeChosen >= LocalTime.now()) timeChosen.atDate(today) else timeChosen.atDate(tomorrow)
 
     // store UTC Long in DB
-    val alarmDateTimeMilliseconds = alarmDateTime.toInstant(
-        ZoneId.systemDefault().rules.getOffset(
-            Instant.now())).toEpochMilli()
+    val alarmDateTimeMilliseconds =
+            alarmDateTime
+                .toInstant(ZoneId.systemDefault()
+                .rules
+                .getOffset(Instant.now()))
+                .truncatedTo(ChronoUnit.MINUTES)
+                .toEpochMilli()
     Log.d("ALARM", "alarm ms $alarmDateTimeMilliseconds")
 
     val reminder = Reminder(
-        id = 1,
+        id = null,
         time = alarmDateTimeMilliseconds
     )
 

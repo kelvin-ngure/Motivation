@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.happymeerkat.motivated.data.models.Reminder
 import com.happymeerkat.motivated.ui.views.dialog.TimeDialog
 import com.happymeerkat.motivated.ui.views.util.AppBar
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -19,7 +20,8 @@ import java.time.LocalTime
 fun Notifications(
     modifier: Modifier = Modifier,
     backToSettings: () -> Unit,
-    setNotificationTime: (pickedTime: LocalTime) -> Unit
+    setNotificationTime: (pickedTime: LocalTime) -> Unit,
+    reminders: List<Reminder>
 ) {
     val timeDialogState = rememberMaterialDialogState()
 
@@ -42,7 +44,9 @@ fun Notifications(
                     addNewTime = {},
                     openTimeDialog = {timeDialogState.show()},
                 )
-                TimesList()
+                TimesList(
+                    reminders = reminders
+                )
                 TimeDialog(
                     timeDialogState = timeDialogState,
                     setNotificationTime = setNotificationTime

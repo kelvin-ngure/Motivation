@@ -4,16 +4,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.happymeerkat.motivated.data.models.Reminder
 
 @Composable
 fun TimesList(
     modifier: Modifier = Modifier,
-    times: List<Long> = listOf(1,2,3,4,5,6)
+    reminders: List<Reminder>
 ) {
     LazyColumn {
-        times.forEach {
+        reminders.forEach {
             item {
-                TimeCard(timeString = it.toString(), deleteTime = {})
+                TimeCard(utcTime = it.time, deleteTime = {})
             }
         }
     }

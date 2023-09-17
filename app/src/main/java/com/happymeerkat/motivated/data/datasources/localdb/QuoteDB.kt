@@ -18,7 +18,7 @@ import com.happymeerkat.motivated.data.models.Reminder
         Favorite::class,
         Reminder::class
     ],
-    version = 4,
+    version = 6,
     exportSchema = false
 )
 abstract class MotivatedDB: RoomDatabase() {

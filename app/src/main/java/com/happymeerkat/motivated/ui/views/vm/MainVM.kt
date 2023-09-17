@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
+import com.happymeerkat.motivated.data.models.Reminder
 import com.happymeerkat.motivated.data.models.Theme
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
@@ -48,12 +49,14 @@ class MainVM @Inject constructor(
     var getQuotesJob: Job? = null
     var getFavoritesJob: Job? = null
     var getThemeJob: Job? = null
+    var getRemindersJob: Job? = null
 
     init {
         getAllQuotes()
         getAllFavorites()
         getTheme()
         getThemes()
+        getReminders()
     }
 
     private fun getAllQuotes() {
@@ -90,6 +93,18 @@ class MainVM @Inject constructor(
                 var currentTheme = themeManager.themes.find { it.themeId == currentThemeId }
                 _homeUIState.value = homeUIState.value.copy(
                     currentTheme = currentTheme!!
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun getReminders() {
+        getRemindersJob?.cancel()
+        getRemindersJob = reminderRepository
+            .getAllReminders()
+            .onEach { reminders ->
+                _homeUIState.value = homeUIState.value.copy(
+                    reminders = reminders
                 )
             }
             .launchIn(viewModelScope)
@@ -169,6 +184,7 @@ data class HomeUIState(
     var favorites: List<Favorite> = emptyList(),
     val quotePage: Int = 0,
     val currentTheme: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null, themeType = ThemeType.COLORS),
-    val themes: List<Theme> = emptyList()
+    val themes: List<Theme> = emptyList(),
+    val reminders: List<Reminder> = emptyList()
 )
 

@@ -11,9 +11,11 @@ import com.happymeerkat.motivated.data.preferences.ThemePreferencesRepository
 import com.happymeerkat.motivated.data.repository.CategoryRepositoryImpl
 import com.happymeerkat.motivated.data.repository.FavoriteRepositoryImpl
 import com.happymeerkat.motivated.data.repository.QuoteRepositoryImpl
+import com.happymeerkat.motivated.data.repository.ReminderRepositoryImpl
 import com.happymeerkat.motivated.domain.repository.CategoryRepository
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
+import com.happymeerkat.motivated.domain.repository.ReminderRepository
 import com.happymeerkat.motivated.domain.themes.ThemeManager
 import dagger.Module
 import dagger.Provides
@@ -63,11 +65,11 @@ object AppModule {
         return FavoriteRepositoryImpl(db.getFavoriteDao())
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideReminderRepository(db: MotivatedDB): ReminderRepository {
-//        return ReminderRepositoryImpl(db.getReminderDao())
-//    }
+    @Provides
+    @Singleton
+    fun provideReminderRepository(db: MotivatedDB): ReminderRepository {
+        return ReminderRepositoryImpl(db.getReminderDao())
+    }
 
 
     @Provides

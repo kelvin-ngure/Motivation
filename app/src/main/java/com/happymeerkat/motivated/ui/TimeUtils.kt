@@ -76,6 +76,8 @@ fun alarmSet(
     alarmManager.setAlarmClock(clockInfo, pendingIntent)
 }
 
-fun alarmRemove() {
+fun alarmRemove(
+    deleteReminder: (suspend (reminder: Reminder) -> Unit)?
+) {
 
 }

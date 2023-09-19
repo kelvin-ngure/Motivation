@@ -163,7 +163,7 @@ class MainVM @Inject constructor(
         alarmSet(
             timeChosen,
             context,
-            _homeUIState.value.quotes[0],
+            _homeUIState.value.quotes.random(),
             saveReminder = {reminder -> reminderRepository.insertReminder(reminder)}
         )
     }

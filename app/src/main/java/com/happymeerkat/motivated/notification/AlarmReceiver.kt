@@ -2,6 +2,7 @@ package com.happymeerkat.motivated.notification
 import android.Manifest
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.PendingIntent.getActivity
 import android.app.PendingIntent.getBroadcast
@@ -43,25 +44,26 @@ class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val quote = intent?.serializable("quote") as? Quote
         if (quote != null) {
-            val markFavoriteIntent = Intent(context, MainActivity::class.java)
-            markFavoriteIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            val pendingIntent: PendingIntent = getActivity(context, quote!!.id, markFavoriteIntent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
-
-            val intent1 = Intent(context, OnFavoritedBroadCastReceiver::class.java).apply {
+            val quoteNotificationIntent = Intent(context, MainActivity::class.java).apply {
                 putExtra("quote", quote)
             }
-            val pendingIntent1: PendingIntent? = quote?.let { getBroadcast(context, it.id!!, intent1, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE) }
-            val action1 = NotificationCompat.Action.Builder(0, "Favorite", pendingIntent1).build()
+            quoteNotificationIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val quoteNotificationPendingIntent: PendingIntent = getActivity(context, 0, quoteNotificationIntent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+
+            val markFavoriteIntent = Intent(context, OnFavoritedBroadCastReceiver::class.java)
+            val markFavoritePendingIntent: PendingIntent? = quote?.let { getBroadcast(context, quote.id, markFavoriteIntent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE) }
+            val markFavoriteAction = NotificationCompat.Action.Builder(0
+                ,"Favorite", markFavoritePendingIntent).build()
 
             val notification = context?.let {
                 NotificationCompat.Builder(it, "quote_reminders")
                     .setContentTitle(quote?.author)
                     .setContentText(quote?.quote)
-                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentIntent(pendingIntent)
-                    .addAction(action1)
+                    .setContentIntent(quoteNotificationPendingIntent)
+                    .addAction(markFavoriteAction)
                     .build()
             }
 
@@ -81,12 +83,12 @@ class AlarmReceiver: BroadcastReceiver() {
                     // for ActivityCompat#requestPermissions for more details.
                     return
                 }
-                notificationManager?.notify(it1.id!!, it); Log.d("ALARM NOTIF", "notification sent") } }
+                notificationManager?.notify(it1.id, it); Log.d("ALARM NOTIF", "notification sent") } }
         } else{
             Log.d("ALARM", "quote received :none")
         }
 
-        val tomorrow = LocalTime.now().plusHours(24)
+        val tomorrow = LocalTime.now().plusMinutes(5)
         CoroutineScope(Dispatchers.Unconfined).launch {
             Log.d("ALARM", "COROUTINE")
             val randomQuote = quoteRepository.getRandomQuote()

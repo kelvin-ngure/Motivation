@@ -9,12 +9,16 @@ import com.happymeerkat.motivated.data.models.Reminder
 @Composable
 fun TimesList(
     modifier: Modifier = Modifier,
-    reminders: List<Reminder>
+    reminders: List<Reminder>,
+    deleteReminder: (reminder: Reminder) -> Unit
 ) {
     LazyColumn {
         reminders.forEach {
             item {
-                TimeCard(utcTime = it.time, deleteTime = {})
+                TimeCard(
+                    reminder = it,
+                    deleteReminder = {deleteReminder(it)}
+                )
             }
         }
     }

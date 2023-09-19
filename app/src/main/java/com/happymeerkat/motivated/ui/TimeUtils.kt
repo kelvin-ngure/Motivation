@@ -81,7 +81,13 @@ fun alarmSet(
 }
 
 fun alarmRemove(
+    context: Context,
+    reminder: Reminder,
     deleteReminder: (suspend (reminder: Reminder) -> Unit)?
 ) {
-
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, AlarmReceiver::class.java)
+    intent.putExtra("reminder", reminder)
+    val pendingIntent = PendingIntent.getBroadcast(context, reminder.id, intent, PendingIntent.FLAG_IMMUTABLE)
+    alarmManager.cancel(pendingIntent)
 }

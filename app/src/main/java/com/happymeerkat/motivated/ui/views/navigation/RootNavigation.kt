@@ -95,7 +95,8 @@ fun RootNavigation(
                 modifier = Modifier.statusBarsPadding(),
                 backToSettings = {navController.popBackStack()},
                 setNotificationTime = {pickedTime ->  vm.setAlarm(pickedTime, context)},
-                reminders = state.reminders
+                reminders = state.reminders,
+                deleteReminder = {reminder -> vm.removeAlarm(context, reminder)}
             )
         }
 

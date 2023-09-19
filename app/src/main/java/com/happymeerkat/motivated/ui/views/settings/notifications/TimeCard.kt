@@ -28,16 +28,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.happymeerkat.motivated.data.models.Reminder
 import com.happymeerkat.motivated.ui.getFormattedTime
 
 @Composable
 fun TimeCard(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    utcTime: Long,
-    deleteTime: () -> Unit
+    reminder: Reminder,
+    deleteReminder: () -> Unit
 ) {
     var showDeleteButton by remember { mutableStateOf(false) }
-    Log.d("ALARM", "time to format $utcTime")
+    Log.d("ALARM", "time to format ${reminder.time}")
     Card(
         modifier = modifier
             .padding(vertical = 10.dp)
@@ -52,9 +53,9 @@ fun TimeCard(
                 .padding(22.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(modifier = Modifier.weight(2f),text = getFormattedTime(utcTime), fontSize = 30.sp)
+            Text(modifier = Modifier.weight(2f),text = getFormattedTime(reminder.time), fontSize = 30.sp)
             if(showDeleteButton) {
-                Icon(modifier = Modifier.size(50.dp), imageVector = Icons.Default.Delete, contentDescription = "Delete time")
+                Icon(modifier = Modifier.size(50.dp).clickable { deleteReminder() }, imageVector = Icons.Default.Delete, contentDescription = "Delete time")
             }
 
         }

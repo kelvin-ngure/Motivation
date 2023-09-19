@@ -178,6 +178,9 @@ class MainVM @Inject constructor(
         val intent = Intent(context, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, reminder.id, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.cancel(pendingIntent)
+        viewModelScope.launch {
+            reminderRepository.deleteReminder(reminder)
+        }
     }
 
 }

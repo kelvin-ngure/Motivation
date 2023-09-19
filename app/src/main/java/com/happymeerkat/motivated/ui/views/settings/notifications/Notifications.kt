@@ -21,7 +21,8 @@ fun Notifications(
     modifier: Modifier = Modifier,
     backToSettings: () -> Unit,
     setNotificationTime: (pickedTime: LocalTime) -> Unit,
-    reminders: List<Reminder>
+    reminders: List<Reminder>,
+    deleteReminder: (reminder: Reminder) -> Unit
 ) {
     val timeDialogState = rememberMaterialDialogState()
 
@@ -45,7 +46,8 @@ fun Notifications(
                     openTimeDialog = {timeDialogState.show()},
                 )
                 TimesList(
-                    reminders = reminders
+                    reminders = reminders,
+                    deleteReminder = deleteReminder
                 )
                 TimeDialog(
                     timeDialogState = timeDialogState,

@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
+import com.happymeerkat.motivated.data.models.Reminder
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
 import com.happymeerkat.motivated.notification.AlarmReceiver.SerializableHelper.serializable
 import com.happymeerkat.motivated.ui.alarmSet
@@ -43,6 +44,8 @@ class AlarmReceiver: BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val quote = intent?.serializable("quote") as? Quote
+        val reminder = intent?.serializable("reminder") as? Reminder
+
         if (quote != null) {
             val quoteNotificationIntent = Intent(context, MainActivity::class.java).apply {
                 putExtra("quote", quote)
@@ -51,7 +54,7 @@ class AlarmReceiver: BroadcastReceiver() {
             val quoteNotificationPendingIntent: PendingIntent = getActivity(context, 0, quoteNotificationIntent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
 
             val markFavoriteIntent = Intent(context, OnFavoritedBroadCastReceiver::class.java)
-            val markFavoritePendingIntent: PendingIntent? = quote?.let { getBroadcast(context, quote.id, markFavoriteIntent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE) }
+            val markFavoritePendingIntent: PendingIntent? = reminder?.let { getBroadcast(context, reminder.id, markFavoriteIntent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE) }
             val markFavoriteAction = NotificationCompat.Action.Builder(0
                 ,"Favorite", markFavoritePendingIntent).build()
 
@@ -68,7 +71,7 @@ class AlarmReceiver: BroadcastReceiver() {
             }
 
             notificationManager = context?.let { NotificationManagerCompat.from(it) }
-            notification?.let { quote?.let { it1 ->
+            notification?.let { reminder!!.let { it1 ->
                 if (ActivityCompat.checkSelfPermission(
                         context,
                         Manifest.permission.POST_NOTIFICATIONS
@@ -97,7 +100,8 @@ class AlarmReceiver: BroadcastReceiver() {
                 timeChosen = tomorrow,
                 context = context!!,
                 quote = randomQuote,
-                saveReminder = null
+                saveReminder = null,
+                reminder = reminder!!
             )
         }
     }

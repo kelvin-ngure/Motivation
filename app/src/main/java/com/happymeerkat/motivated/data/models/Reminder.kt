@@ -8,6 +8,6 @@ import java.time.LocalDateTime
 @Entity
 data class Reminder(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    val id: Int,
     val time: Long,
 ): Serializable

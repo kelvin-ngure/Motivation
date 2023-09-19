@@ -12,27 +12,27 @@ import com.happymeerkat.motivated.ui.views.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
 
 
 fun getFormattedTime(time: Long): String {
     return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault().rules.getOffset(Instant.now())).toLocalTime().format(
         DateTimeFormatter.ofPattern("hh:mm a"))
 }
+
+
 fun alarmSet(
     timeChosen: LocalTime,
     context: Context,
     quote: Quote,
+    reminder: Reminder?, // for automatic alarm reset, we just get the old reminder. for new alarm, reminder is built within this function
     saveReminder: (suspend (reminder: Reminder) -> Unit)?
 ) {
     // if past time, set alarm for tomorrow
@@ -50,15 +50,18 @@ fun alarmSet(
                 .toEpochMilli()
     Log.d("ALARM", "alarm ms $alarmDateTimeMilliseconds")
 
-    val reminder = Reminder(
-        id = null,
-        time = alarmDateTimeMilliseconds
-    )
 
+    lateinit var rem: Reminder
     if(saveReminder != null) { // in the case of an alarm being reset automatically, we don't save it again in the database
+        rem = Reminder(
+            id = Instant.now().toEpochMilli().toInt(),
+            time = alarmDateTimeMilliseconds
+        )
         CoroutineScope(Dispatchers.IO).launch {
-            saveReminder(reminder)
+            saveReminder(rem)
         }
+    } else {
+        rem = reminder!!
     }
 
 
@@ -67,9 +70,10 @@ fun alarmSet(
     val intent = Intent(context, AlarmReceiver::class.java)
     intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
     intent.putExtra("quote", quote)
-    val pendingIntent = PendingIntent.getBroadcast(context, quote.id, intent, PendingIntent.FLAG_IMMUTABLE)
+    intent.putExtra("reminder", rem)
+    val pendingIntent = PendingIntent.getBroadcast(context, rem.id, intent, PendingIntent.FLAG_IMMUTABLE) // we can guarantee reminder exists since we get the old or new one
     val mainActivityIntent = Intent(context, MainActivity::class.java)
-    val basicPendingIntent = PendingIntent.getActivity(context, quote.id, mainActivityIntent, PendingIntent.FLAG_IMMUTABLE)
+    val basicPendingIntent = PendingIntent.getActivity(context, rem.id, mainActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
 
     val clockInfo = AlarmManager.AlarmClockInfo(alarmDateTimeMilliseconds, basicPendingIntent)

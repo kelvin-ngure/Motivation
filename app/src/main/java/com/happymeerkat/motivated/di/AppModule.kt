@@ -81,6 +81,7 @@ object AppModule {
             MotivatedDB.DATABASE_NAME,
         )
             .createFromAsset("database/MotivationApp.db")
+            .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
     }

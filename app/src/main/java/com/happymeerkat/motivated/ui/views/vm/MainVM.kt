@@ -32,6 +32,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -164,14 +165,18 @@ class MainVM @Inject constructor(
             timeChosen,
             context,
             _homeUIState.value.quotes.random(),
-            saveReminder = {reminder -> reminderRepository.insertReminder(reminder)}
+            saveReminder = {reminder -> reminderRepository.insertReminder(reminder)},
+            reminder = null
         )
     }
 
-    fun removeAlarm(context: Context){
+    fun removeAlarm(
+        context: Context,
+        reminder: Reminder
+    ){
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = PendingIntent.getBroadcast(context, reminder.id, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.cancel(pendingIntent)
     }
 

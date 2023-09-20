@@ -29,26 +29,32 @@ fun getFormattedTime(time: Long): String {
 
 
 fun alarmSet(
-    timeChosen: LocalTime,
+    timeChosen: LocalTime? = null,
+    timeChosenUTC: Long? = null,
     context: Context,
     quote: Quote,
     reminder: Reminder?, // for automatic alarm reset, we just get the old reminder. for new alarm, reminder is built within this function
     saveReminder: (suspend (reminder: Reminder) -> Unit)?
 ) {
-    // if past time, set alarm for tomorrow
-    val today = LocalDate.now()
-    val tomorrow = today.plusDays(1)
-    val alarmDateTime: LocalDateTime = if (timeChosen >= LocalTime.now()) timeChosen.atDate(today) else timeChosen.atDate(tomorrow)
+    var alarmDateTimeMilliseconds: Long = 0
 
-    // store UTC Long in DB
-    val alarmDateTimeMilliseconds =
-            alarmDateTime
-                .toInstant(ZoneId.systemDefault()
+    if(timeChosen != null) {
+        // if past time, set alarm for tomorrow
+        val today = LocalDate.now()
+        val tomorrow = today.plusDays(1)
+        val alarmDateTime: LocalDateTime = if (timeChosen >= LocalTime.now()) timeChosen.atDate(today) else timeChosen.atDate(tomorrow)
+
+        alarmDateTimeMilliseconds = alarmDateTime
+            .toInstant(ZoneId.systemDefault()
                 .rules
                 .getOffset(Instant.now()))
-                .truncatedTo(ChronoUnit.MINUTES)
-                .toEpochMilli()
-    Log.d("ALARM", "alarm ms $alarmDateTimeMilliseconds")
+            .truncatedTo(ChronoUnit.MINUTES)
+            .toEpochMilli()
+        Log.d("ALARM", "alarm ms $alarmDateTimeMilliseconds")
+
+    } else {
+        alarmDateTimeMilliseconds = timeChosenUTC!!
+    }
 
 
     lateinit var rem: Reminder

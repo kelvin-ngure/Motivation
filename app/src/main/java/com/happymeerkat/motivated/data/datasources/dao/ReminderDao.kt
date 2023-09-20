@@ -17,4 +17,7 @@ interface ReminderDao {
 
     @Delete
     suspend fun deleteReminder(reminder: Reminder)
+
+    @Query("SELECT * FROM Reminder where time >= :currentTime")
+    suspend fun getActiveReminders(currentTime: Long): List<Reminder>
 }

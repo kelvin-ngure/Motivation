@@ -162,9 +162,9 @@ class MainVM @Inject constructor(
 
     fun setAlarm(timeChosen: LocalTime, context: Context) {
         alarmSet(
-            timeChosen,
-            context,
-            _homeUIState.value.quotes.random(),
+            timeChosen = timeChosen,
+            context = context,
+            quote = _homeUIState.value.quotes.random(),
             saveReminder = {reminder -> reminderRepository.insertReminder(reminder)},
             reminder = null
         )

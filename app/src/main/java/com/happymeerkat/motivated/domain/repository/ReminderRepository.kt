@@ -10,4 +10,6 @@ interface ReminderRepository {
     suspend fun insertReminder(reminder: Reminder)
 
     suspend fun deleteReminder(reminder: Reminder)
+
+    suspend fun getActiveReminders(currentTime: Long): List<Reminder>
 }

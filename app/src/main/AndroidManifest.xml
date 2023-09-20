@@ -49,6 +49,15 @@
 
         <receiver android:name=".notification.AlarmReceiver" />
         <receiver android:name=".notification.OnFavoritedBroadCastReceiver" />
+        <receiver
+            android:name=".notification.RebootBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
 
 
 

@@ -72,11 +72,11 @@ fun Settings(
             onClick = { navigateToThemes() },
             icon = Icons.Default.ColorLens
         )
-        SettingsButton(
-            title = "Fonts",
-            onClick = { navigateToFonts() },
-            icon = Icons.Default.FontDownload
-        )
+//        SettingsButton(
+//            title = "Fonts",
+//            onClick = { navigateToFonts() },
+//            icon = Icons.Default.FontDownload
+//        )
         SettingsButton(title = "Notifications", icon = Icons.Default.Notifications) {
             navigateToNotifications()
         }

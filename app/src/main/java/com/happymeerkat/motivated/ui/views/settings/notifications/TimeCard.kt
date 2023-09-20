@@ -2,7 +2,9 @@ package com.happymeerkat.motivated.ui.views.settings.notifications
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.happymeerkat.motivated.data.models.Reminder
 import com.happymeerkat.motivated.ui.getFormattedTime
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TimeCard(
     modifier: Modifier = Modifier.fillMaxWidth(),
@@ -42,7 +45,10 @@ fun TimeCard(
     Card(
         modifier = modifier
             .padding(vertical = 10.dp)
-            .clickable { showDeleteButton = !showDeleteButton },
+            .combinedClickable (
+                onClick = {},
+                onLongClick = {showDeleteButton = !showDeleteButton},
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 7.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onPrimary)
@@ -55,7 +61,8 @@ fun TimeCard(
         ) {
             Text(modifier = Modifier.weight(2f),text = getFormattedTime(reminder.time), fontSize = 30.sp)
             if(showDeleteButton) {
-                Icon(modifier = Modifier.size(50.dp).clickable { deleteReminder() }, imageVector = Icons.Default.Delete, contentDescription = "Delete time")
+                Icon(
+                    modifier = Modifier.size(30.dp).clickable { deleteReminder() }, imageVector = Icons.Default.Delete, contentDescription = "Delete time")
             }
 
         }

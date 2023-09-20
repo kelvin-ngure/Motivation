@@ -32,7 +32,7 @@ fun AddNewCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(fontSize = 40.sp, text = "+")
-            Text("Tap to add new quote reminder")
+            Text("Tap to add daily quote reminder")
         }
     }
 }

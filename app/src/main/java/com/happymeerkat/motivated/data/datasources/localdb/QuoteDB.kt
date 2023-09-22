@@ -1,7 +1,10 @@
 package com.happymeerkat.motivated.data.datasources.localdb
 
+import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.RoomDatabase
+import androidx.room.migration.AutoMigrationSpec
 import com.happymeerkat.motivated.data.datasources.dao.CategoryDao
 import com.happymeerkat.motivated.data.datasources.dao.FavoriteDao
 import com.happymeerkat.motivated.data.datasources.dao.QuoteDao
@@ -19,9 +22,18 @@ import com.happymeerkat.motivated.data.models.Reminder
         Reminder::class
     ],
     version = 8,
-    exportSchema = false
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 2, to = 8, spec = MotivatedDB.Migration_2to8::class)
+    ]
 )
 abstract class MotivatedDB: RoomDatabase() {
+
+    @DeleteColumn(tableName = "Quote", columnName = "context")
+    @DeleteColumn(tableName = "Quote", columnName = "categoryId")
+    @DeleteColumn(tableName = "Quote", columnName = "favorite")
+    class Migration_2to8 : AutoMigrationSpec
+
     abstract fun getQuoteDao(): QuoteDao
     abstract fun getCategoryDao(): CategoryDao
 

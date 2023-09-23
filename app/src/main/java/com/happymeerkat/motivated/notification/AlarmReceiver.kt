@@ -62,7 +62,7 @@ class AlarmReceiver: BroadcastReceiver() {
                 NotificationCompat.Builder(it, "quote_reminders")
                     .setContentTitle(quote?.author)
                     .setContentText(quote?.quote)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentIntent(quoteNotificationPendingIntent)

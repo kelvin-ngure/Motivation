@@ -19,7 +19,6 @@ import com.happymeerkat.motivated.domain.themes.ThemeManager
 import com.happymeerkat.motivated.domain.themes.ThemeType
 import com.happymeerkat.motivated.notification.AlarmReceiver
 import com.happymeerkat.motivated.ui.alarmSet
-import com.happymeerkat.motivated.ui.views.MainActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,13 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,7 +63,7 @@ class MainVM @Inject constructor(
             .readIntroPreference
             .onEach { introSeen ->
                 _homeUIState.value = _homeUIState.value.copy(
-                    introSeen = introSeen
+                    firstScreen = FirstScreenIsOnboarding.Success(introSeen)
                 )
             }
             .launchIn(viewModelScope)
@@ -113,6 +106,12 @@ class MainVM @Inject constructor(
                 )
             }
             .launchIn(viewModelScope)
+    }
+
+    fun completeOnboard() {
+        viewModelScope.launch {
+            preferencesRepository.saveIntroPreference(true)
+        }
     }
 
     private fun getReminders() {
@@ -210,6 +209,11 @@ data class HomeUIState(
     val currentTheme: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null, themeType = ThemeType.COLORS),
     val themes: List<Theme> = emptyList(),
     val reminders: List<Reminder> = emptyList(),
-    val introSeen: Boolean = false
+    val firstScreen: FirstScreenIsOnboarding = FirstScreenIsOnboarding.Loading
 )
+
+sealed interface FirstScreenIsOnboarding {
+    object Loading : FirstScreenIsOnboarding
+    data class Success(val data: Boolean): FirstScreenIsOnboarding
+}
 

@@ -26,6 +26,8 @@ import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 import com.happymeerkat.motivated.ui.views.settings.fonts.FontsSelection
 import com.happymeerkat.motivated.ui.views.settings.notifications.Notifications
 import com.happymeerkat.motivated.ui.views.settings.themes.Themes
+import com.happymeerkat.motivated.ui.views.util.LoadingPage
+import com.happymeerkat.motivated.ui.views.vm.FirstScreenIsOnboarding
 import com.happymeerkat.motivated.ui.views.vm.MainVM
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -49,15 +51,30 @@ fun RootNavigation(
 
 
 
+
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = if(state.introSeen) NavigationGraph.HOME.route else NavigationGraph.ONBOARD.route,
+        startDestination = if(state.firstScreen is FirstScreenIsOnboarding.Loading) NavigationGraph.LOADING.route else {
+            if(state.firstScreen is FirstScreenIsOnboarding.Success) {
+                if(!state.firstScreen.data) {
+                    NavigationGraph.ONBOARD.route
+                } else {
+                    NavigationGraph.HOME.route
+                }
+            } else {
+                NavigationGraph.ONBOARD.route
+            }
+        }
     ) {
+        composable(route = NavigationGraph.LOADING.route) {
+            LoadingPage()
+        }
         composable( route = NavigationGraph.ONBOARD.route) {
             Onboard(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.background),
+                completeOnboard = {vm.completeOnboard()}
             )
         }
 

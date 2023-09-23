@@ -24,7 +24,8 @@ import com.happymeerkat.motivated.data.models.Reminder
     version = 8,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 2, to = 8, spec = MotivatedDB.Migration_2to8::class)
+        AutoMigration(from = 2, to = 8, spec = MotivatedDB.Migration_2to8::class),
+        AutoMigration(from = 6, to = 8, spec = MotivatedDB.Migration_2to8::class)
     ]
 )
 abstract class MotivatedDB: RoomDatabase() {

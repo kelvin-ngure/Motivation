@@ -22,9 +22,13 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 
-fun getFormattedTime(time: Long): String {
+fun getFormattedUTCTime(time: Long): String {
     return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault().rules.getOffset(Instant.now())).toLocalTime().format(
         DateTimeFormatter.ofPattern("hh:mm a"))
+}
+
+fun getFormattedLocalTime(time: LocalTime): String {
+    return time.format(DateTimeFormatter.ofPattern("hh:mm a"))
 }
 
 

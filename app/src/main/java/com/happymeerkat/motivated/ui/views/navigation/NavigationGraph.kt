@@ -17,4 +17,5 @@ sealed class NavigationGraph(val route: String, val icon: ImageVector?) {
     object FAVORITES: NavigationGraph(route = "favorites", icon = null)
     object THEMES: NavigationGraph(route = "themes", icon = null)
     object FONTS: NavigationGraph(route = "fonts", icon = null)
+    object LOADING: NavigationGraph(route = "loading", icon = null)
 }

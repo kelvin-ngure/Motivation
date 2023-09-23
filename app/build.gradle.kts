@@ -123,6 +123,9 @@ dependencies {
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
+    // Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
 //    // Work Manager
 //    val work_version = "2.8.1"
 

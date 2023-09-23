@@ -34,7 +34,8 @@ import java.time.LocalTime
 @Composable
 fun Onboard(
     modifier: Modifier = Modifier,
-    completeOnboard: () -> Unit
+    completeOnboard: () -> Unit,
+    setAlarm: (pickedTime: LocalTime) -> Unit
 ) {
     val timeDialogState = rememberMaterialDialogState()
     var pickedTime by remember{ mutableStateOf<LocalTime?>(null) }
@@ -78,7 +79,8 @@ fun Onboard(
                     subtext = subtext[page],
                     completeOnboard = completeOnboard,
                     openClock = {timeDialogState.show()},
-                    pickedTime = pickedTime
+                    pickedTime = pickedTime,
+                    setReminder = { pickedTime?.let { setAlarm(it) } }
                 )
 
             }

@@ -37,7 +37,8 @@ fun IntroPage(
     subtext: String,
     completeOnboard: () -> Unit,
     openClock: () -> Unit,
-    pickedTime: LocalTime?
+    pickedTime: LocalTime?,
+    setReminder: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -89,7 +90,7 @@ fun IntroPage(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(
-                        onClick = { completeOnboard() },
+                        onClick = { completeOnboard(); setReminder() },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.onPrimary,
                             contentColor = MaterialTheme.colorScheme.background,

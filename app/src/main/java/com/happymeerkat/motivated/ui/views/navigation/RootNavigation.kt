@@ -74,7 +74,8 @@ fun RootNavigation(
             Onboard(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background),
-                completeOnboard = {vm.completeOnboard()}
+                completeOnboard = {vm.completeOnboard()},
+                setAlarm = {pickedTime -> vm.setAlarm(pickedTime, context)}
             )
         }
 

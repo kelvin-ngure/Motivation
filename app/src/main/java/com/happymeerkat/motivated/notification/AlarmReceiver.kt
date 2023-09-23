@@ -88,7 +88,7 @@ class AlarmReceiver: BroadcastReceiver() {
         // SET THE NEXT RECURRING ALARM
         val epochMilli = reminder?.time
         val reminderDateTime = epochMilli?.let { epochMilliToLocalDateTime(it) }
-        val nextReminderDateTime = reminderDateTime?.plusMinutes(1)
+        val nextReminderDateTime = reminderDateTime?.plusHours(24)
         val nextReminderEpochMilli = nextReminderDateTime?.let { localDateTimeToEpochMilli(it) }
         val newReminder = nextReminderEpochMilli?.let {
             Reminder(

@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.home.Home
+import com.happymeerkat.motivated.ui.views.onboard.Onboard
 import com.happymeerkat.motivated.ui.views.settings.Settings
 import com.happymeerkat.motivated.ui.views.settings.favorites.Favorites
 import com.happymeerkat.motivated.ui.views.settings.fonts.FontsSelection
@@ -51,8 +52,15 @@ fun RootNavigation(
     NavHost(
         navController = navController,
         route = NavigationGraph.GRAPHROOT.route,
-        startDestination = NavigationGraph.HOME.route,
+        startDestination = if(state.introSeen) NavigationGraph.HOME.route else NavigationGraph.ONBOARD.route,
     ) {
+        composable( route = NavigationGraph.ONBOARD.route) {
+            Onboard(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+            )
+        }
+
         composable( route = NavigationGraph.HOME.route ) {
             Home(
                 context = context,

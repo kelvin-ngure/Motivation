@@ -5,7 +5,6 @@ import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Theme
 import com.happymeerkat.motivated.data.preferences.ThemePreferencesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 
 class ThemeManager(
     private val repository: ThemePreferencesRepository

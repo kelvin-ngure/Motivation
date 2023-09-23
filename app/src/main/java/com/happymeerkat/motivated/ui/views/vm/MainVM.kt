@@ -11,6 +11,7 @@ import com.happymeerkat.motivated.data.models.Favorite
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.data.models.Reminder
 import com.happymeerkat.motivated.data.models.Theme
+import com.happymeerkat.motivated.data.preferences.ThemePreferencesRepository
 import com.happymeerkat.motivated.domain.repository.FavoriteRepository
 import com.happymeerkat.motivated.domain.repository.QuoteRepository
 import com.happymeerkat.motivated.domain.repository.ReminderRepository
@@ -40,7 +41,8 @@ class MainVM @Inject constructor(
     private val quotesRepository: QuoteRepository,
     private val favoriteRepository: FavoriteRepository,
     private val reminderRepository: ReminderRepository,
-    private val themeManager: ThemeManager
+    private val themeManager: ThemeManager,
+    private val preferencesRepository: ThemePreferencesRepository
 ): ViewModel() {
     private var _homeUIState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState())
     val homeUIState: StateFlow<HomeUIState> = _homeUIState
@@ -51,13 +53,27 @@ class MainVM @Inject constructor(
     var getFavoritesJob: Job? = null
     var getThemeJob: Job? = null
     var getRemindersJob: Job? = null
+    var getIntroJob: Job? = null
 
     init {
+        getIntro()
         getAllQuotes()
         getAllFavorites()
         getTheme()
         getThemes()
         getReminders()
+    }
+
+    private fun getIntro() {
+        getIntroJob?.cancel()
+        getIntroJob = preferencesRepository
+            .readIntroPreference
+            .onEach { introSeen ->
+                _homeUIState.value = _homeUIState.value.copy(
+                    introSeen = introSeen
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun getAllQuotes() {
@@ -193,6 +209,7 @@ data class HomeUIState(
     val quotePage: Int = 0,
     val currentTheme: Theme = Theme(themeId = 1000, backgroundImage = null, backgroundColor = null, fontColor = null, fontId = null, awsKey = null, themeType = ThemeType.COLORS),
     val themes: List<Theme> = emptyList(),
-    val reminders: List<Reminder> = emptyList()
+    val reminders: List<Reminder> = emptyList(),
+    val introSeen: Boolean = false
 )
 

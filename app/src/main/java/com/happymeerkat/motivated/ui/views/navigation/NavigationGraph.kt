@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavigationGraph(val route: String, val icon: ImageVector?) {
     object GRAPHROOT: NavigationGraph(route = "root", icon = null)
+    object ONBOARD: NavigationGraph(route = "onboard", icon = Icons.Default.Home)
     object HOME: NavigationGraph(route = "home", icon = Icons.Default.Home)
     object FILTERS: NavigationGraph(route = "filters", icon = Icons.Default.Apps)
     object SETTINGS: NavigationGraph(route = "settings", icon = Icons.Default.Settings)

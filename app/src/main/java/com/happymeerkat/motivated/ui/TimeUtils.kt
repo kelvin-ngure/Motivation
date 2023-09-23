@@ -31,62 +31,43 @@ fun getFormattedLocalTime(time: LocalTime): String {
     return time.format(DateTimeFormatter.ofPattern("hh:mm a"))
 }
 
+fun localDateTimeToEpochMilli(dateTime: LocalDateTime): Long {
+    return dateTime
+        .toInstant(ZoneId.systemDefault()
+            .rules
+            .getOffset(Instant.now()))
+        .truncatedTo(ChronoUnit.MINUTES)
+        .toEpochMilli()
+}
+
+fun epochMilliToLocalDateTime(utcTime: Long): LocalDateTime {
+    return Instant.ofEpochMilli(utcTime).atZone(ZoneId.systemDefault()).toLocalDateTime();
+}
 
 fun alarmSet(
-    timeChosen: LocalTime? = null,
-    timeChosenUTC: Long? = null,
+    reminderEpochMilliDateTime: Long,
     context: Context,
     quote: Quote,
-    reminder: Reminder?, // for automatic alarm reset, we just get the old reminder. for new alarm, reminder is built within this function
-    saveReminder: (suspend (reminder: Reminder) -> Unit)?
+    reminder: Reminder, // for automatic alarm reset, we just get the old reminder. for new alarm, reminder is built within this function
+    saveReminder: suspend (reminder: Reminder) -> Unit,
 ) {
-    var alarmDateTimeMilliseconds: Long = 0
-
-    if(timeChosen != null) {
-        // if past time, set alarm for tomorrow
-        val today = LocalDate.now()
-        val tomorrow = today.plusDays(1)
-        val alarmDateTime: LocalDateTime = if (timeChosen >= LocalTime.now()) timeChosen.atDate(today) else timeChosen.atDate(tomorrow)
-
-        alarmDateTimeMilliseconds = alarmDateTime
-            .toInstant(ZoneId.systemDefault()
-                .rules
-                .getOffset(Instant.now()))
-            .truncatedTo(ChronoUnit.MINUTES)
-            .toEpochMilli()
-        Log.d("ALARM", "alarm ms $alarmDateTimeMilliseconds")
-
-    } else {
-        alarmDateTimeMilliseconds = timeChosenUTC!!
+    // SAVE REMINDER
+    CoroutineScope(Dispatchers.IO).launch {
+        saveReminder(reminder)
     }
 
-
-    lateinit var rem: Reminder
-    if(saveReminder != null) { // in the case of an alarm being reset automatically, we don't save it again in the database
-        rem = Reminder(
-            id = Instant.now().toEpochMilli().toInt(),
-            time = alarmDateTimeMilliseconds
-        )
-        CoroutineScope(Dispatchers.IO).launch {
-            saveReminder(rem)
-        }
-    } else {
-        rem = reminder!!
-    }
-
-
-    // Alarm and intents
+    // SET ALARM
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, AlarmReceiver::class.java)
     intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
     intent.putExtra("quote", quote)
-    intent.putExtra("reminder", rem)
-    val pendingIntent = PendingIntent.getBroadcast(context, rem.id, intent, PendingIntent.FLAG_IMMUTABLE) // we can guarantee reminder exists since we get the old or new one
+    intent.putExtra("reminder", reminder)
+    val pendingIntent = PendingIntent.getBroadcast(context, reminder.id, intent, PendingIntent.FLAG_IMMUTABLE) // we can guarantee reminder exists since we get the old or new one
     val mainActivityIntent = Intent(context, MainActivity::class.java)
-    val basicPendingIntent = PendingIntent.getActivity(context, rem.id, mainActivityIntent, PendingIntent.FLAG_IMMUTABLE)
+    val basicPendingIntent = PendingIntent.getActivity(context, reminder.id, mainActivityIntent, PendingIntent.FLAG_IMMUTABLE)
 
 
-    val clockInfo = AlarmManager.AlarmClockInfo(alarmDateTimeMilliseconds, basicPendingIntent)
+    val clockInfo = AlarmManager.AlarmClockInfo(reminderEpochMilliDateTime, basicPendingIntent)
     alarmManager.setAlarmClock(clockInfo, pendingIntent)
 }
 

@@ -56,7 +56,7 @@ fun Notifications(
                 )
                 TimeDialog(
                     timeDialogState = timeDialogState,
-                    setNotificationTime = setNotificationTime,
+                    setNotificationTime = {setNotificationTime(pickedTime)},
                     pickedTime = pickedTime,
                     changePickedTime = {pickedTime = it}
                 )

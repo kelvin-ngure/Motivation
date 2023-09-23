@@ -19,6 +19,9 @@ import com.happymeerkat.motivated.domain.themes.ThemeManager
 import com.happymeerkat.motivated.domain.themes.ThemeType
 import com.happymeerkat.motivated.notification.AlarmReceiver
 import com.happymeerkat.motivated.ui.alarmSet
+import com.happymeerkat.motivated.ui.epochMilliToLocalDateTime
+import com.happymeerkat.motivated.ui.getFormattedLocalTime
+import com.happymeerkat.motivated.ui.localDateTimeToEpochMilli
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +29,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.time.Clock
+import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -176,12 +182,23 @@ class MainVM @Inject constructor(
     }
 
     fun setAlarm(timeChosen: LocalTime, context: Context) {
+        Log.d("ALARM", "picked time rceived ${getFormattedLocalTime(timeChosen)}")
+        val date = LocalDate.now(Clock.systemDefaultZone())
+        Log.d("ALARM", "Date set $date")
+        val localDateTime = timeChosen.atDate(date)
+        val epochMilli = localDateTimeToEpochMilli(localDateTime)
+        Log.d("ALARM", "picked time reformatted ${epochMilliToLocalDateTime(epochMilli)}")
+        val reminder = Reminder(
+            id = Instant.now().toEpochMilli().toInt(),
+            time = epochMilli
+        )
+
         alarmSet(
-            timeChosen = timeChosen,
+            reminderEpochMilliDateTime = epochMilli,
             context = context,
             quote = _homeUIState.value.quotes.random(),
             saveReminder = {reminder -> reminderRepository.insertReminder(reminder)},
-            reminder = null
+            reminder = reminder
         )
     }
 

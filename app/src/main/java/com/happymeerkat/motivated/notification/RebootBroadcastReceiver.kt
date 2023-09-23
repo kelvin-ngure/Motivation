@@ -22,7 +22,7 @@ import java.time.ZoneId
 class RebootBroadcastReceiver: BroadcastReceiver() {
 
     @Inject
-    lateinit var repository: ReminderRepository
+    lateinit var reminderRepository: ReminderRepository
     @Inject
     lateinit var quoteRepository: QuoteRepository
 
@@ -33,18 +33,18 @@ class RebootBroadcastReceiver: BroadcastReceiver() {
         )
 
         CoroutineScope(Dispatchers.IO).launch {
-            val activeReminders = repository.getActiveReminders(time)
+            val activeReminders = reminderRepository.getActiveReminders(time)
             Log.d("ALARM PENDING", activeReminders.size.toString())
             activeReminders.forEach { reminder ->
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d("ALARM", "COROUTINE")
                     val randomQuote = quoteRepository.getRandomQuote()
                     alarmSet(
-                        timeChosenUTC = reminder.time,
+                        reminderEpochMilliDateTime = reminder.time,
                         context = context!!,
                         quote = randomQuote,
                         reminder = reminder,
-                        saveReminder = null
+                        saveReminder = {reminder -> reminderRepository.insertReminder(reminder)}
                     )
                 }
             }

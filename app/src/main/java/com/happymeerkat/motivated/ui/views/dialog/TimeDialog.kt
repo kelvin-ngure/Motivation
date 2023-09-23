@@ -20,7 +20,7 @@ import java.time.LocalTime
 @Composable
 fun TimeDialog(
     timeDialogState: MaterialDialogState,
-    setNotificationTime: ((pickedTime: LocalTime) -> Unit)?,
+    setNotificationTime: (() -> Unit)?,
     pickedTime: LocalTime?,
     changePickedTime: (time: LocalTime) -> Unit
 ) {
@@ -31,7 +31,7 @@ fun TimeDialog(
             positiveButton(
                 text = "Ok",
                // onClick = {setNotificationTime(pickedTime)},
-                onClick = { if(setNotificationTime != null && pickedTime != null) setNotificationTime(pickedTime) else {} },
+                onClick = { if(setNotificationTime != null && pickedTime != null) setNotificationTime() else {} },
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onPrimary)
             )
             negativeButton(

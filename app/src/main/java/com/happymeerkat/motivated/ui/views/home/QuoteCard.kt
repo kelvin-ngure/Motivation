@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
@@ -73,10 +74,12 @@ fun QuoteCard(
                 ) {
                     if (quote != null)
                         Text(
-                            quote.quote,
+                            text = quote.quote,
                             textAlign = TextAlign.Center,
                             fontFamily = if (fontId != null) FontFamily(listOf(Font(fontId))) else MaterialTheme.typography.bodyLarge.fontFamily,
-                            color = fontColor ?: MaterialTheme.colorScheme.onPrimary
+                            color = fontColor ?: MaterialTheme.colorScheme.onPrimary,
+                            fontSize = 25.sp,
+                            lineHeight = 40.sp,
                         )
                 }
                 Row(

@@ -85,6 +85,7 @@ fun Home(
                 model = theme.backgroundImage,
                 contentDescription = theme.awsKey,
                 contentScale = ContentScale.Crop,
+                alpha = 0.3f
             )
         }
         if( theme.backgroundColor != null) {

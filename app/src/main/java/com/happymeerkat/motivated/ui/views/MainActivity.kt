@@ -34,9 +34,11 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+
+        window.setDecorFitsSystemWindows(false)
 
 
         super.onCreate(savedInstanceState)

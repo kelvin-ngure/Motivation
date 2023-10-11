@@ -96,7 +96,7 @@ class ThemeManager(
             themeType = ThemeType.NATURE,
             backgroundImage = R.drawable.nature10,
             backgroundColor = null,
-            fontColor = Color.White,
+            fontColor = Color.Black,
             fontId = R.font.open_sans_regular,
             awsKey = "nature10"
         ),
@@ -168,7 +168,7 @@ class ThemeManager(
             themeType = ThemeType.CITIES,
             backgroundImage = R.drawable.cities7,
             backgroundColor = null,
-            fontColor = Color.White,
+            fontColor = Color(0xff023047),
             fontId = R.font.open_sans_regular,
             awsKey = "cities7"
         ),

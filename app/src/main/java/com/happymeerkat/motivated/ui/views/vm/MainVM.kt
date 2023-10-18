@@ -183,7 +183,11 @@ class MainVM @Inject constructor(
 
     fun setAlarm(timeChosen: LocalTime, context: Context) {
         Log.d("ALARM", "picked time rceived ${getFormattedLocalTime(timeChosen)}")
-        val date = LocalDate.now(Clock.systemDefaultZone())
+
+        var date = LocalDate.now(Clock.systemDefaultZone())
+        if(timeChosen < LocalTime.now()) {
+            date = date.plusDays(1)
+        }
         Log.d("ALARM", "Date set $date")
         val localDateTime = timeChosen.atDate(date)
         val epochMilli = localDateTimeToEpochMilli(localDateTime)

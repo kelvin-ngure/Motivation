@@ -7,29 +7,37 @@ import android.content.Intent
 import android.content.pm.LabeledIntent
 import android.content.pm.ResolveInfo
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.applyCanvas
-import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.google.accompanist.drawablepainter.DrawablePainter
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.ui.views.MainActivity
 import java.io.File
@@ -44,9 +52,31 @@ fun ShareModal(
     context: Context
 ) {
     val pm = context.packageManager
+    val iconSize = 50
+    val padding = 20
 
     ModalBottomSheet(onDismissRequest = {onDismissRequest()} ) {
         Column {
+
+            // CUSTOM IN-APP ACTIONS
+            val actions = listOf<InAppShareAction>(
+                InAppShareAction(Icons.Default.ArrowDownward) {
+                    Toast.makeText(
+                        context,
+                        "Downloaded",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+            LazyRow {
+                items(actions) {action ->
+                    IntentIcon(modifier = Modifier, onClick = action.action, icon = action.icon, name = "Download quote")
+                }
+            }
+
+
+
+            // OTHER APPS
             LazyRow {
                 // SHARE IMAGE
                 val uri = FileProvider.getUriForFile(
@@ -82,14 +112,42 @@ fun ShareModal(
                         setPackage(packageName)
                     }
 
-                    IconButton(onClick = { context.startActivity(intent) }) {
-                        GlideImage(model = icon, contentDescription = "")
-                    }
+                    IntentIcon(modifier = Modifier, onClick = {context.startActivity(intent)}, icon = icon, name = name)
 
 
                 }
             }
 
+        }
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun IntentIcon(
+    modifier: Modifier,
+    onClick: () -> Unit,
+    icon: Any?,
+    name: String
+) {
+    val size = 60
+    val spacing = 20
+    Row(
+        modifier = Modifier.padding(spacing.dp)
+    ) {
+
+        Column(
+            modifier = Modifier.width(size.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            IconButton(modifier = Modifier.size(size.dp),onClick = {onClick()}) {
+                if(icon is ImageVector)
+                    Icon(modifier = Modifier.size(size.dp),imageVector = icon, contentDescription = "")
+                else
+                    GlideImage(modifier = Modifier.size(size.dp), model = icon, contentDescription = "")
+            }
+            Text(text = name)
         }
     }
 }
@@ -125,7 +183,7 @@ fun shareQuote(
     }
 
     // INVOKE SHARE INTENT LIST
-    val accompanyingText = "$quote ${if(author != null) "\n\n~ $author" else ""} \n\nFor more quotes, try out the Motivation app ${String(Character.toChars(0x1F60A))}\n$appLink"
+    val accompanyingText = "$quote ${if(author != null) "\n\n~ $author" else ""} \n\nFor more quotes, try out the Motivation app ${String(Character.toChars(0x1F60))}\n$appLink"
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, accompanyingText)
@@ -199,3 +257,8 @@ private fun saveImageToDevice2(filename: String, bitmap: Bitmap, context: Contex
         false
     }
 }
+
+data class InAppShareAction (
+    val icon: ImageVector,
+    val action: () -> Unit
+)

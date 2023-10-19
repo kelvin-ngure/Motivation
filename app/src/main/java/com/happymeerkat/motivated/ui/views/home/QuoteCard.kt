@@ -1,12 +1,15 @@
 package com.happymeerkat.motivated.ui.views.home
 
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.pm.LabeledIntent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +22,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,15 +44,17 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.applyCanvas
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
+import com.happymeerkat.motivated.ui.views.MainActivity
 import java.io.File
+import java.io.IOException
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuoteCard(
     modifier: Modifier,
@@ -56,6 +67,7 @@ fun QuoteCard(
     toggleHidden: () -> Unit,
     context: Context
 ) {
+        var showShareModal by remember{ mutableStateOf(false) }
 
         Column(
             modifier = modifier
@@ -150,6 +162,12 @@ fun QuoteCard(
                 }
             }
 
+            if(showShareModal) {
+                ModalBottomSheet(onDismissRequest = { showShareModal = false }) {
+                    // Sheet content
+                }
+            }
+
 
         }
 }
@@ -178,13 +196,14 @@ fun shareQuote(
         File(context.filesDir,"screenshot.png")
     )
 
-    val playstore_uri = Uri.parse(
-        ContextCompat.getString(
-            context,
-            R.string.app_playstore_link
-        )
-    )
+    // ADD DOWNLOAD OPTION TO INTENT LIST
+    val download = Intent(Intent.ACTION_SEND)
+    val downloadIntent = LabeledIntent(download, context.packageName, "Download Quote", R.drawable.download_logo).apply {
+        type = "image/jpeg"
+        component = ComponentName(context, MainActivity::class.java)
+    }
 
+    // INVOKE SHARE INTENT LIST
     val accompanyingText = "$quote ${if(author != null) "\n\n~ $author" else ""} \n\nFor more quotes, try out the Motivation app ${String(Character.toChars(0x1F60A))}\n$appLink"
     val intent = Intent().apply {
         action = Intent.ACTION_SEND
@@ -199,11 +218,12 @@ fun shareQuote(
         startActivity(
             context,
             Intent.createChooser(intent, "send")
-                .addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-                ),
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(Intent.EXTRA_INITIAL_INTENTS, listOf(downloadIntent).toTypedArray()), // .putExtra(Intent.EXTRA_INITIAL_INTENTS, downloadIntent) won't work. input has to be parcelable
             null
         )
+        //
+
     } catch (e: ActivityNotFoundException) {
         Toast.makeText(context, "couldn't share quote", Toast.LENGTH_SHORT)
     }
@@ -237,4 +257,21 @@ private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, qual
         out.flush()
     }
     //outputStream().close()
+}
+
+
+private fun saveImageToDevice(filename: String, bitmap: Bitmap, context: Context): Boolean {
+    return try {
+        context.openFileOutput("$filename.jpg", MODE_PRIVATE).use { fileInputStream ->
+            if(!bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileInputStream)) {
+                throw IOException("ERROR saving bitmap")
+            }
+        }
+
+        return true
+    } catch (e: IOException) {
+        e.printStackTrace()
+        Log.d("DOWNLOAD", "error saving image to device")
+        false
+    }
 }

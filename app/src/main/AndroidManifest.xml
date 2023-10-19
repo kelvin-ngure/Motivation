@@ -42,9 +42,14 @@
             android:theme="@style/Theme.MotivatedDailyQuotes">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".DownloadActivity"
+            android:exported="true">
+
         </activity>
 
         <receiver android:name=".notification.AlarmReceiver" />

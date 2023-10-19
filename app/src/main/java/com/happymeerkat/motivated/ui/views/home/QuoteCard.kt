@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.LabeledIntent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
@@ -26,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,6 +50,8 @@ import androidx.core.graphics.applyCanvas
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
 import com.happymeerkat.motivated.ui.views.MainActivity
+import com.happymeerkat.motivated.ui.views.dialog.ShareModal
+import com.happymeerkat.motivated.ui.views.dialog.takeScreenShot2
 import java.io.File
 import java.io.IOException
 
@@ -142,14 +144,24 @@ fun QuoteCard(
                         IconButton(
                             modifier = Modifier
                                 .size(80.dp),
-                            onClick = { shareQuote(
+                            onClick = {
+                                toggleHidden()
+                                takeScreenShot2(
+                                    context = context,
+                                    currentView = currentView,
+                                    toggleHidden = toggleHidden
+                                )
+                                showShareModal = true
+
+                                /*shareQuote(
                                 context = cnt,
                                 currentView = currentView,
                                 quote.quote,
                                 quote.author,
                                 appLink,
                                 toggleHidden = toggleHidden
-                            ) }
+                                ) */
+                            }
                         ) {
                             Icon(
                                 modifier = Modifier.size(35.dp),
@@ -163,9 +175,23 @@ fun QuoteCard(
             }
 
             if(showShareModal) {
-                ModalBottomSheet(onDismissRequest = { showShareModal = false }) {
-                    // Sheet content
-                }
+
+                val pm: PackageManager = context.packageManager
+                val mainIntent = Intent(Intent.ACTION_SEND, null)
+                mainIntent.type = "image/jpeg"
+                val resolveInfos = pm.queryIntentActivities(
+                    mainIntent,
+                    0
+                )
+                // returns all applications which can listen to the SEND Intent
+                resolveInfos.forEach{Log.d("APPS", it.toString())}
+
+
+                ShareModal(
+                    onDismissRequest = { showShareModal = false },
+                    appIntents = resolveInfos.toList(),
+                    context = context
+                )
             }
 
 

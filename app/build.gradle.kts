@@ -14,8 +14,8 @@ android {
         applicationId = "com.happymeerkat.motivation"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1032
-        versionName = "1.0.32"
+        versionCode = 1033
+        versionName = "1.0.33"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

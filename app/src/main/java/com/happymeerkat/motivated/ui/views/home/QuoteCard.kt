@@ -70,10 +70,9 @@ fun QuoteCard(
     context: Context
 ) {
         var showShareModal by remember{ mutableStateOf(false) }
-        var bitmap: Bitmap = Bitmap.createBitmap(
-            1, 1,
-            Bitmap.Config.ARGB_8888
-        )
+        var bitmap: Bitmap? by remember {
+            mutableStateOf(null)
+        }
 
         Column(
             modifier = modifier
@@ -154,7 +153,7 @@ fun QuoteCard(
                                     context = context,
                                     currentView = currentView,
                                     toggleHidden = toggleHidden,
-                                    setBitmap = {bmp: Bitmap ->bitmap = bmp},
+                                    setBitmap = {bmp: Bitmap -> bitmap = bmp.copy(bmp.config, true)},
                                 )
                                 showShareModal = true
 
@@ -200,7 +199,7 @@ fun QuoteCard(
                     context = context,
                     saveImageToDevice = {
                         saveImageToDevice(
-                            filename = File(context.filesDir, "screenshot.png").name,
+                            filename = File(context.filesDir, "quote.png").name,
                             bitmap = bitmap!!,
                             context = context
                         )
@@ -286,11 +285,6 @@ fun takeScreenShot(
             File(context.filesDir, "screenshot.png")
                 .writeBitmap(bmp, Bitmap.CompressFormat.PNG, 85)
         }
-        saveImageToDevice(
-            filename = "pic.png",
-            bitmap = bmp,
-            context = context
-        )
         setBitmap(bmp)
         toggleHidden()
     }, 1000)
@@ -307,13 +301,6 @@ private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, qual
 
 private fun saveImageToDevice(filename: String, bitmap: Bitmap, context: Context): Boolean {
     return try {
-//        context.openFileOutput(filename, MODE_PRIVATE).use { fileOutputStream ->
-//            if(!bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream)) {
-//                throw IOException("ERROR saving bitmap")
-//            }
-//        }
-        Log.d("IMAGE", "opened")
-
         var fileOutputStream: OutputStream? = null
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q) {
             context.contentResolver?.also { resolver ->
@@ -338,9 +325,6 @@ private fun saveImageToDevice(filename: String, bitmap: Bitmap, context: Context
             !bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it)
             Toast.makeText(context, "Quote saved to gallery", Toast.LENGTH_LONG).show()
         }
-
-
-
 
         return true
     } catch (e: IOException) {

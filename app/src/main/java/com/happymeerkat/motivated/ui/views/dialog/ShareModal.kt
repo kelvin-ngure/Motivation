@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,7 +33,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.applyCanvas
@@ -75,7 +78,7 @@ fun ShareModal(
             }
 
 
-
+            Spacer(modifier = Modifier.height(15.dp))
             // OTHER APPS
             LazyRow {
                 // SHARE IMAGE
@@ -130,25 +133,27 @@ fun IntentIcon(
     icon: Any?,
     name: String
 ) {
-    val size = 60
-    val spacing = 20
+    val buttonSize = 70
+    val iconSize = 50
+    val spacing = 14
     Row(
-        modifier = Modifier.padding(spacing.dp)
+        modifier = Modifier
     ) {
 
         Column(
-            modifier = Modifier.width(size.dp),
+            modifier = Modifier.width(buttonSize.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconButton(modifier = Modifier.size(size.dp),onClick = {onClick()}) {
+            IconButton(modifier = Modifier.size(buttonSize.dp),onClick = {onClick()}) {
                 if(icon is ImageVector)
-                    Icon(modifier = Modifier.size(size.dp),imageVector = icon, contentDescription = "")
+                    Icon(modifier = Modifier.size(iconSize.dp),imageVector = icon, contentDescription = "")
                 else
-                    GlideImage(modifier = Modifier.size(size.dp), model = icon, contentDescription = "")
+                    GlideImage(modifier = Modifier.size(iconSize.dp), model = icon, contentDescription = "")
             }
-            Text(text = name)
+            Text(text = name, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 1)
         }
+        Spacer(modifier = Modifier.width(spacing.dp))
     }
 }
 

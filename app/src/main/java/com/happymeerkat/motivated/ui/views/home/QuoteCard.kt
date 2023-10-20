@@ -1,15 +1,16 @@
 package com.happymeerkat.motivated.ui.views.home
 
-import android.content.ActivityNotFoundException
-import android.content.ComponentName
+import android.content.ContentValues
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.pm.LabeledIntent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -44,16 +45,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.applyCanvas
 import com.happymeerkat.motivated.R
 import com.happymeerkat.motivated.data.models.Quote
-import com.happymeerkat.motivated.ui.views.MainActivity
 import com.happymeerkat.motivated.ui.views.dialog.ShareModal
-import com.happymeerkat.motivated.ui.views.dialog.takeScreenShot2
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,6 +70,10 @@ fun QuoteCard(
     context: Context
 ) {
         var showShareModal by remember{ mutableStateOf(false) }
+        var bitmap: Bitmap = Bitmap.createBitmap(
+            1, 1,
+            Bitmap.Config.ARGB_8888
+        )
 
         Column(
             modifier = modifier
@@ -146,10 +150,11 @@ fun QuoteCard(
                                 .size(80.dp),
                             onClick = {
                                 toggleHidden()
-                                takeScreenShot2(
+                                takeScreenShot(
                                     context = context,
                                     currentView = currentView,
-                                    toggleHidden = toggleHidden
+                                    toggleHidden = toggleHidden,
+                                    setBitmap = {bmp: Bitmap ->bitmap = bmp},
                                 )
                                 showShareModal = true
 
@@ -184,22 +189,29 @@ fun QuoteCard(
                     0
                 )
                 // returns all applications which can listen to the SEND Intent
-                resolveInfos.forEach{Log.d("APPS", it.toString())}
-
-
+                val uri = FileProvider.getUriForFile(
+                    context,
+                    "com.happymeerkat.motivated.provider",  //(use your app signature + ".provider" )
+                    File(context.filesDir,"screenshot.png")
+                )
                 ShareModal(
                     onDismissRequest = { showShareModal = false },
                     appIntents = resolveInfos.toList(),
-                    context = context
+                    context = context,
+                    saveImageToDevice = {
+                        saveImageToDevice(
+                            filename = File(context.filesDir, "screenshot.png").name,
+                            bitmap = bitmap!!,
+                            context = context
+                        )
+                    }
                 )
             }
-
-
         }
 }
 
 
-fun shareQuote(
+/*fun shareQuote(
     context: Context,
     currentView: View,
     quote: String,
@@ -253,13 +265,14 @@ fun shareQuote(
     } catch (e: ActivityNotFoundException) {
         Toast.makeText(context, "couldn't share quote", Toast.LENGTH_SHORT)
     }
-}
+}*/
 
 
 fun takeScreenShot(
     context: Context,
     currentView: View,
-    toggleHidden: () -> Unit
+    toggleHidden: () -> Unit,
+    setBitmap: (bmp: Bitmap) -> Unit,
 ) {
     val handler = Handler(Looper.getMainLooper())
     handler.postDelayed({
@@ -273,6 +286,12 @@ fun takeScreenShot(
             File(context.filesDir, "screenshot.png")
                 .writeBitmap(bmp, Bitmap.CompressFormat.PNG, 85)
         }
+        saveImageToDevice(
+            filename = "pic.png",
+            bitmap = bmp,
+            context = context
+        )
+        setBitmap(bmp)
         toggleHidden()
     }, 1000)
 }
@@ -288,11 +307,40 @@ private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, qual
 
 private fun saveImageToDevice(filename: String, bitmap: Bitmap, context: Context): Boolean {
     return try {
-        context.openFileOutput("$filename.jpg", MODE_PRIVATE).use { fileInputStream ->
-            if(!bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileInputStream)) {
-                throw IOException("ERROR saving bitmap")
+//        context.openFileOutput(filename, MODE_PRIVATE).use { fileOutputStream ->
+//            if(!bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream)) {
+//                throw IOException("ERROR saving bitmap")
+//            }
+//        }
+        Log.d("IMAGE", "opened")
+
+        var fileOutputStream: OutputStream? = null
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q) {
+            context.contentResolver?.also { resolver ->
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                val imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                fileOutputStream = imageUri?.let {
+                    resolver.openOutputStream(it)
+                }
             }
+        } else {
+            val imagesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDirectory, filename)
+            fileOutputStream = FileOutputStream(image)
         }
+
+        fileOutputStream?.use {
+            !bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it)
+            Toast.makeText(context, "Quote saved to gallery", Toast.LENGTH_LONG).show()
+        }
+
+
+
 
         return true
     } catch (e: IOException) {

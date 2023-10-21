@@ -142,8 +142,6 @@ fun QuoteCard(
                         }
 
                         val currentView = LocalView.current
-                        val cnt = LocalContext.current
-                        val appLink = stringResource(id = R.string.app_playstore_link)
                         IconButton(
                             modifier = Modifier
                                 .size(80.dp),
@@ -156,15 +154,6 @@ fun QuoteCard(
                                     setBitmap = {bmp: Bitmap -> bitmap = bmp.copy(bmp.config, true)},
                                 )
                                 showShareModal = true
-
-                                /*shareQuote(
-                                context = cnt,
-                                currentView = currentView,
-                                quote.quote,
-                                quote.author,
-                                appLink,
-                                toggleHidden = toggleHidden
-                                ) */
                             }
                         ) {
                             Icon(
@@ -179,6 +168,8 @@ fun QuoteCard(
             }
 
             if(showShareModal) {
+
+                val appLink = stringResource(id = R.string.app_playstore_link)
 
                 val pm: PackageManager = context.packageManager
                 val mainIntent = Intent(Intent.ACTION_SEND, null)
@@ -203,68 +194,20 @@ fun QuoteCard(
                             bitmap = bitmap!!,
                             context = context
                         )
-                    }
+                    },
+                    text = textBuilder(quote.quote, quote.author, appLink)
                 )
             }
         }
 }
 
+fun textBuilder(quote: String, author: String?, appLink: String): String {
+    val tagline = "For more quotes, try out the Motivation app ${String(Character.toChars(0x1F60A))}$appLink"
+    var _author = author ?: ""
+    _author = "~ $_author"
+    return "$quote \n\n $_author \n\n $tagline"
+}
 
-/*fun shareQuote(
-    context: Context,
-    currentView: View,
-    quote: String,
-    author: String?,
-    appLink: String,
-    toggleHidden: () -> Unit
-) {
-    // TAKE SCREENSHOT
-    toggleHidden()
-    takeScreenShot(
-        context = context,
-        currentView = currentView,
-        toggleHidden = toggleHidden
-    )
-
-    // SHARE IMAGE
-    val uri = FileProvider.getUriForFile(
-        context,
-        "com.happymeerkat.motivated.provider",  //(use your app signature + ".provider" )
-        File(context.filesDir,"screenshot.png")
-    )
-
-    // ADD DOWNLOAD OPTION TO INTENT LIST
-    val download = Intent(Intent.ACTION_SEND)
-    val downloadIntent = LabeledIntent(download, context.packageName, "Download Quote", R.drawable.download_logo).apply {
-        type = "image/jpeg"
-        component = ComponentName(context, MainActivity::class.java)
-    }
-
-    // INVOKE SHARE INTENT LIST
-    val accompanyingText = "$quote ${if(author != null) "\n\n~ $author" else ""} \n\nFor more quotes, try out the Motivation app ${String(Character.toChars(0x1F60A))}\n$appLink"
-    val intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, accompanyingText)
-        putExtra(Intent.EXTRA_STREAM, uri)
-        type = "image/jpeg"
-        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    }
-
-    try {
-        startActivity(
-            context,
-            Intent.createChooser(intent, "send")
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(Intent.EXTRA_INITIAL_INTENTS, listOf(downloadIntent).toTypedArray()), // .putExtra(Intent.EXTRA_INITIAL_INTENTS, downloadIntent) won't work. input has to be parcelable
-            null
-        )
-        //
-
-    } catch (e: ActivityNotFoundException) {
-        Toast.makeText(context, "couldn't share quote", Toast.LENGTH_SHORT)
-    }
-}*/
 
 
 fun takeScreenShot(

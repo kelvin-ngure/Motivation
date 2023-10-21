@@ -3,7 +3,8 @@ package com.happymeerkat.motivated.ui.views.dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
-import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,9 +41,39 @@ fun ShareModal(
     onDismissRequest: () -> Unit,
     appIntents: List<ResolveInfo>,
     context: Context,
-    saveImageToDevice: () -> Unit
+    saveImageToDevice: () -> Unit,
+    text: String
 ) {
     val pm = context.packageManager
+    val priorityApps = emptyList<ExternalAppShareIcon>().toMutableList()
+    appIntents.forEach {
+
+        val name: String? = it.activityInfo.name
+        if(name != null) {
+            if(name.contains("whatsapp")) {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "Whatsapp", it.activityInfo.packageName, it.activityInfo.name,1))
+            }
+            if(name == "com.instagram.share.handleractivity.ShareHandlerActivity") {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "Instagram", it.activityInfo.packageName, it.activityInfo.name,2))
+            }
+            if(name.contains("com.facebook.composer")) {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "Facebook", it.activityInfo.packageName, it.activityInfo.name,3))
+            }
+            if(name.contains("messag")) {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "Message", it.activityInfo.packageName, it.activityInfo.name,4))
+            }
+            if(name.contains("snapchat")) {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "Snapchat", it.activityInfo.packageName, it.activityInfo.name,5))
+            }
+            if(name == ("com.ss.android.ugc.aweme.share.SystemShareActivity")) {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "TikTok", it.activityInfo.packageName, it.activityInfo.name,6))
+            }
+            if(name == "com.google.android.gm") {
+                priorityApps.add(ExternalAppShareIcon(it.loadIcon(pm), "Gmail", it.activityInfo.packageName, it.activityInfo.name,7))
+            }
+        }
+
+    }
 
     ModalBottomSheet(onDismissRequest = {onDismissRequest()} ) {
         Column(
@@ -50,15 +81,15 @@ fun ShareModal(
         ) {
 
             // CUSTOM IN-APP ACTIONS
-            val actions = listOf<InAppShareAction>(
+            val actions = listOf(
                 InAppShareAction(
                     Icons.Default.ArrowDownward,
-                    {saveImageToDevice()}
+                    saveImageToDevice
                 )
             )
             LazyRow {
                 items(actions) {action ->
-                    IntentIcon(modifier = Modifier, onClick = {action.action()}, icon = action.icon, name = "Download quote", closeModal = onDismissRequest)
+                    IntentIcon(modifier = Modifier, onClick = {action.action()}, icon = action.icon, displayName = "Download quote", closeModal = onDismissRequest)
                 }
             }
 
@@ -68,9 +99,12 @@ fun ShareModal(
             LazyRow {
                 // SHARE IMAGE
 
-
-                items(appIntents) { appInfo ->
-                    val applicationInfo = appInfo.activityInfo.applicationInfo
+                //icon packagename
+                items(priorityApps.sortedBy { it.position }) { appInfo ->
+                    Log.d("APP name ", appInfo.name)
+                    Log.d("APP package name ", appInfo.packageName)
+                    Log.d("APP ", " ")
+                    val applicationInfo = appInfo
 
                     // SHARE IMAGE
                     val uri = FileProvider.getUriForFile(
@@ -80,20 +114,17 @@ fun ShareModal(
                     )
 
                     //get package name, icon and label from applicationInfo object and display it in your custom layout
-                    val icon = applicationInfo.loadIcon(pm)
-                    val name  = applicationInfo.loadLabel(pm).toString()
-                    val packageName = applicationInfo.packageName
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, "SOME QUOTE TEXT")
+                        putExtra(Intent.EXTRA_TEXT, text)
                         putExtra(Intent.EXTRA_STREAM, uri)
                         type = "image/jpeg"
                         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        setPackage(packageName)
+                        setPackage(appInfo.packageName)
                     }
 
-                    IntentIcon(modifier = Modifier, onClick = {context.startActivity(intent)}, icon = icon, name = name, closeModal = onDismissRequest)
+                    IntentIcon(modifier = Modifier, onClick = {context.startActivity(intent)}, icon = appInfo.icon, displayName = appInfo.displayName, closeModal = onDismissRequest)
 
 
                 }
@@ -109,7 +140,7 @@ fun IntentIcon(
     modifier: Modifier,
     onClick: () -> Unit,
     icon: Any?,
-    name: String,
+    displayName: String,
     closeModal: () -> Unit
 ) {
     val buttonSize = 70
@@ -130,7 +161,7 @@ fun IntentIcon(
                 else
                     GlideImage(modifier = Modifier.size(iconSize.dp), model = icon, contentDescription = "")
             }
-            Text(text = name, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 1)
+            Text(text = displayName, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 2)
         }
         Spacer(modifier = Modifier.width(spacing.dp))
     }
@@ -140,4 +171,12 @@ fun IntentIcon(
 data class InAppShareAction (
     val icon: ImageVector,
     val action: () -> Unit
+)
+
+data class ExternalAppShareIcon(
+    val icon: Drawable,
+    val displayName: String,
+    val packageName: String,
+    val name: String,
+    val position: Int
 )

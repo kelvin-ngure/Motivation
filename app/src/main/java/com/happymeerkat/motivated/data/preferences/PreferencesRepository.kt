@@ -37,7 +37,7 @@ class ThemePreferencesRepository @Inject constructor (
             }
         }
         .map { preferences ->
-            preferences[CURRENT_THEME] ?: 4
+            preferences[CURRENT_THEME] ?: 2
         }
 
     suspend fun saveFontPreference(fontIndex: Int) {

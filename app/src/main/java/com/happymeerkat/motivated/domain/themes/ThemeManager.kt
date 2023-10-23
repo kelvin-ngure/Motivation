@@ -12,8 +12,8 @@ class ThemeManager(
     val themes = listOf(
         Theme(
             themeId = 1,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature1,
+            themeType = ThemeType.CITIES,
+            backgroundImage = R.drawable.image1,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.montserrat_regular,
@@ -22,7 +22,7 @@ class ThemeManager(
         Theme(
             themeId = 2,
             themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature2,
+            backgroundImage = R.drawable.image2,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.robotomono_regular,
@@ -30,8 +30,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 3,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature3,
+            themeType = ThemeType.DESERT,
+            backgroundImage = R.drawable.image3,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -39,8 +39,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 4,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature4,
+            themeType = ThemeType.TEXTURE,
+            backgroundImage = R.drawable.image4,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -48,8 +48,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 5,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature5,
+            themeType = ThemeType.TEXTURE,
+            backgroundImage = R.drawable.image5,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -57,8 +57,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 6,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature6,
+            themeType = ThemeType.PAINTING,
+            backgroundImage = R.drawable.image6,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -67,7 +67,7 @@ class ThemeManager(
         Theme(
             themeId = 7,
             themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature7,
+            backgroundImage = R.drawable.image7,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -75,8 +75,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 8,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature8,
+            themeType = ThemeType.TEXTURE,
+            backgroundImage = R.drawable.image8,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -85,7 +85,7 @@ class ThemeManager(
         Theme(
             themeId = 9,
             themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature9,
+            backgroundImage = R.drawable.image9,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -93,8 +93,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 10,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature10,
+            themeType = ThemeType.SKY,
+            backgroundImage = R.drawable.image10,
             backgroundColor = null,
             fontColor = Color.Black,
             fontId = R.font.open_sans_regular,
@@ -102,8 +102,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 11,
-            themeType = ThemeType.NATURE,
-            backgroundImage = R.drawable.nature11,
+            themeType = ThemeType.ROAD,
+            backgroundImage = R.drawable.image11,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -111,8 +111,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 12,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities1,
+            themeType = ThemeType.NATURE,
+            backgroundImage = R.drawable.image12,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.montserrat_regular,
@@ -121,7 +121,7 @@ class ThemeManager(
         Theme(
             themeId = 13,
             themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities2,
+            backgroundImage = R.drawable.image13,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.robotomono_regular,
@@ -129,8 +129,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 14,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities3,
+            themeType = ThemeType.SKY,
+            backgroundImage = R.drawable.image14,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -138,8 +138,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 15,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities4,
+            themeType = ThemeType.SKY,
+            backgroundImage = R.drawable.image15,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -147,8 +147,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 16,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities5,
+            themeType = ThemeType.TEXTURE,
+            backgroundImage = R.drawable.image16,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -156,8 +156,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 17,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities6,
+            themeType = ThemeType.DESERT,
+            backgroundImage = R.drawable.image17,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -165,8 +165,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 18,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities7,
+            themeType = ThemeType.TEXTURE,
+            backgroundImage = R.drawable.image18,
             backgroundColor = null,
             fontColor = Color(0xff023047),
             fontId = R.font.open_sans_regular,
@@ -174,8 +174,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 19,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities8,
+            themeType = ThemeType.TEXTURE,
+            backgroundImage = R.drawable.image19,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -183,8 +183,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 20,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities9,
+            themeType = ThemeType.DESERT,
+            backgroundImage = R.drawable.image20,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -192,8 +192,8 @@ class ThemeManager(
         ),
         Theme(
             themeId = 21,
-            themeType = ThemeType.CITIES,
-            backgroundImage = R.drawable.cities10,
+            themeType = ThemeType.SKY,
+            backgroundImage = R.drawable.image21,
             backgroundColor = null,
             fontColor = Color.White,
             fontId = R.font.open_sans_regular,
@@ -271,6 +271,15 @@ class ThemeManager(
             fontId = R.font.open_sans_regular,
             awsKey = null
         ),
+        Theme(
+            themeId = 30,
+            themeType = ThemeType.MOUNTAIN,
+            backgroundImage = R.drawable.image22,
+            backgroundColor = null,
+            fontColor = Color.White,
+            fontId = R.font.open_sans_regular,
+            awsKey = "cities10"
+        ),
     )
 
     val currentThemeId : Flow<Int> =  repository.readThemePreference
@@ -282,5 +291,5 @@ class ThemeManager(
 }
 
 enum class ThemeType {
-    COLORS, NATURE, CITIES
+    COLORS, NATURE, CITIES, SKY, ROAD, TEXTURE, MOUNTAIN, DESERT, PAINTING
 }
